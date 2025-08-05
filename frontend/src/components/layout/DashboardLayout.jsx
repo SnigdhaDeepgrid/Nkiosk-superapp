@@ -143,11 +143,19 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
         <nav className="flex-1 p-4 space-y-1">
           {navigation.map((item, index) => (
             <Button
-              key={item.href}
+              key={item.label}
               variant="ghost"
-              className="w-full justify-start gap-3 h-11 text-slate-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50 hover:text-blue-700 rounded-lg font-medium transition-all duration-200 text-sm"
+              className={`w-full justify-start gap-3 h-11 font-medium transition-all duration-200 text-sm rounded-lg ${
+                activeTab === item.tab 
+                  ? 'bg-gradient-to-r from-blue-50 to-green-50 text-blue-700 shadow-sm' 
+                  : 'text-slate-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50 hover:text-blue-700'
+              }`}
               onClick={() => {
-                navigate(item.href);
+                if (item.tab) {
+                  onTabChange?.(item.tab);
+                } else if (item.href) {
+                  navigate(item.href);
+                }
                 setSidebarOpen(false);
               }}
             >
