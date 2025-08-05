@@ -213,7 +213,7 @@ const LoginForm = () => {
                 <span className="text-slate-600 font-medium">Vendor:</span>
                 <span className="text-slate-800">vendor@foodie.com</span>
               </div>
-              <div className="mt-3 pt-3 border-t border-indigo-200 flex justify-between">
+              <div className="mt-3 pt-3 border-t border-blue-200 flex justify-between">
                 <span className="text-slate-600 font-medium">Password:</span>
                 <span className="text-slate-800 font-mono bg-white px-2 py-1 rounded text-xs">password123</span>
               </div>
