@@ -38,10 +38,10 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
   const getRoleNavigation = (role) => {
     const navItems = {
       saas_admin: [
-        { label: 'Dashboard', href: '/dashboard', icon: Store },
-        { label: 'Tenants', href: '/tenants', icon: Users },
-        { label: 'Analytics', href: '/analytics', icon: BarChart3 },
-        { label: 'Settings', href: '/settings', icon: Settings },
+        { label: 'Dashboard', tab: 'overview', icon: Store },
+        { label: 'Tenants', tab: 'tenants', icon: Users },
+        { label: 'Analytics', tab: 'analytics', icon: BarChart3 },
+        { label: 'Settings', tab: 'settings', icon: Settings },
       ],
       super_admin: [
         { label: 'Dashboard', href: '/dashboard', icon: Store },
