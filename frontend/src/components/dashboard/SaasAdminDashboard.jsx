@@ -41,10 +41,6 @@ const SaasAdminDashboard = ({ user }) => {
   const [viewMode, setViewMode] = useState('grid');
   const { toast } = useToast();
 
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-  };
-
   const stats = [
     {
       title: 'Active Tenants',
