@@ -144,7 +144,7 @@ const DashboardLayout = ({ children, user }) => {
             <Button
               key={item.href}
               variant="ghost"
-              className="w-full justify-start gap-3 h-12 text-slate-700 hover:bg-gradient-to-r hover:from-indigo-50 hover:to-purple-50 hover:text-indigo-700 rounded-xl font-medium transition-all duration-200"
+              className="w-full justify-start gap-3 h-12 text-slate-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50 hover:text-blue-700 rounded-xl font-medium transition-all duration-200"
               onClick={() => {
                 navigate(item.href);
                 setSidebarOpen(false);
