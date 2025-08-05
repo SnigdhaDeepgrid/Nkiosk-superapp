@@ -170,7 +170,7 @@ const DashboardLayout = ({ children, user }) => {
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-slate-900 truncate">{user.name}</p>
               <p className="text-xs text-slate-600 truncate">{user.roleDisplay}</p>
-              <p className="text-xs text-indigo-600 font-medium">Active</p>
+              <p className="text-xs text-blue-600 font-medium">Active</p>
             </div>
           </div>
         </div>
