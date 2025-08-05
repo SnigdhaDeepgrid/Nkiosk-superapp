@@ -140,7 +140,7 @@ const LoginForm = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="h-12 border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl"
+                className="h-12 border-slate-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl"
                 required
               />
             </div>
