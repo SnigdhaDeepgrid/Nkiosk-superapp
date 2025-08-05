@@ -156,7 +156,7 @@ const LoginForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="h-12 border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl pr-12"
+                  className="h-12 border-slate-200 focus:border-blue-500 focus:ring-blue-500 rounded-xl pr-12"
                   required
                 />
                 <Button
