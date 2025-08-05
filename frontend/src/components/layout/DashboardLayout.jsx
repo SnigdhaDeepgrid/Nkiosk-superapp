@@ -216,7 +216,7 @@ const DashboardLayout = ({ children, user }) => {
               {/* User Menu */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-indigo-50 rounded-xl">
+                  <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-blue-50 rounded-xl">
                     <Avatar className="w-8 h-8 ring-2 ring-indigo-100">
                       <AvatarImage src={user.avatar} />
                       <AvatarFallback className={`bg-gradient-to-tr ${getRoleColor(user.role)} text-white text-xs font-semibold`}>
