@@ -207,7 +207,7 @@ const DashboardLayout = ({ children, user }) => {
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="relative hover:bg-indigo-50 rounded-xl"
+                className="relative hover:bg-blue-50 rounded-xl"
               >
                 <Bell className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-full text-xs border-2 border-white"></span>
