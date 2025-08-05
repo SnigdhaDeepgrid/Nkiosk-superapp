@@ -160,7 +160,8 @@ const SaasAdminDashboard = ({ user }) => {
           <h1 className="text-3xl font-bold text-slate-900 mb-1">SaaS Administration</h1>
           <p className="text-slate-600">Manage tenants, users, and platform settings</p>
         </div>
-        <Button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white gap-2 px-6 h-11 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+        <Button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white gap-2 px-6 h-11 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+                onClick={handleCreateTenant}>
           <Plus className="w-4 h-4" />
           Add New Tenant
         </Button>
