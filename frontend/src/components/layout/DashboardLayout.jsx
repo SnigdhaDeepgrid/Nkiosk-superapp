@@ -131,7 +131,7 @@ const DashboardLayout = ({ children, user }) => {
           <Button
             variant="ghost"
             size="sm"
-            className="lg:hidden hover:bg-indigo-50"
+            className="lg:hidden hover:bg-blue-50"
             onClick={() => setSidebarOpen(false)}
           >
             <X className="w-5 h-5" />
