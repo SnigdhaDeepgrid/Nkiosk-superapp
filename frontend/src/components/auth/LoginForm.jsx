@@ -193,7 +193,7 @@ const LoginForm = () => {
 
           <div className="mt-8 p-5 bg-gradient-to-r from-blue-50 to-green-50 rounded-xl border border-blue-100">
             <h4 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
-              <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
               Demo Accounts
             </h4>
             <div className="space-y-2 text-sm">
