@@ -107,7 +107,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-2xl border-0 bg-white/90 backdrop-blur-sm">
         <CardHeader className="space-y-6 pb-8 text-center">
           <div className="flex justify-center">
