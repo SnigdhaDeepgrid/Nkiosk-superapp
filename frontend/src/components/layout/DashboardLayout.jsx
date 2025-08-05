@@ -120,7 +120,7 @@ const DashboardLayout = ({ children, user }) => {
               <Store className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
                 Nkiosk
               </h1>
               <p className="text-xs text-slate-500 font-medium">
