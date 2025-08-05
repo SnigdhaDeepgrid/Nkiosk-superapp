@@ -116,7 +116,7 @@ const LoginForm = () => {
             </div>
           </div>
           <div className="space-y-2">
-            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
               Nkiosk
             </CardTitle>
             <p className="text-slate-600 text-lg font-medium">
