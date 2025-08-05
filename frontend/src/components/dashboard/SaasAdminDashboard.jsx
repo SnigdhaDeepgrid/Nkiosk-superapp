@@ -44,8 +44,8 @@ const SaasAdminDashboard = ({ user }) => {
   const stats = [
     {
       title: 'Active Tenants',
-      value: mockData.tenants.filter(t => t.status === 'active').length,
-      total: mockData.tenants.length,
+      value: tenants.filter(t => t.status === 'active').length,
+      total: tenants.length,
       icon: Building2,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
@@ -54,7 +54,7 @@ const SaasAdminDashboard = ({ user }) => {
     },
     {
       title: 'Total Users',
-      value: mockData.analytics.totalUsers.toLocaleString(),
+      value: tenants.reduce((sum, tenant) => sum + tenant.users, 0).toLocaleString(),
       change: '+12% from last month',
       icon: Users,
       color: 'text-emerald-600',
@@ -63,7 +63,7 @@ const SaasAdminDashboard = ({ user }) => {
     },
     {
       title: 'Monthly Revenue',
-      value: `$${mockData.analytics.monthlyRevenue.toLocaleString()}`,
+      value: `$${tenants.reduce((sum, tenant) => sum + tenant.monthlyRevenue, 0).toLocaleString()}`,
       change: '+18% from last month',
       icon: TrendingUp,
       color: 'text-green-600',
@@ -81,10 +81,76 @@ const SaasAdminDashboard = ({ user }) => {
     }
   ];
 
-  const filteredTenants = mockData.tenants.filter(tenant =>
-    tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    tenant.domain.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredTenants = tenants.filter(tenant => {
+    const matchesSearch = tenant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         tenant.domain.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         tenant.email.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesStatus = statusFilter === 'all' || tenant.status === statusFilter;
+    const matchesPlan = planFilter === 'all' || tenant.plan === planFilter;
+    
+    return matchesSearch && matchesStatus && matchesPlan;
+  });
+
+  // CRUD Operations
+  const handleCreateTenant = () => {
+    setEditingTenant(null);
+    setShowTenantForm(true);
+  };
+
+  const handleEditTenant = (tenant) => {
+    setEditingTenant(tenant);
+    setShowTenantForm(true);
+    setShowTenantDetails(false);
+  };
+
+  const handleViewTenant = (tenant) => {
+    setSelectedTenant(tenant);
+    setShowTenantDetails(true);
+  };
+
+  const handleSaveTenant = (tenantData) => {
+    if (editingTenant) {
+      // Update existing tenant
+      setTenants(prev => prev.map(t => t.id === editingTenant.id ? tenantData : t));
+      toast({
+        title: "Tenant Updated",
+        description: `${tenantData.name} has been updated successfully`,
+      });
+    } else {
+      // Create new tenant
+      setTenants(prev => [...prev, tenantData]);
+      toast({
+        title: "Tenant Created",
+        description: `${tenantData.name} has been created successfully`,
+      });
+    }
+    setShowTenantForm(false);
+    setEditingTenant(null);
+  };
+
+  const handleDeleteTenant = (tenantId) => {
+    const tenant = tenants.find(t => t.id === tenantId);
+    setTenants(prev => prev.filter(t => t.id !== tenantId));
+    toast({
+      title: "Tenant Deleted",
+      description: `${tenant?.name} has been deleted successfully`,
+      variant: "destructive",
+    });
+  };
+
+  const handleToggleStatus = (tenantId, newStatus) => {
+    setTenants(prev => prev.map(t => 
+      t.id === tenantId 
+        ? { ...t, status: newStatus, updatedAt: new Date().toLocaleDateString() }
+        : t
+    ));
+    const tenant = tenants.find(t => t.id === tenantId);
+    toast({
+      title: "Status Updated",
+      description: `${tenant?.name} is now ${newStatus}`,
+    });
+  };
 
   return (
     <div className="space-y-8 max-w-7xl">
