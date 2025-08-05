@@ -16,10 +16,17 @@ import {
   Globe,
   Activity,
   ArrowUpRight,
-  ArrowDownRight
+  ArrowDownRight,
+  Grid3X3,
+  List
 } from 'lucide-react';
 import { Input } from '../ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { mockData } from '../../data/mockData';
+import TenantForm from '../tenants/TenantForm';
+import TenantCard from '../tenants/TenantCard';
+import TenantDetails from '../tenants/TenantDetails';
+import { useToast } from '../../hooks/use-toast';
 
 const SaasAdminDashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState('overview');
