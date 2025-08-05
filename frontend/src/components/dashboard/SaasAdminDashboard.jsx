@@ -14,7 +14,9 @@ import {
   MoreHorizontal,
   Shield,
   Globe,
-  Activity
+  Activity,
+  ArrowUpRight,
+  ArrowDownRight
 } from 'lucide-react';
 import { Input } from '../ui/input';
 import { mockData } from '../../data/mockData';
@@ -29,32 +31,37 @@ const SaasAdminDashboard = ({ user }) => {
       value: mockData.tenants.filter(t => t.status === 'active').length,
       total: mockData.tenants.length,
       icon: Building2,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-50',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50',
+      change: '+2 this week',
+      changeType: 'positive'
     },
     {
       title: 'Total Users',
       value: mockData.analytics.totalUsers.toLocaleString(),
-      change: '+12%',
+      change: '+12% from last month',
       icon: Users,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-50',
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-50',
+      changeType: 'positive'
     },
     {
       title: 'Monthly Revenue',
       value: `$${mockData.analytics.monthlyRevenue.toLocaleString()}`,
-      change: '+18%',
+      change: '+18% from last month',
       icon: TrendingUp,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-50',
+      color: 'text-green-600',
+      bgColor: 'bg-green-50',
+      changeType: 'positive'
     },
     {
       title: 'System Health',
       value: '99.9%',
-      status: 'Optimal',
+      status: 'Operational',
       icon: Activity,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-50',
+      changeType: 'stable'
     }
   ];
 
@@ -64,47 +71,56 @@ const SaasAdminDashboard = ({ user }) => {
   );
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 max-w-7xl">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">SaaS Administration</h1>
-          <p className="text-slate-600 mt-1">Manage tenants, users, and platform settings</p>
+          <h1 className="text-3xl font-bold text-slate-900 mb-1">SaaS Administration</h1>
+          <p className="text-slate-600">Manage tenants, users, and platform settings</p>
         </div>
-        <Button className="bg-slate-900 hover:bg-slate-800 text-white gap-2">
+        <Button className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white gap-2 px-6 h-11 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
           <Plus className="w-4 h-4" />
           Add New Tenant
         </Button>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300">
+          <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white/80 backdrop-blur-sm">
             <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div className="space-y-2">
-                  <p className="text-slate-600 text-sm font-medium">{stat.title}</p>
-                  <div className="flex items-center gap-2">
-                    <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
-                    {stat.change && (
-                      <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 border-0">
-                        {stat.change}
-                      </Badge>
-                    )}
-                    {stat.status && (
-                      <Badge variant="secondary" className="bg-green-100 text-green-700 border-0">
-                        {stat.status}
-                      </Badge>
-                    )}
-                  </div>
-                  {stat.total && (
-                    <p className="text-xs text-slate-500">of {stat.total} total</p>
-                  )}
-                </div>
-                <div className={`w-12 h-12 ${stat.bgColor} rounded-xl flex items-center justify-center`}>
+              <div className="flex items-start justify-between mb-4">
+                <div className={`w-12 h-12 ${stat.bgColor} rounded-2xl flex items-center justify-center shadow-sm`}>
                   <stat.icon className={`w-6 h-6 ${stat.color}`} />
                 </div>
+                {stat.changeType === 'positive' && (
+                  <ArrowUpRight className="w-4 h-4 text-emerald-500" />
+                )}
+              </div>
+              
+              <div className="space-y-2">
+                <p className="text-slate-600 text-sm font-medium">{stat.title}</p>
+                <div className="flex items-baseline gap-2">
+                  <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                  {stat.total && (
+                    <span className="text-xs text-slate-500">of {stat.total}</span>
+                  )}
+                </div>
+                
+                {stat.change && (
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs text-emerald-600 font-medium bg-emerald-50 px-2 py-1 rounded-full">
+                      {stat.change}
+                    </span>
+                  </div>
+                )}
+                
+                {stat.status && (
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                    <span className="text-xs text-emerald-600 font-medium">{stat.status}</span>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -112,253 +128,275 @@ const SaasAdminDashboard = ({ user }) => {
       </div>
 
       {/* Main Content Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4 bg-slate-100 p-1 rounded-lg">
-          <TabsTrigger value="overview" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
-            Overview
-          </TabsTrigger>
-          <TabsTrigger value="tenants" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
-            Tenants
-          </TabsTrigger>
-          <TabsTrigger value="analytics" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
-            Analytics
-          </TabsTrigger>
-          <TabsTrigger value="settings" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
-            Settings
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-6 mt-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Recent Activity */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Activity className="w-5 h-5 text-slate-600" />
-                  Recent Activity
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {mockData.recentActivity.map((activity, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-slate-900 font-medium">{activity.action}</p>
-                        <p className="text-xs text-slate-500 mt-1">{activity.timestamp}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* System Status */}
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <Shield className="w-5 h-5 text-slate-600" />
-                  System Status
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {mockData.systemStatus.map((service, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50">
-                      <div className="flex items-center gap-3">
-                        <div className={`w-3 h-3 rounded-full ${
-                          service.status === 'operational' ? 'bg-green-500' :
-                          service.status === 'degraded' ? 'bg-yellow-500' : 'bg-red-500'
-                        }`}></div>
-                        <span className="font-medium text-slate-900">{service.name}</span>
-                      </div>
-                      <Badge 
-                        variant={service.status === 'operational' ? 'secondary' : 'destructive'}
-                        className={`${
-                          service.status === 'operational' 
-                            ? 'bg-green-100 text-green-700 border-0' 
-                            : service.status === 'degraded'
-                            ? 'bg-yellow-100 text-yellow-700 border-0'
-                            : 'bg-red-100 text-red-700 border-0'
-                        }`}
-                      >
-                        {service.status}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border-0 overflow-hidden">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <div className="border-b border-slate-200/60 bg-gradient-to-r from-white/90 to-blue-50/30 px-6 pt-6">
+            <TabsList className="grid w-full max-w-md grid-cols-4 bg-slate-100/80 p-1 rounded-xl">
+              <TabsTrigger 
+                value="overview" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 rounded-lg text-sm font-medium"
+              >
+                Overview
+              </TabsTrigger>
+              <TabsTrigger 
+                value="tenants" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 rounded-lg text-sm font-medium"
+              >
+                Tenants
+              </TabsTrigger>
+              <TabsTrigger 
+                value="analytics" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 rounded-lg text-sm font-medium"
+              >
+                Analytics
+              </TabsTrigger>
+              <TabsTrigger 
+                value="settings" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 rounded-lg text-sm font-medium"
+              >
+                Settings
+              </TabsTrigger>
+            </TabsList>
           </div>
-        </TabsContent>
 
-        <TabsContent value="tenants" className="space-y-6 mt-6">
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">Tenant Management</CardTitle>
-                <div className="flex items-center gap-2">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-                    <Input
-                      placeholder="Search tenants..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 w-64"
-                    />
-                  </div>
-                  <Button variant="outline" size="sm">
-                    <Filter className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {filteredTenants.map((tenant) => (
-                  <div key={tenant.id} className="flex items-center justify-between p-4 rounded-lg border border-slate-200 hover:bg-slate-50 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-lg flex items-center justify-center">
-                        <Building2 className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-slate-900">{tenant.name}</h3>
-                        <p className="text-sm text-slate-600">{tenant.domain}</p>
-                        <div className="flex items-center gap-4 mt-1">
-                          <span className="text-xs text-slate-500">{tenant.users} users</span>
-                          <span className="text-xs text-slate-500">Created {tenant.createdAt}</span>
+          <TabsContent value="overview" className="p-6 space-y-6 mt-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Recent Activity */}
+              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold">
+                    <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                      <Activity className="w-4 h-4 text-blue-600" />
+                    </div>
+                    Recent Activity
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {mockData.recentActivity.map((activity, index) => (
+                      <div key={index} className="flex items-start gap-3 p-3 rounded-xl hover:bg-blue-50/50 transition-colors group">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0 group-hover:scale-125 transition-transform"></div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-slate-900 font-medium">{activity.action}</p>
+                          <p className="text-xs text-slate-500 mt-1">{activity.timestamp}</p>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Badge 
-                        variant={tenant.status === 'active' ? 'secondary' : 'destructive'}
-                        className={`${
-                          tenant.status === 'active' 
-                            ? 'bg-green-100 text-green-700 border-0' 
-                            : 'bg-red-100 text-red-700 border-0'
-                        }`}
-                      >
-                        {tenant.status}
-                      </Badge>
-                      <Button variant="ghost" size="sm">
-                        <MoreHorizontal className="w-4 h-4" />
-                      </Button>
-                    </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                </CardContent>
+              </Card>
 
-        <TabsContent value="analytics" className="space-y-6 mt-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle>Platform Metrics</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-600">Total Orders</span>
-                    <span className="font-semibold">45,672</span>
+              {/* System Status */}
+              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
+                <CardHeader className="pb-4">
+                  <CardTitle className="flex items-center gap-2 text-lg font-semibold">
+                    <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
+                      <Shield className="w-4 h-4 text-emerald-600" />
+                    </div>
+                    System Status
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {mockData.systemStatus.map((service, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 rounded-xl hover:bg-emerald-50/30 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-3 h-3 rounded-full shadow-sm ${
+                            service.status === 'operational' ? 'bg-emerald-500' :
+                            service.status === 'degraded' ? 'bg-yellow-500' : 'bg-red-500'
+                          }`}></div>
+                          <span className="font-medium text-slate-900 text-sm">{service.name}</span>
+                        </div>
+                        <Badge 
+                          variant="secondary"
+                          className={`text-xs font-medium border-0 ${
+                            service.status === 'operational' 
+                              ? 'bg-emerald-100 text-emerald-700' 
+                              : service.status === 'degraded'
+                              ? 'bg-yellow-100 text-yellow-700'
+                              : 'bg-red-100 text-red-700'
+                          }`}
+                        >
+                          {service.status}
+                        </Badge>
+                      </div>
+                    ))}
                   </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-600">Avg Order Value</span>
-                    <span className="font-semibold">$34.50</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-600">Success Rate</span>
-                    <span className="font-semibold">98.2%</span>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="tenants" className="p-6 space-y-6 mt-0">
+            <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                    <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                      <Building2 className="w-4 h-4 text-blue-600" />
+                    </div>
+                    Tenant Management
+                  </CardTitle>
+                  <div className="flex items-center gap-2">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+                      <Input
+                        placeholder="Search tenants..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="pl-10 w-64 h-10 border-slate-200 focus:border-blue-500 rounded-xl"
+                      />
+                    </div>
+                    <Button variant="outline" size="sm" className="h-10 rounded-xl border-slate-200">
+                      <Filter className="w-4 h-4" />
+                    </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-0 shadow-lg">
-              <CardHeader>
-                <CardTitle>Revenue Breakdown</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {mockData.revenueByCategory.map((category, index) => (
-                    <div key={index} className="flex justify-between items-center">
-                      <span className="text-slate-600">{category.name}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-semibold">${category.revenue.toLocaleString()}</span>
-                        <Badge variant="secondary" className="bg-blue-100 text-blue-700 border-0">
-                          {category.percentage}%
+                <div className="space-y-3">
+                  {filteredTenants.map((tenant) => (
+                    <div key={tenant.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-200/60 hover:bg-blue-50/30 transition-all duration-200 group">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-gradient-to-tr from-blue-600 to-green-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
+                          <Building2 className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-slate-900 text-sm">{tenant.name}</h3>
+                          <p className="text-sm text-slate-600">{tenant.domain}</p>
+                          <div className="flex items-center gap-4 mt-1">
+                            <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
+                              {tenant.users} users
+                            </span>
+                            <span className="text-xs text-slate-500">Created {tenant.createdAt}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Badge 
+                          variant="secondary"
+                          className={`text-xs font-medium border-0 ${
+                            tenant.status === 'active' 
+                              ? 'bg-emerald-100 text-emerald-700' 
+                              : 'bg-red-100 text-red-700'
+                          }`}
+                        >
+                          {tenant.status}
                         </Badge>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-slate-100 rounded-lg">
+                          <MoreHorizontal className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </TabsContent>
+          </TabsContent>
 
-        <TabsContent value="settings" className="space-y-6 mt-6">
-          <Card className="border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Settings className="w-5 h-5" />
-                Platform Settings
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card className="border border-slate-200">
-                    <CardHeader>
-                      <CardTitle className="text-base flex items-center gap-2">
-                        <Globe className="w-4 h-4" />
-                        Global Configuration
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <Button variant="outline" className="w-full justify-start">
-                          API Rate Limits
-                        </Button>
-                        <Button variant="outline" className="w-full justify-start">
-                          Payment Gateway
-                        </Button>
-                        <Button variant="outline" className="w-full justify-start">
-                          Email Templates
-                        </Button>
+          <TabsContent value="analytics" className="p-6 space-y-6 mt-0">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold">Platform Metrics</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { label: 'Total Orders', value: '45,672', change: '+8.2%' },
+                      { label: 'Avg Order Value', value: '$34.50', change: '+12.1%' },
+                      { label: 'Success Rate', value: '98.2%', change: '+1.4%' }
+                    ].map((metric, index) => (
+                      <div key={index} className="flex justify-between items-center p-3 rounded-lg hover:bg-blue-50/30 transition-colors">
+                        <span className="text-slate-600 text-sm">{metric.label}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="font-semibold text-slate-900">{metric.value}</span>
+                          <span className="text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+                            {metric.change}
+                          </span>
+                        </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
 
-                  <Card className="border border-slate-200">
-                    <CardHeader>
-                      <CardTitle className="text-base flex items-center gap-2">
-                        <Shield className="w-4 h-4" />
-                        Security Settings
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <Button variant="outline" className="w-full justify-start">
-                          Access Control
-                        </Button>
-                        <Button variant="outline" className="w-full justify-start">
-                          Audit Logs
-                        </Button>
-                        <Button variant="outline" className="w-full justify-start">
-                          Data Retention
-                        </Button>
+              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold">Revenue Breakdown</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {mockData.revenueByCategory.map((category, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-slate-600 text-sm">{category.name}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold text-slate-900">${category.revenue.toLocaleString()}</span>
+                            <Badge variant="secondary" className="bg-blue-100 text-blue-700 border-0 text-xs">
+                              {category.percentage}%
+                            </Badge>
+                          </div>
+                        </div>
+                        <div className="w-full bg-slate-200 rounded-full h-2">
+                          <div 
+                            className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-500"
+                            style={{width: `${category.percentage}%`}}
+                          ></div>
+                        </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="settings" className="p-6 space-y-6 mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                    <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                      <Globe className="w-4 h-4 text-blue-600" />
+                    </div>
+                    Global Configuration
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {['API Rate Limits', 'Payment Gateway', 'Email Templates', 'Backup Settings'].map((item, index) => (
+                      <Button key={index} variant="outline" className="w-full justify-start h-11 rounded-xl border-slate-200 hover:bg-blue-50">
+                        {item}
+                      </Button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
+                    <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
+                      <Shield className="w-4 h-4 text-emerald-600" />
+                    </div>
+                    Security Settings
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {['Access Control', 'Audit Logs', 'Data Retention', 'Security Policies'].map((item, index) => (
+                      <Button key={index} variant="outline" className="w-full justify-start h-11 rounded-xl border-slate-200 hover:bg-emerald-50">
+                        {item}
+                      </Button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };

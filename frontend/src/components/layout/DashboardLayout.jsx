@@ -87,7 +87,7 @@ const DashboardLayout = ({ children, user }) => {
 
   const getRoleColor = (role) => {
     const colors = {
-      saas_admin: 'from-purple-600 to-indigo-600',
+      saas_admin: 'from-blue-600 to-green-600',
       super_admin: 'from-blue-600 to-indigo-600',
       store_manager: 'from-emerald-600 to-teal-600',
       vendor: 'from-orange-500 to-red-500',
@@ -99,7 +99,7 @@ const DashboardLayout = ({ children, user }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50/30 flex">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div 
@@ -110,17 +110,18 @@ const DashboardLayout = ({ children, user }) => {
 
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-72 bg-white/80 backdrop-blur-xl shadow-2xl border-r border-slate-200/50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0
-        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+        fixed inset-y-0 left-0 z-50 w-64 bg-white/95 backdrop-blur-xl shadow-2xl border-r border-slate-200/80 transform transition-transform duration-300 ease-in-out
+        lg:relative lg:translate-x-0 lg:z-auto
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Logo Section */}
-        <div className="flex items-center justify-between h-16 px-6 border-b border-slate-200/50 bg-white/50">
+        <div className="flex items-center justify-between h-16 px-6 border-b border-slate-200/60 bg-gradient-to-r from-white/80 to-blue-50/50">
           <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 bg-gradient-to-tr ${getRoleColor(user.role)} rounded-xl flex items-center justify-center shadow-lg`}>
-              <Store className="w-6 h-6 text-white" />
+            <div className={`w-9 h-9 bg-gradient-to-tr ${getRoleColor(user.role)} rounded-xl flex items-center justify-center shadow-lg`}>
+              <Store className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
+              <h1 className="text-lg font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
                 Nkiosk
               </h1>
               <p className="text-xs text-slate-500 font-medium">
@@ -131,26 +132,26 @@ const DashboardLayout = ({ children, user }) => {
           <Button
             variant="ghost"
             size="sm"
-            className="lg:hidden hover:bg-blue-50"
+            className="lg:hidden hover:bg-blue-50 w-8 h-8 p-0 rounded-lg"
             onClick={() => setSidebarOpen(false)}
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </Button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4 space-y-2">
-          {navigation.map((item) => (
+        <nav className="flex-1 p-4 space-y-1">
+          {navigation.map((item, index) => (
             <Button
               key={item.href}
               variant="ghost"
-              className="w-full justify-start gap-3 h-12 text-slate-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50 hover:text-blue-700 rounded-xl font-medium transition-all duration-200"
+              className="w-full justify-start gap-3 h-11 text-slate-700 hover:bg-gradient-to-r hover:from-blue-50 hover:to-green-50 hover:text-blue-700 rounded-lg font-medium transition-all duration-200 text-sm"
               onClick={() => {
                 navigate(item.href);
                 setSidebarOpen(false);
               }}
             >
-              <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
+              <div className="w-7 h-7 rounded-lg bg-slate-100 hover:bg-white flex items-center justify-center transition-colors">
                 <item.icon className="w-4 h-4" />
               </div>
               {item.label}
@@ -159,9 +160,9 @@ const DashboardLayout = ({ children, user }) => {
         </nav>
 
         {/* User Profile Section */}
-        <div className="p-4 border-t border-slate-200/50 bg-white/30">
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-green-50 border border-blue-100">
-            <Avatar className="w-12 h-12 ring-2 ring-white shadow-lg">
+        <div className="p-4 border-t border-slate-200/60 bg-gradient-to-r from-white/50 to-blue-50/30">
+          <div className="flex items-center gap-3 p-3 rounded-lg bg-gradient-to-r from-blue-50 to-green-50 border border-blue-100/60">
+            <Avatar className="w-10 h-10 ring-2 ring-white shadow-sm">
               <AvatarImage src={user.avatar} />
               <AvatarFallback className={`bg-gradient-to-tr ${getRoleColor(user.role)} text-white text-sm font-bold`}>
                 {user.name.split(' ').map(n => n[0]).join('')}
@@ -177,15 +178,15 @@ const DashboardLayout = ({ children, user }) => {
       </aside>
 
       {/* Main Content */}
-      <div className="lg:pl-72">
+      <div className="flex-1 flex flex-col min-h-screen lg:min-h-auto">
         {/* Top Navigation Bar */}
-        <header className="bg-white/80 backdrop-blur-xl shadow-sm border-b border-slate-200/50 sticky top-0 z-30">
+        <header className="bg-white/95 backdrop-blur-xl shadow-sm border-b border-slate-200/60 sticky top-0 z-30">
           <div className="flex items-center justify-between h-16 px-6">
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
                 size="sm"
-                className="lg:hidden hover:bg-blue-50"
+                className="lg:hidden hover:bg-blue-50 w-9 h-9 p-0 rounded-lg"
                 onClick={() => setSidebarOpen(true)}
               >
                 <Menu className="w-5 h-5" />
@@ -202,22 +203,22 @@ const DashboardLayout = ({ children, user }) => {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               {/* Notifications */}
               <Button 
                 variant="ghost" 
                 size="sm" 
-                className="relative hover:bg-blue-50 rounded-xl"
+                className="relative hover:bg-blue-50 rounded-lg w-9 h-9 p-0"
               >
                 <Bell className="w-5 h-5" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-orange-500 to-red-500 rounded-full text-xs border-2 border-white"></span>
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-gradient-to-r from-orange-500 to-red-500 rounded-full border border-white"></span>
               </Button>
 
               {/* User Menu */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-blue-50 rounded-xl">
-                    <Avatar className="w-8 h-8 ring-2 ring-indigo-100">
+                  <Button variant="ghost" className="flex items-center gap-3 h-10 px-3 hover:bg-blue-50 rounded-lg">
+                    <Avatar className="w-8 h-8 ring-1 ring-blue-100">
                       <AvatarImage src={user.avatar} />
                       <AvatarFallback className={`bg-gradient-to-tr ${getRoleColor(user.role)} text-white text-xs font-semibold`}>
                         {user.name.split(' ').map(n => n[0]).join('')}
@@ -229,10 +230,10 @@ const DashboardLayout = ({ children, user }) => {
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56 border-slate-200">
+                <DropdownMenuContent align="end" className="w-56 border-slate-200 shadow-lg">
                   <DropdownMenuLabel className="font-semibold text-slate-800">My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="hover:bg-indigo-50">
+                  <DropdownMenuItem className="hover:bg-blue-50">
                     <Settings className="mr-2 h-4 w-4" />
                     Account Settings
                   </DropdownMenuItem>
@@ -247,7 +248,7 @@ const DashboardLayout = ({ children, user }) => {
         </header>
 
         {/* Main Content Area */}
-        <main className="p-6 min-h-screen">
+        <main className="flex-1 p-6 overflow-auto">
           {children}
         </main>
       </div>
