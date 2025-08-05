@@ -5,7 +5,7 @@ import { Input } from '../ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Label } from '../ui/label';
 import { useToast } from '../../hooks/use-toast';
-import { Eye, EyeOff, Building2 } from 'lucide-react';
+import { Eye, EyeOff, Store } from 'lucide-react';
 
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,14 +26,14 @@ const LoginForm = () => {
       if (mockUser && password === 'password123') {
         localStorage.setItem('user', JSON.stringify(mockUser));
         toast({
-          title: "Login Successful",
-          description: `Welcome back, ${mockUser.name}!`,
+          title: "Welcome to Nkiosk!",
+          description: `Successfully logged in as ${mockUser.name}`,
         });
         navigate('/dashboard');
       } else {
         toast({
           title: "Login Failed",
-          description: "Invalid email or password. Try: admin@saas.com with password123",
+          description: "Invalid credentials. Try: admin@saas.com with password123",
           variant: "destructive",
         });
       }
@@ -107,39 +107,48 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md shadow-xl border-0 bg-white/80 backdrop-blur">
-        <CardHeader className="space-y-4 pb-8">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md shadow-2xl border-0 bg-white/90 backdrop-blur-sm">
+        <CardHeader className="space-y-6 pb-8 text-center">
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-gradient-to-tr from-slate-900 to-slate-700 rounded-xl flex items-center justify-center shadow-lg">
-              <Building2 className="w-8 h-8 text-white" />
+            <div className="w-16 h-16 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <Store className="w-8 h-8 text-white" />
             </div>
           </div>
-          <CardTitle className="text-3xl font-bold text-center text-slate-900">
-            DeliveryHub
-          </CardTitle>
-          <p className="text-slate-600 text-center">
-            Multi-Service Delivery Platform
-          </p>
+          <div className="space-y-2">
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Nkiosk
+            </CardTitle>
+            <p className="text-slate-600 text-lg font-medium">
+              Multi-Vendor eCommerce Platform
+            </p>
+            <p className="text-sm text-slate-500">
+              Sign in to your dashboard
+            </p>
+          </div>
         </CardHeader>
         
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-6">
+        <CardContent className="space-y-6">
+          <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-slate-700 font-medium">Email</Label>
+              <Label htmlFor="email" className="text-slate-700 font-semibold text-sm">
+                Email Address
+              </Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="h-12 border-slate-200 focus:border-slate-400 focus:ring-slate-400"
+                className="h-12 border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl"
                 required
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-slate-700 font-medium">Password</Label>
+              <Label htmlFor="password" className="text-slate-700 font-semibold text-sm">
+                Password
+              </Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -147,14 +156,14 @@ const LoginForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="h-12 border-slate-200 focus:border-slate-400 focus:ring-slate-400 pr-12"
+                  className="h-12 border-slate-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl pr-12"
                   required
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-slate-100"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-indigo-50"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
@@ -168,21 +177,46 @@ const LoginForm = () => {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white font-semibold transition-all duration-200 hover:shadow-lg"
+              className="w-full h-12 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02]"
               disabled={isLoading}
             >
-              {isLoading ? 'Signing In...' : 'Sign In'}
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Signing in...
+                </div>
+              ) : (
+                'Sign In to Dashboard'
+              )}
             </Button>
           </form>
 
-          <div className="mt-8 p-4 bg-slate-50 rounded-lg border border-slate-200">
-            <h4 className="font-medium text-slate-900 mb-3">Demo Accounts:</h4>
-            <div className="space-y-2 text-sm text-slate-600">
-              <p><strong>SaaS Admin:</strong> admin@saas.com</p>
-              <p><strong>Super Admin:</strong> superadmin@tenant1.com</p>
-              <p><strong>Store Manager:</strong> manager@store1.com</p>
-              <p><strong>Vendor:</strong> vendor@foodie.com</p>
-              <p><strong>Password:</strong> password123</p>
+          <div className="mt-8 p-5 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl border border-indigo-100">
+            <h4 className="font-semibold text-slate-800 mb-3 flex items-center gap-2">
+              <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
+              Demo Accounts
+            </h4>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="text-slate-600 font-medium">SaaS Admin:</span>
+                <span className="text-slate-800">admin@saas.com</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-600 font-medium">Super Admin:</span>
+                <span className="text-slate-800">superadmin@tenant1.com</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-600 font-medium">Store Manager:</span>
+                <span className="text-slate-800">manager@store1.com</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-600 font-medium">Vendor:</span>
+                <span className="text-slate-800">vendor@foodie.com</span>
+              </div>
+              <div className="mt-3 pt-3 border-t border-indigo-200 flex justify-between">
+                <span className="text-slate-600 font-medium">Password:</span>
+                <span className="text-slate-800 font-mono bg-white px-2 py-1 rounded text-xs">password123</span>
+              </div>
             </div>
           </div>
         </CardContent>
