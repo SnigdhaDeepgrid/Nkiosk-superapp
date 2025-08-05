@@ -31,6 +31,15 @@ import { useToast } from '../../hooks/use-toast';
 const SaasAdminDashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [searchTerm, setSearchTerm] = useState('');
+  const [tenants, setTenants] = useState(mockData.tenants);
+  const [selectedTenant, setSelectedTenant] = useState(null);
+  const [showTenantForm, setShowTenantForm] = useState(false);
+  const [showTenantDetails, setShowTenantDetails] = useState(false);
+  const [editingTenant, setEditingTenant] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [planFilter, setPlanFilter] = useState('all');
+  const [viewMode, setViewMode] = useState('grid');
+  const { toast } = useToast();
 
   const stats = [
     {
