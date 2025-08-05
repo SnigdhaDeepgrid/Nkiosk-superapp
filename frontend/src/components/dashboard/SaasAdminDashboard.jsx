@@ -27,7 +27,6 @@ import TenantForm from '../tenants/TenantForm';
 import TenantCard from '../tenants/TenantCard';
 import TenantDetails from '../tenants/TenantDetails';
 import { useToast } from '../../hooks/use-toast';
-import DashboardLayout from '../layout/DashboardLayout';
 
 const SaasAdminDashboard = ({ user }) => {
   const [activeTab, setActiveTab] = useState('overview');
