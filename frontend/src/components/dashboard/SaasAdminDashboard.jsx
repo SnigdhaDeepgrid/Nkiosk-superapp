@@ -532,6 +532,28 @@ const SaasAdminDashboard = ({ user }) => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Tenant Form Modal */}
+      <TenantForm
+        tenant={editingTenant}
+        isOpen={showTenantForm}
+        onSave={handleSaveTenant}
+        onCancel={() => {
+          setShowTenantForm(false);
+          setEditingTenant(null);
+        }}
+      />
+
+      {/* Tenant Details Modal */}
+      <TenantDetails
+        tenant={selectedTenant}
+        isOpen={showTenantDetails}
+        onClose={() => {
+          setShowTenantDetails(false);
+          setSelectedTenant(null);
+        }}
+        onEdit={handleEditTenant}
+      />
     </div>
   );
 };
