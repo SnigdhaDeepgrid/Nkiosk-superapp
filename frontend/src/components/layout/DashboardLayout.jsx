@@ -26,7 +26,7 @@ import {
   BarChart3
 } from 'lucide-react';
 
-const DashboardLayout = ({ children, user }) => {
+const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
