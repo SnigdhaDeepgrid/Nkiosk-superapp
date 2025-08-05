@@ -318,9 +318,10 @@ const SaasAdminDashboard = ({ user }) => {
                     <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
                       <Building2 className="w-4 h-4 text-blue-600" />
                     </div>
-                    Tenant Management
+                    Tenant Management ({filteredTenants.length})
                   </CardTitle>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
+                    {/* Search */}
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                       <Input
@@ -330,49 +331,100 @@ const SaasAdminDashboard = ({ user }) => {
                         className="pl-10 w-64 h-10 border-slate-200 focus:border-blue-500 rounded-xl"
                       />
                     </div>
-                    <Button variant="outline" size="sm" className="h-10 rounded-xl border-slate-200">
-                      <Filter className="w-4 h-4" />
+
+                    {/* Status Filter */}
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                      <SelectTrigger className="w-32 h-10 border-slate-200 rounded-xl">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Status</SelectItem>
+                        <SelectItem value="active">🟢 Active</SelectItem>
+                        <SelectItem value="suspended">🟡 Suspended</SelectItem>
+                        <SelectItem value="pending">🔵 Pending</SelectItem>
+                        <SelectItem value="inactive">🔴 Inactive</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    {/* Plan Filter */}
+                    <Select value={planFilter} onValueChange={setPlanFilter}>
+                      <SelectTrigger className="w-32 h-10 border-slate-200 rounded-xl">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All Plans</SelectItem>
+                        <SelectItem value="Basic">Basic</SelectItem>
+                        <SelectItem value="Professional">Professional</SelectItem>
+                        <SelectItem value="Enterprise">Enterprise</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    {/* View Mode Toggle */}
+                    <div className="flex items-center bg-slate-100 rounded-lg p-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setViewMode('grid')}
+                        className={`h-8 w-8 p-0 ${viewMode === 'grid' ? 'bg-white shadow-sm' : ''}`}
+                      >
+                        <Grid3X3 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setViewMode('list')}
+                        className={`h-8 w-8 p-0 ${viewMode === 'list' ? 'bg-white shadow-sm' : ''}`}
+                      >
+                        <List className="w-4 h-4" />
+                      </Button>
+                    </div>
+
+                    <Button 
+                      onClick={handleCreateTenant}
+                      className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white h-10 px-4 rounded-xl"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Tenant
                     </Button>
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {filteredTenants.map((tenant) => (
-                    <div key={tenant.id} className="flex items-center justify-between p-4 rounded-xl border border-slate-200/60 hover:bg-blue-50/30 transition-all duration-200 group">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-tr from-blue-600 to-green-600 rounded-xl flex items-center justify-center shadow-sm group-hover:shadow-md transition-shadow">
-                          <Building2 className="w-6 h-6 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-slate-900 text-sm">{tenant.name}</h3>
-                          <p className="text-sm text-slate-600">{tenant.domain}</p>
-                          <div className="flex items-center gap-4 mt-1">
-                            <span className="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">
-                              {tenant.users} users
-                            </span>
-                            <span className="text-xs text-slate-500">Created {tenant.createdAt}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Badge 
-                          variant="secondary"
-                          className={`text-xs font-medium border-0 ${
-                            tenant.status === 'active' 
-                              ? 'bg-emerald-100 text-emerald-700' 
-                              : 'bg-red-100 text-red-700'
-                          }`}
-                        >
-                          {tenant.status}
-                        </Badge>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-slate-100 rounded-lg">
-                          <MoreHorizontal className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                {filteredTenants.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Building2 className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">No tenants found</h3>
+                    <p className="text-slate-600 mb-4">
+                      {searchTerm || statusFilter !== 'all' || planFilter !== 'all'
+                        ? 'Try adjusting your search or filters'
+                        : 'Get started by creating your first tenant'
+                      }
+                    </p>
+                    {!searchTerm && statusFilter === 'all' && planFilter === 'all' && (
+                      <Button onClick={handleCreateTenant} className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white rounded-xl">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Create First Tenant
+                      </Button>
+                    )}
+                  </div>
+                ) : (
+                  <div className={`${
+                    viewMode === 'grid' 
+                      ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6' 
+                      : 'space-y-4'
+                  }`}>
+                    {filteredTenants.map((tenant) => (
+                      <TenantCard
+                        key={tenant.id}
+                        tenant={tenant}
+                        onEdit={handleEditTenant}
+                        onDelete={handleDeleteTenant}
+                        onToggleStatus={handleToggleStatus}
+                        onView={handleViewTenant}
+                      />
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
