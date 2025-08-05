@@ -111,7 +111,7 @@ const LoginForm = () => {
       <Card className="w-full max-w-md shadow-2xl border-0 bg-white/90 backdrop-blur-sm">
         <CardHeader className="space-y-6 pb-8 text-center">
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-tr from-blue-600 to-green-600 rounded-2xl flex items-center justify-center shadow-lg">
               <Store className="w-8 h-8 text-white" />
             </div>
           </div>
