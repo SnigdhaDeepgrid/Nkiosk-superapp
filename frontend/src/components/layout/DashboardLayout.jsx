@@ -160,7 +160,7 @@ const DashboardLayout = ({ children, user }) => {
 
         {/* User Profile Section */}
         <div className="p-4 border-t border-slate-200/50 bg-white/30">
-          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100">
+          <div className="flex items-center gap-3 p-4 rounded-xl bg-gradient-to-r from-blue-50 to-green-50 border border-blue-100">
             <Avatar className="w-12 h-12 ring-2 ring-white shadow-lg">
               <AvatarImage src={user.avatar} />
               <AvatarFallback className={`bg-gradient-to-tr ${getRoleColor(user.role)} text-white text-sm font-bold`}>
