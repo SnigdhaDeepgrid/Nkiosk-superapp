@@ -14,8 +14,8 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  // For SaaS Admin, we need to handle tab changes
-  if (user.role === 'saas_admin') {
+  // For SaaS Admin and Super Admin, we need to handle tab changes
+  if (user.role === 'saas_admin' || user.role === 'super_admin') {
     return children; // Let the Dashboard component handle its own layout
   }
 
