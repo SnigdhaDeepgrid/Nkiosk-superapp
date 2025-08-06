@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Backend API Testing Suite for Analytics Endpoints
-Tests all analytics API endpoints for proper functionality and data structure validation.
+Backend API Testing Suite for Analytics and Super Admin Endpoints
+Tests all analytics and super admin API endpoints for proper functionality and data structure validation.
 """
 
 import requests
