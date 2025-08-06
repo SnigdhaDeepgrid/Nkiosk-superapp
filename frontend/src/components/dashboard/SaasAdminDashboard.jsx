@@ -225,7 +225,7 @@ const SaasAdminDashboard = ({ user }) => {
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border-0 overflow-hidden">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <div className="border-b border-slate-200/60 bg-gradient-to-r from-white/90 to-blue-50/30 px-6 pt-6">
-            <TabsList className="grid w-full max-w-4xl grid-cols-6 bg-slate-100/80 p-1 rounded-xl">
+            <TabsList className="grid w-full max-w-5xl grid-cols-7 bg-slate-100/80 p-1 rounded-xl">
               <TabsTrigger 
                 value="overview" 
                 className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 rounded-lg text-sm font-medium"
@@ -237,6 +237,12 @@ const SaasAdminDashboard = ({ user }) => {
                 className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 rounded-lg text-sm font-medium"
               >
                 Tenants
+              </TabsTrigger>
+              <TabsTrigger 
+                value="analytics" 
+                className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-blue-600 rounded-lg text-sm font-medium"
+              >
+                Analytics
               </TabsTrigger>
               <TabsTrigger 
                 value="users" 
