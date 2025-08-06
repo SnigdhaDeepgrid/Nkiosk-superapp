@@ -5,6 +5,7 @@ import { Toaster } from "./components/ui/toaster";
 import LoginForm from "./components/auth/LoginForm";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import SaasAdminDashboard from "./components/dashboard/SaasAdminDashboard";
+import SuperAdminDashboard from "./components/dashboard/SuperAdminDashboard";
 
 const ProtectedRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
