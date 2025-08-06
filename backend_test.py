@@ -1089,11 +1089,39 @@ class AnalyticsAPITester:
 
 def main():
     """Main test execution"""
-    tester = AnalyticsAPITester(BACKEND_URL)
-    success = tester.run_all_tests()
+    print("🚀 Starting Comprehensive Backend API Testing Suite")
+    print("=" * 80)
     
-    if success:
-        print("\n🎉 All analytics API tests passed!")
+    # Test Analytics APIs
+    analytics_tester = AnalyticsAPITester(BACKEND_URL)
+    analytics_success = analytics_tester.run_all_tests()
+    
+    print("\n" + "=" * 80)
+    
+    # Test Super Admin APIs
+    super_admin_tester = SuperAdminAPITester(BACKEND_URL)
+    super_admin_success = super_admin_tester.run_all_super_admin_tests()
+    
+    # Overall Summary
+    print("\n" + "=" * 80)
+    print("🎯 OVERALL TEST SUMMARY")
+    print("=" * 80)
+    
+    analytics_passed = sum(1 for result in analytics_tester.test_results if result['success'])
+    analytics_total = len(analytics_tester.test_results)
+    
+    super_admin_passed = sum(1 for result in super_admin_tester.test_results if result['success'])
+    super_admin_total = len(super_admin_tester.test_results)
+    
+    total_passed = analytics_passed + super_admin_passed
+    total_tests = analytics_total + super_admin_total
+    
+    print(f"Analytics API Tests: {analytics_passed}/{analytics_total} passed")
+    print(f"Super Admin API Tests: {super_admin_passed}/{super_admin_total} passed")
+    print(f"Overall: {total_passed}/{total_tests} passed ({(total_passed/total_tests)*100:.1f}%)")
+    
+    if analytics_success and super_admin_success:
+        print("\n🎉 All backend API tests passed successfully!")
         sys.exit(0)
     else:
         print("\n❌ Some tests failed. Check the details above.")
