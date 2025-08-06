@@ -77,7 +77,7 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
         { label: 'Staff', href: '/staff', icon: Users },
       ],
       vendor: [
-        { label: 'Dashboard', href: '/dashboard', icon: ShoppingBag },
+        { label: 'Dashboard', href: '/dashboard', icon: Package },
         { label: 'Products', href: '/products', icon: Package },
         { label: 'Orders', href: '/orders', icon: ShoppingCart },
         { label: 'Analytics', href: '/analytics', icon: BarChart3 },
