@@ -445,64 +445,6 @@ const SaasAdminDashboard = ({ user }) => {
             <AnalyticsDashboard />
           </TabsContent>
 
-          <TabsContent value="tenants" className="p-6 space-y-6 mt-0">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold">Platform Metrics</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {[
-                      { label: 'Total Orders', value: '45,672', change: '+8.2%' },
-                      { label: 'Avg Order Value', value: '$34.50', change: '+12.1%' },
-                      { label: 'Success Rate', value: '98.2%', change: '+1.4%' }
-                    ].map((metric, index) => (
-                      <div key={index} className="flex justify-between items-center p-3 rounded-lg hover:bg-blue-50/30 transition-colors">
-                        <span className="text-slate-600 text-sm">{metric.label}</span>
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold text-slate-900">{metric.value}</span>
-                          <span className="text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
-                            {metric.change}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold">Revenue Breakdown</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {mockData.revenueByCategory.map((category, index) => (
-                      <div key={index} className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-600 text-sm">{category.name}</span>
-                          <div className="flex items-center gap-2">
-                            <span className="font-semibold text-slate-900">${category.revenue.toLocaleString()}</span>
-                            <Badge variant="secondary" className="bg-blue-100 text-blue-700 border-0 text-xs">
-                              {category.percentage}%
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="w-full bg-slate-200 rounded-full h-2">
-                          <div 
-                            className="bg-gradient-to-r from-blue-500 to-green-500 h-2 rounded-full transition-all duration-500"
-                            style={{width: `${category.percentage}%`}}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-
           {/* User Management Tab */}
           <TabsContent value="users" className="p-6 space-y-6 mt-0">
             <UserManagement />
