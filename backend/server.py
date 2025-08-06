@@ -76,6 +76,128 @@ class AnalyticsSummary(BaseModel):
     avg_session_duration: float
     system_uptime: float
 
+# Super Admin Models
+class BusinessUser(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    email: str
+    phone: str
+    role: str  # store_manager, vendor, delivery_partner, support_staff
+    status: str  # active, inactive, suspended
+    outlet_id: Optional[str] = None
+    permissions: List[str]
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    last_login: Optional[datetime] = None
+
+class BusinessOutlet(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    address: str
+    city: str
+    state: str
+    zip_code: str
+    phone: str
+    email: str
+    manager_id: Optional[str] = None
+    business_hours: Dict[str, Dict[str, str]]  # {"monday": {"open": "09:00", "close": "18:00"}}
+    status: str  # active, inactive, maintenance
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class Product(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    description: str
+    category: str
+    price: float
+    cost: float
+    sku: str
+    barcode: Optional[str] = None
+    images: List[str] = []
+    status: str  # active, inactive, out_of_stock
+    inventory_count: int = 0
+    min_stock_level: int = 10
+    outlet_ids: List[str] = []  # Available at these outlets
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class Order(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    order_number: str
+    customer_id: str
+    customer_name: str
+    customer_phone: str
+    customer_email: str
+    outlet_id: str
+    items: List[Dict[str, Any]]  # [{"product_id": "...", "name": "...", "quantity": 2, "price": 10.99}]
+    subtotal: float
+    tax: float
+    delivery_fee: float
+    total: float
+    status: str  # pending, confirmed, preparing, ready, out_for_delivery, delivered, cancelled, refunded
+    payment_status: str  # pending, paid, refunded
+    payment_method: str
+    delivery_address: str
+    delivery_partner_id: Optional[str] = None
+    estimated_delivery: Optional[datetime] = None
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class DeliveryPartner(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    email: str
+    phone: str
+    vehicle_type: str  # bike, car, van
+    license_number: str
+    status: str  # active, inactive, on_delivery, offline
+    current_location: Optional[Dict[str, float]] = None  # {"lat": 40.7128, "lng": -74.0060}
+    rating: float = 5.0
+    total_deliveries: int = 0
+    active_orders: List[str] = []
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class Customer(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    email: str
+    phone: str
+    addresses: List[Dict[str, Any]] = []
+    total_orders: int = 0
+    total_spent: float = 0.0
+    loyalty_points: int = 0
+    status: str = "active"  # active, inactive, banned
+    preferences: Dict[str, Any] = {}
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    last_order_at: Optional[datetime] = None
+
+class Promotion(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    description: str
+    type: str  # percentage, fixed_amount, buy_one_get_one, free_delivery
+    value: float  # discount value
+    min_order_amount: float = 0.0
+    max_discount: Optional[float] = None
+    code: str
+    start_date: datetime
+    end_date: datetime
+    usage_limit: Optional[int] = None
+    used_count: int = 0
+    applicable_outlets: List[str] = []
+    applicable_products: List[str] = []
+    status: str = "active"  # active, inactive, expired
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class AuditLog(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    user_name: str
+    action: str
+    resource_type: str  # user, product, order, outlet, etc.
+    resource_id: str
+    details: Dict[str, Any]
+    ip_address: str
+    timestamp: datetime = Field(default_factory=datetime.utcnow)
+
 # Helper function to generate mock analytics data
 def generate_mock_revenue_data(days: int = 30) -> List[RevenueMetrics]:
     base_date = datetime.now() - timedelta(days=days)
