@@ -490,47 +490,50 @@ const SaasAdminDashboard = ({ user }) => {
             </div>
           </TabsContent>
 
-          <TabsContent value="settings" className="p-6 space-y-6 mt-0">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                    <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                      <Globe className="w-4 h-4 text-blue-600" />
-                    </div>
-                    Global Configuration
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {['API Rate Limits', 'Payment Gateway', 'Email Templates', 'Backup Settings'].map((item, index) => (
-                      <Button key={index} variant="outline" className="w-full justify-start h-11 rounded-xl border-slate-200 hover:bg-blue-50">
-                        {item}
-                      </Button>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+          {/* User Management Tab */}
+          <TabsContent value="users" className="p-6 space-y-6 mt-0">
+            <UserManagement />
+          </TabsContent>
 
-              <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                    <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
-                      <Shield className="w-4 h-4 text-emerald-600" />
-                    </div>
-                    Security Settings
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    {['Access Control', 'Audit Logs', 'Data Retention', 'Security Policies'].map((item, index) => (
-                      <Button key={index} variant="outline" className="w-full justify-start h-11 rounded-xl border-slate-200 hover:bg-emerald-50">
-                        {item}
-                      </Button>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+          {/* Platform Configuration Tab */}
+          <TabsContent value="config" className="p-6 space-y-6 mt-0">
+            <PlatformConfig />
+          </TabsContent>
+
+          {/* Security Center Tab */}
+          <TabsContent value="security" className="p-6 space-y-6 mt-0">
+            <SecurityCenter />
+          </TabsContent>
+
+          {/* Notifications Tab */}
+          <TabsContent value="notifications" className="p-6 space-y-6 mt-0">
+            <NotificationCenter />
+          </TabsContent>
+
+          <TabsContent value="settings" className="p-6 space-y-6 mt-0">
+            <div className="text-center py-12">
+              <Settings className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">Additional Settings</h3>
+              <p className="text-slate-600 mb-4">
+                Additional platform settings and configuration options
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                <Card className="border border-slate-200 hover:shadow-md transition-shadow">
+                  <CardContent className="p-6 text-center">
+                    <Globe className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                    <h4 className="font-semibold text-slate-900 mb-2">Global Settings</h4>
+                    <p className="text-sm text-slate-600">Configure global platform preferences</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="border border-slate-200 hover:shadow-md transition-shadow">
+                  <CardContent className="p-6 text-center">
+                    <Shield className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                    <h4 className="font-semibold text-slate-900 mb-2">Advanced Security</h4>
+                    <p className="text-sm text-slate-600">Advanced security configurations</p>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </TabsContent>
         </Tabs>
