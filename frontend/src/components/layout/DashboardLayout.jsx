@@ -23,7 +23,9 @@ import {
   Bell,
   Menu,
   X,
-  BarChart3
+  BarChart3,
+  Shield,
+  UserCog
 } from 'lucide-react';
 
 const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
