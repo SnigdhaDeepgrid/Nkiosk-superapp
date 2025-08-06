@@ -517,7 +517,7 @@ const SaasAdminDashboard = ({ user }) => {
         }}
         onEdit={handleEditTenant}
       />
-    </div>
+    </DashboardLayout>
   );
 };
 
