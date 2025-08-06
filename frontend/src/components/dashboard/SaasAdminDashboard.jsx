@@ -440,7 +440,7 @@ const SaasAdminDashboard = ({ user }) => {
             )}
           </TabsContent>
 
-          <TabsContent value="analytics" className="p-6 space-y-6 mt-0">
+          <TabsContent value="tenants" className="p-6 space-y-6 mt-0">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="border-0 shadow-md bg-white/50 backdrop-blur-sm">
                 <CardHeader>
