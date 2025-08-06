@@ -353,6 +353,301 @@ async def get_geographic_analytics():
         ]
     }
 
+# Super Admin API endpoints
+def generate_mock_business_users():
+    """Generate mock business users for Super Admin"""
+    return [
+        BusinessUser(
+            id="usr_001",
+            name="John Manager",
+            email="john.manager@business.com",
+            phone="+1-555-0101",
+            role="store_manager",
+            status="active",
+            outlet_id="out_001",
+            permissions=["manage_orders", "view_analytics", "manage_inventory"],
+            last_login=datetime.now() - timedelta(hours=2)
+        ),
+        BusinessUser(
+            id="usr_002", 
+            name="Sarah Vendor",
+            email="sarah@freshproduce.com",
+            phone="+1-555-0102",
+            role="vendor",
+            status="active",
+            permissions=["manage_products", "view_orders", "update_inventory"],
+            last_login=datetime.now() - timedelta(hours=5)
+        ),
+        BusinessUser(
+            id="usr_003",
+            name="Mike Delivery",
+            email="mike.driver@fastdelivery.com", 
+            phone="+1-555-0103",
+            role="delivery_partner",
+            status="on_delivery",
+            permissions=["view_deliveries", "update_delivery_status"],
+            last_login=datetime.now() - timedelta(minutes=30)
+        ),
+        BusinessUser(
+            id="usr_004",
+            name="Lisa Support",
+            email="lisa@customersupport.com",
+            phone="+1-555-0104", 
+            role="support_staff",
+            status="active",
+            permissions=["manage_tickets", "view_customers", "process_refunds"],
+            last_login=datetime.now() - timedelta(hours=1)
+        )
+    ]
+
+def generate_mock_outlets():
+    """Generate mock outlet data"""
+    return [
+        BusinessOutlet(
+            id="out_001",
+            name="Downtown Store",
+            address="123 Main Street",
+            city="New York",
+            state="NY", 
+            zip_code="10001",
+            phone="+1-555-0201",
+            email="downtown@business.com",
+            manager_id="usr_001",
+            business_hours={
+                "monday": {"open": "08:00", "close": "20:00"},
+                "tuesday": {"open": "08:00", "close": "20:00"},
+                "wednesday": {"open": "08:00", "close": "20:00"},
+                "thursday": {"open": "08:00", "close": "20:00"},
+                "friday": {"open": "08:00", "close": "22:00"},
+                "saturday": {"open": "09:00", "close": "22:00"},
+                "sunday": {"open": "10:00", "close": "18:00"}
+            },
+            status="active"
+        ),
+        BusinessOutlet(
+            id="out_002", 
+            name="Mall Branch",
+            address="456 Shopping Center Blvd",
+            city="New York",
+            state="NY",
+            zip_code="10002",
+            phone="+1-555-0202",
+            email="mall@business.com",
+            business_hours={
+                "monday": {"open": "10:00", "close": "21:00"},
+                "tuesday": {"open": "10:00", "close": "21:00"},
+                "wednesday": {"open": "10:00", "close": "21:00"},
+                "thursday": {"open": "10:00", "close": "21:00"},
+                "friday": {"open": "10:00", "close": "22:00"},
+                "saturday": {"open": "10:00", "close": "22:00"},
+                "sunday": {"open": "11:00", "close": "19:00"}
+            },
+            status="active"
+        )
+    ]
+
+def generate_mock_products():
+    """Generate mock product data"""
+    return [
+        Product(
+            id="prd_001",
+            name="Organic Apples",
+            description="Fresh organic red apples, locally sourced",
+            category="Fruits",
+            price=3.99,
+            cost=2.50,
+            sku="ORG-APL-001",
+            barcode="1234567890123",
+            status="active",
+            inventory_count=150,
+            min_stock_level=20,
+            outlet_ids=["out_001", "out_002"]
+        ),
+        Product(
+            id="prd_002",
+            name="Whole Wheat Bread",
+            description="Fresh baked whole wheat bread",
+            category="Bakery", 
+            price=4.50,
+            cost=2.00,
+            sku="WWB-001",
+            status="active",
+            inventory_count=45,
+            min_stock_level=10,
+            outlet_ids=["out_001"]
+        ),
+        Product(
+            id="prd_003",
+            name="Premium Coffee Beans",
+            description="Arabica coffee beans, medium roast",
+            category="Beverages",
+            price=12.99,
+            cost=7.50,
+            sku="COF-ARB-001",
+            status="active",
+            inventory_count=8,
+            min_stock_level=15,
+            outlet_ids=["out_001", "out_002"]
+        )
+    ]
+
+def generate_mock_orders():
+    """Generate mock order data"""
+    return [
+        Order(
+            id="ord_001",
+            order_number="ORD-2024-001",
+            customer_id="cust_001",
+            customer_name="Alice Johnson",
+            customer_phone="+1-555-1001", 
+            customer_email="alice@email.com",
+            outlet_id="out_001",
+            items=[
+                {"product_id": "prd_001", "name": "Organic Apples", "quantity": 3, "price": 3.99},
+                {"product_id": "prd_002", "name": "Whole Wheat Bread", "quantity": 2, "price": 4.50}
+            ],
+            subtotal=21.97,
+            tax=1.76,
+            delivery_fee=3.99,
+            total=27.72,
+            status="delivered",
+            payment_status="paid",
+            payment_method="credit_card",
+            delivery_address="789 Customer St, New York, NY 10003",
+            delivery_partner_id="usr_003",
+            created_at=datetime.now() - timedelta(days=2)
+        ),
+        Order(
+            id="ord_002",
+            order_number="ORD-2024-002", 
+            customer_id="cust_002",
+            customer_name="Bob Smith",
+            customer_phone="+1-555-1002",
+            customer_email="bob@email.com",
+            outlet_id="out_001",
+            items=[
+                {"product_id": "prd_003", "name": "Premium Coffee Beans", "quantity": 1, "price": 12.99}
+            ],
+            subtotal=12.99,
+            tax=1.04,
+            delivery_fee=3.99,
+            total=18.02,
+            status="out_for_delivery",
+            payment_status="paid", 
+            payment_method="digital_wallet",
+            delivery_address="321 Another St, New York, NY 10004",
+            delivery_partner_id="usr_003",
+            estimated_delivery=datetime.now() + timedelta(minutes=45),
+            created_at=datetime.now() - timedelta(hours=3)
+        )
+    ]
+
+# Super Admin User Management APIs
+@api_router.get("/super-admin/users", response_model=List[BusinessUser])
+async def get_business_users():
+    """Get all business users for Super Admin"""
+    return generate_mock_business_users()
+
+@api_router.post("/super-admin/users", response_model=BusinessUser)
+async def create_business_user(user: BusinessUser):
+    """Create a new business user"""
+    # Mock creation - in real app would save to database
+    user.id = str(uuid.uuid4())
+    user.created_at = datetime.utcnow()
+    return user
+
+@api_router.put("/super-admin/users/{user_id}", response_model=BusinessUser)
+async def update_business_user(user_id: str, user_data: BusinessUser):
+    """Update a business user"""
+    user_data.id = user_id
+    return user_data
+
+@api_router.delete("/super-admin/users/{user_id}")
+async def delete_business_user(user_id: str):
+    """Delete a business user"""
+    return {"message": f"User {user_id} deleted successfully"}
+
+# Outlet Management APIs
+@api_router.get("/super-admin/outlets", response_model=List[BusinessOutlet])
+async def get_outlets():
+    """Get all business outlets"""
+    return generate_mock_outlets()
+
+@api_router.post("/super-admin/outlets", response_model=BusinessOutlet)
+async def create_outlet(outlet: BusinessOutlet):
+    """Create a new outlet"""
+    outlet.id = str(uuid.uuid4())
+    outlet.created_at = datetime.utcnow()
+    return outlet
+
+@api_router.put("/super-admin/outlets/{outlet_id}", response_model=BusinessOutlet)
+async def update_outlet(outlet_id: str, outlet_data: BusinessOutlet):
+    """Update an outlet"""
+    outlet_data.id = outlet_id
+    return outlet_data
+
+# Product Management APIs  
+@api_router.get("/super-admin/products", response_model=List[Product])
+async def get_products():
+    """Get all products"""
+    return generate_mock_products()
+
+@api_router.post("/super-admin/products", response_model=Product)
+async def create_product(product: Product):
+    """Create a new product"""
+    product.id = str(uuid.uuid4())
+    product.created_at = datetime.utcnow()
+    return product
+
+@api_router.put("/super-admin/products/{product_id}", response_model=Product)
+async def update_product(product_id: str, product_data: Product):
+    """Update a product"""
+    product_data.id = product_id
+    return product_data
+
+@api_router.delete("/super-admin/products/{product_id}")
+async def delete_product(product_id: str):
+    """Delete a product"""
+    return {"message": f"Product {product_id} deleted successfully"}
+
+# Order Management APIs
+@api_router.get("/super-admin/orders", response_model=List[Order])
+async def get_orders(status: Optional[str] = None, outlet_id: Optional[str] = None):
+    """Get all orders with optional filtering"""
+    orders = generate_mock_orders()
+    if status:
+        orders = [order for order in orders if order.status == status]
+    if outlet_id:
+        orders = [order for order in orders if order.outlet_id == outlet_id]
+    return orders
+
+@api_router.put("/super-admin/orders/{order_id}/status")
+async def update_order_status(order_id: str, status: str, delivery_partner_id: Optional[str] = None):
+    """Update order status"""
+    return {"message": f"Order {order_id} status updated to {status}"}
+
+# Business Analytics APIs
+@api_router.get("/super-admin/analytics/dashboard")
+async def get_business_dashboard():
+    """Get business analytics dashboard data"""
+    return {
+        "total_revenue": 45678.90,
+        "revenue_growth": 12.5,
+        "total_orders": 1234,
+        "pending_orders": 23,
+        "active_customers": 567,
+        "top_products": [
+            {"name": "Organic Apples", "sales": 450, "revenue": 1795.50},
+            {"name": "Premium Coffee", "sales": 120, "revenue": 1558.80},
+            {"name": "Whole Wheat Bread", "sales": 230, "revenue": 1035.00}
+        ],
+        "sales_by_outlet": [
+            {"outlet_name": "Downtown Store", "sales": 28900.50, "orders": 789},
+            {"outlet_name": "Mall Branch", "sales": 16778.40, "orders": 445}
+        ],
+        "recent_orders": generate_mock_orders()[:5]
+    }
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
