@@ -163,21 +163,22 @@ const SaasAdminDashboard = ({ user }) => {
   };
 
   return (
-    <div className="space-y-8 max-w-7xl">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 mb-1">SaaS Administration</h1>
-          <p className="text-slate-600">Manage tenants, users, and platform settings</p>
+    <DashboardLayout user={user} activeTab={activeTab} onTabChange={setActiveTab}>
+      <div className="space-y-8 max-w-7xl">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900 mb-1">SaaS Administration</h1>
+            <p className="text-slate-600">Manage tenants, users, and platform settings</p>
+          </div>
+          <Button 
+            className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white gap-2 px-6 h-11 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
+            onClick={handleCreateTenant}
+          >
+            <Plus className="w-4 h-4" />
+            Add New Tenant
+          </Button>
         </div>
-        <Button 
-          className="bg-gradient-to-r from-blue-600 to-green-600 hover:from-blue-700 hover:to-green-700 text-white gap-2 px-6 h-11 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105"
-          onClick={handleCreateTenant}
-        >
-          <Plus className="w-4 h-4" />
-          Add New Tenant
-        </Button>
-      </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
