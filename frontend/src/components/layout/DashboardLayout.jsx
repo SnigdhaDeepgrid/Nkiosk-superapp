@@ -13,19 +13,21 @@ import {
 import {
   Store,
   Users,
-  ShoppingBag,
-  Package,
-  Truck,
-  ShoppingCart,
-  Headphones,
+  Bell,
   Settings,
   LogOut,
-  Bell,
   Menu,
   X,
-  BarChart3,
+  ChevronRight,
   Shield,
-  UserCog
+  BarChart3,
+  UserCog,
+  Building2,
+  Package,
+  ShoppingCart,
+  Truck,
+  UserCheck,
+  Tag
 } from 'lucide-react';
 
 const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
