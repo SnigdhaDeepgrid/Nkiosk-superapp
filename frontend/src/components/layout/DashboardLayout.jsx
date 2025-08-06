@@ -93,8 +93,8 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
         { label: 'Profile', href: '/profile', icon: Users },
       ],
       support_staff: [
-        { label: 'Dashboard', href: '/dashboard', icon: Headphones },
-        { label: 'Tickets', href: '/tickets', icon: Headphones },
+        { label: 'Dashboard', href: '/dashboard', icon: UserCheck },
+        { label: 'Tickets', href: '/tickets', icon: Settings },
         { label: 'Knowledge Base', href: '/kb', icon: Package },
       ],
     };
