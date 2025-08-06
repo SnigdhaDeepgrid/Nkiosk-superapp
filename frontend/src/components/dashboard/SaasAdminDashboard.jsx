@@ -18,7 +18,10 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Grid3X3,
-  List
+  List,
+  Bell,
+  Key,
+  UserCog
 } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -26,6 +29,10 @@ import { mockData } from '../../data/mockData';
 import TenantForm from '../tenants/TenantForm';
 import TenantCard from '../tenants/TenantCard';
 import TenantDetails from '../tenants/TenantDetails';
+import PlatformConfig from '../admin/PlatformConfig';
+import UserManagement from '../admin/UserManagement';
+import SecurityCenter from '../admin/SecurityCenter';
+import NotificationCenter from '../admin/NotificationCenter';
 import { useToast } from '../../hooks/use-toast';
 
 const SaasAdminDashboard = ({ user }) => {
