@@ -40,8 +40,10 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
       saas_admin: [
         { label: 'Dashboard', tab: 'overview', icon: Store },
         { label: 'Tenants', tab: 'tenants', icon: Users },
-        { label: 'Analytics', tab: 'analytics', icon: BarChart3 },
-        { label: 'Settings', tab: 'settings', icon: Settings },
+        { label: 'User Management', tab: 'users', icon: UserCog },
+        { label: 'Platform Config', tab: 'config', icon: Settings },
+        { label: 'Security Center', tab: 'security', icon: Shield },
+        { label: 'Notifications', tab: 'notifications', icon: Bell },
       ],
       super_admin: [
         { label: 'Dashboard', href: '/dashboard', icon: Store },
