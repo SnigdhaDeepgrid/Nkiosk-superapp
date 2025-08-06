@@ -49,6 +49,18 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
         { label: 'Notifications', tab: 'notifications', icon: Bell },
       ],
       super_admin: [
+        { label: 'Overview', tab: 'overview', icon: Store },
+        { label: 'Staff', tab: 'staff', icon: Users },
+        { label: 'Outlets', tab: 'outlets', icon: Building2 },
+        { label: 'Products', tab: 'products', icon: Package },
+        { label: 'Orders', tab: 'orders', icon: ShoppingCart },
+        { label: 'Delivery', tab: 'delivery', icon: Truck },
+        { label: 'Customers', tab: 'customers', icon: UserCheck },
+        { label: 'Analytics', tab: 'analytics', icon: BarChart3 },
+        { label: 'Promotions', tab: 'promotions', icon: Tag },
+        { label: 'Audit', tab: 'audit', icon: Shield },
+      ],
+      super_admin: [
         { label: 'Dashboard', href: '/dashboard', icon: Store },
         { label: 'Users', href: '/users', icon: Users },
         { label: 'Products', href: '/products', icon: Package },
