@@ -513,7 +513,7 @@ const PerformanceAnalytics = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-slate-600">
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-emerald-500" />
-                    <span>Monitor response times < 200ms</span>
+                    <span>Monitor response times &lt; 200ms</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <CheckCircle className="w-4 h-4 text-emerald-500" />
