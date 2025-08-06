@@ -36,6 +36,46 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+# Analytics Models
+class RevenueMetrics(BaseModel):
+    date: str
+    total_revenue: float
+    tenant_count: int
+    avg_revenue_per_tenant: float
+    subscription_revenue: float
+    transaction_revenue: float
+    growth_rate: float
+
+class UserBehaviorMetrics(BaseModel):
+    date: str
+    daily_active_users: int
+    monthly_active_users: int
+    session_duration_avg: float
+    page_views: int
+    feature_usage: Dict[str, int]
+    login_frequency: Dict[str, int]
+    user_retention_rate: float
+
+class PerformanceMetrics(BaseModel):
+    timestamp: datetime
+    api_response_time: float
+    error_rate: float
+    uptime_percentage: float
+    cpu_usage: float
+    memory_usage: float
+    database_connections: int
+    active_sessions: int
+
+class AnalyticsSummary(BaseModel):
+    total_revenue: float
+    revenue_growth: float
+    total_users: int
+    active_users: int
+    conversion_rate: float
+    churn_rate: float
+    avg_session_duration: float
+    system_uptime: float
+
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
 async def root():
