@@ -35,6 +35,7 @@ import UserManagement from '../admin/UserManagement';
 import SecurityCenter from '../admin/SecurityCenter';
 import NotificationCenter from '../admin/NotificationCenter';
 import AnalyticsDashboard from '../analytics/AnalyticsDashboard';
+import DashboardLayout from '../layout/DashboardLayout';
 import { useToast } from '../../hooks/use-toast';
 
 const SaasAdminDashboard = ({ user }) => {
