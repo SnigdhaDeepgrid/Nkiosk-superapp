@@ -248,7 +248,7 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
                     <Avatar className="w-8 h-8 ring-1 ring-blue-100">
                       <AvatarImage src={user.avatar} />
                       <AvatarFallback className={`bg-gradient-to-tr ${getRoleColor(user.role)} text-white text-xs font-semibold`}>
-                        {user.name.split(' ').map(n => n[0]).join('')}
+                        {user.name ? user.name.split(' ').map(n => n[0]).join('') : 'U'}
                       </AvatarFallback>
                     </Avatar>
                     <div className="text-left hidden sm:block">
