@@ -222,7 +222,7 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
               {/* Page Title Context */}
               <div className="hidden sm:block">
                 <h2 className="text-lg font-semibold text-slate-800">
-                  Welcome back, {user.name.split(' ')[0]}
+                  Welcome back, {user.name ? user.name.split(' ')[0] : 'User'}
                 </h2>
                 <p className="text-sm text-slate-600">
                   {user.roleDisplay} Dashboard
