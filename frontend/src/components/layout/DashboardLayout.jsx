@@ -144,7 +144,7 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
                 Nkiosk
               </h1>
               <p className="text-xs text-slate-500 font-medium">
-                {user.roleDisplay}
+                {user.roleDisplay || user.role || 'User'}
               </p>
             </div>
           </div>
