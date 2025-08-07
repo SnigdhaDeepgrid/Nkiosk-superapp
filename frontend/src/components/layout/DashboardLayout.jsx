@@ -252,8 +252,8 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
                       </AvatarFallback>
                     </Avatar>
                     <div className="text-left hidden sm:block">
-                      <p className="text-sm font-medium text-slate-900">{user.name}</p>
-                      <p className="text-xs text-slate-600">{user.roleDisplay}</p>
+                      <p className="text-sm font-medium text-slate-900">{user.name || 'Unknown User'}</p>
+                      <p className="text-xs text-slate-600">{user.roleDisplay || user.role || 'User'}</p>
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
