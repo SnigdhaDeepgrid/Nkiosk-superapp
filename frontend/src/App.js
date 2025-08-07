@@ -47,7 +47,7 @@ const Dashboard = () => {
     case 'delivery_partner':
       return <div>Delivery Partner Dashboard - Coming Soon</div>;
     case 'customer':
-      return <div>Customer Dashboard - Coming Soon</div>;
+      return <CustomerDashboard user={user} />;
     case 'support_staff':
       return <div>Support Staff Dashboard - Coming Soon</div>;
     default:
