@@ -12,7 +12,7 @@ import sys
 import os
 
 # Get backend URL from environment
-BACKEND_URL = "https://6503cd5b-81c1-4c8a-b51b-feb688db4a37.preview.emergentagent.com/api"
+BACKEND_URL = "https://fbcf6709-9dd4-40dd-b3d0-60058fd079ad.preview.emergentagent.com/api"
 
 class SuperAdminAPITester:
     def __init__(self, base_url: str):
