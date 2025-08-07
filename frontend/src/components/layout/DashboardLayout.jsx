@@ -192,7 +192,7 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
             <Avatar className="w-10 h-10 ring-2 ring-white shadow-sm">
               <AvatarImage src={user.avatar} />
               <AvatarFallback className={`bg-gradient-to-tr ${getRoleColor(user.role)} text-white text-sm font-bold`}>
-                {user.name.split(' ').map(n => n[0]).join('')}
+                {user.name ? user.name.split(' ').map(n => n[0]).join('') : 'U'}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
