@@ -7,6 +7,13 @@ import DashboardLayout from "./components/layout/DashboardLayout";
 import SaasAdminDashboard from "./components/dashboard/SaasAdminDashboard";
 import SuperAdminDashboard from "./components/dashboard/SuperAdminDashboard";
 import CustomerDashboard from "./components/customer/CustomerDashboard";
+import NKioskDashboard from "./components/customer/NKioskDashboard";
+import GroceryPage from "./components/customer/GroceryPage";
+import PharmacyPage from "./components/customer/PharmacyPage";
+import FoodDeliveryPage from "./components/customer/FoodDeliveryPage";
+import ElectronicsPage from "./components/customer/ElectronicsPage";
+import OrderHistoryPage from "./components/customer/OrderHistoryPage";
+import CartPage from "./components/customer/CartPage";
 
 const ProtectedRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
