@@ -90,6 +90,42 @@ function App() {
               <div>Settings Page - Coming Soon</div>
             </ProtectedRoute>
           } />
+          {/* Customer App Routes */}
+          <Route path="/customer-app" element={
+            <ProtectedRoute>
+              <NKioskDashboard user={JSON.parse(localStorage.getItem('user') || 'null')} />
+            </ProtectedRoute>
+          } />
+          <Route path="/customer-app/grocery" element={
+            <ProtectedRoute>
+              <GroceryPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/customer-app/pharmacy" element={
+            <ProtectedRoute>
+              <PharmacyPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/customer-app/food" element={
+            <ProtectedRoute>
+              <FoodDeliveryPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/customer-app/electronics" element={
+            <ProtectedRoute>
+              <ElectronicsPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/customer-app/orders" element={
+            <ProtectedRoute>
+              <OrderHistoryPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/customer-app/cart" element={
+            <ProtectedRoute>
+              <CartPage />
+            </ProtectedRoute>
+          } />
         </Routes>
         <Toaster />
       </BrowserRouter>
