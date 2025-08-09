@@ -49,7 +49,7 @@ const Dashboard = () => {
     case 'super_admin':
       return <SuperAdminDashboard user={user} />;
     case 'store_manager':
-      return <div>Store Manager Dashboard - Coming Soon</div>;
+      return <StoreManagerDashboard user={user} />;
     case 'vendor':
       return <div>Vendor Dashboard - Coming Soon</div>;
     case 'delivery_partner':
