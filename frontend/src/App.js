@@ -14,6 +14,7 @@ import FoodDeliveryPage from "./components/customer/FoodDeliveryPage";
 import ElectronicsPage from "./components/customer/ElectronicsPage";
 import OrderHistoryPage from "./components/customer/OrderHistoryPage";
 import CartPage from "./components/customer/CartPage";
+import StoreManagerDashboard from "./components/storemanager/StoreManagerDashboard";
 
 const ProtectedRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
