@@ -10,15 +10,14 @@ import { useCart } from '../../contexts/CartContext';
 const CartPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      name: 'Smartphone Case',
-      price: 24.99,
-      quantity: 1,
-      image: '💊'
-    }
-  ]);
+  const { 
+    items: cartItems, 
+    totalItems, 
+    totalPrice, 
+    updateQuantity, 
+    removeItem, 
+    clearCart 
+  } = useCart();
 
   const updateQuantity = (id, newQuantity) => {
     if (newQuantity === 0) {
