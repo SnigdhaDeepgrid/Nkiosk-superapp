@@ -11,6 +11,7 @@ import { useCart } from '../../contexts/CartContext';
 const GroceryPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { addItem, totalItems } = useCart();
   const [searchTerm, setSearchTerm] = useState('');
 
   const features = [
