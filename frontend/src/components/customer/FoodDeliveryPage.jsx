@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { useToast } from '../../hooks/use-toast';
+import { useCart } from '../../contexts/CartContext';
 
 const FoodDeliveryPage = () => {
   const navigate = useNavigate();
