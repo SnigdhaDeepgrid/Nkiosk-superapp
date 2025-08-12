@@ -6,6 +6,7 @@ import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
 import { useToast } from '../../hooks/use-toast';
+import { useCart } from '../../contexts/CartContext';
 
 const GroceryPage = () => {
   const navigate = useNavigate();
