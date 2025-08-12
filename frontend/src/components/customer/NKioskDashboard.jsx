@@ -12,8 +12,8 @@ import LocationSelector from "./LocationSelector";
 const NKioskDashboard = ({ user }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { totalItems, clearCartOnLogout } = useCart();
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [cartItems, setCartItems] = useState(0);
 
   // Location-based category availability
   const locationCategories = {
