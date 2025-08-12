@@ -368,39 +368,108 @@ agent_communication:
     - agent: "testing"
       message: "Completed comprehensive testing of all 6 analytics API endpoints. All endpoints are working correctly with proper data structures, optional parameters functioning as expected, and realistic mock data. Created backend_test.py with full validation suite. All tests passed with 100% success rate (8/8 tests passed including parameter variations)."
 
-user_problem_statement: "Add the customer role as well, no need to include all the features for it just the login, keep it under 3 credits"
+user_problem_statement: "make the customer dashboard's quick  actions like 📦 View My Orders
+🔥 Order Food Now
+🥬 Fresh Groceries
+work properly and make the adding to cart work well. All under 1 credit"
 
 frontend:
-  - task: "Customer Dashboard Implementation"
+  - task: "Customer Dashboard Quick Actions Navigation"
     implemented: true
-    working: true
-    file: "/app/frontend/src/components/customer/CustomerDashboard.jsx"
+    working: "testing_required"
+    file: "/app/frontend/src/components/customer/NKioskDashboard.jsx"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
-        - working: true
+        - working: "testing_required"
           agent: "main"
-          comment: "Successfully implemented comprehensive Customer Dashboard with 4 main sections: Overview (with stats cards for orders, spending, loyalty points, favorites), Orders (order history with detailed views), Favorites (product wishlist), and Profile (user info and addresses). Features include professional header with user avatar, responsive tab navigation, order status tracking, and integrated logout functionality. Customer login already existed (customer@email.com / password123), replaced 'Coming Soon' placeholder with fully functional dashboard."
+          comment: "Fixed navigation issues in quick action buttons. Updated handleViewOrders to navigate to '/customer-app/orders' and handleCategorySelect to use proper '/customer-app/' routes for all categories (grocery, pharmacy, food, electronics)."
+
+  - task: "Cart Context State Management"
+    implemented: true
+    working: "testing_required"
+    file: "/app/frontend/src/contexts/CartContext.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "testing_required"
+          agent: "main"
+          comment: "Created comprehensive CartContext with localStorage persistence, add/remove/update quantity functionality, and cart clearing on logout. Integrated CartProvider in App.js to wrap entire application."
+
+  - task: "Food Delivery Add to Cart Integration"
+    implemented: true
+    working: "testing_required"
+    file: "/app/frontend/src/components/customer/FoodDeliveryPage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "testing_required"
+          agent: "main"
+          comment: "Updated FoodDeliveryPage to use CartContext. Add to Cart buttons now actually add items to persistent cart state with proper item structure (id, name, price, type, restaurant, etc.). Added dynamic cart count display in header."
+
+  - task: "Grocery Add to Cart Integration"
+    implemented: true
+    working: "testing_required"
+    file: "/app/frontend/src/components/customer/GroceryPage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "testing_required"
+          agent: "main"
+          comment: "Updated GroceryPage to use CartContext. Add to Cart buttons now actually add items to persistent cart with proper item structure. Added dynamic cart count display in header."
+
+  - task: "Cart Page Real State Integration"
+    implemented: true
+    working: "testing_required"
+    file: "/app/frontend/src/components/customer/CartPage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "testing_required"
+          agent: "main"
+          comment: "Completely rewrote CartPage to use real cart state instead of hardcoded items. Added proper quantity update, item removal, selective clearing (products vs food), and dynamic totals calculation. Added empty cart state handling."
+
+  - task: "Dynamic Cart Count in Headers"
+    implemented: true
+    working: "testing_required"
+    file: "/app/frontend/src/components/customer/NKioskDashboard.jsx, /app/frontend/src/components/customer/OrderHistoryPage.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "testing_required"
+          agent: "main"
+          comment: "Updated all customer pages to show dynamic cart count in shopping cart icons instead of static values. Cart badge only shows when totalItems > 0."
 
 metadata:
   created_by: "main_agent"
-  version: "4.0"
-  test_sequence: 4
-  run_ui: true
-  completion_status: "COMPLETED"
-  feature_scope: "Customer Role Dashboard - Basic Implementation"
+  version: "5.0"
+  test_sequence: 5
+  run_ui: false
+  completion_status: "IMPLEMENTED_TESTING_REQUIRED"
+  feature_scope: "Customer Dashboard Quick Actions + Cart Management System"
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Customer Dashboard Quick Actions Navigation"
+    - "Cart Context State Management"  
+    - "Food Delivery Add to Cart Integration"
+    - "Grocery Add to Cart Integration"
+    - "Cart Page Real State Integration"
+    - "Dynamic Cart Count in Headers"
   stuck_tasks: []
-  test_all: false
-  test_priority: "completed"
-  completion_summary: "✅ CUSTOMER ROLE SUCCESSFULLY IMPLEMENTED: Customer login was already functional, created comprehensive Customer Dashboard with Overview, Orders, Favorites, and Profile sections. Professional UI with stats cards, order history, and account management. Implementation kept minimal but functional as requested."
+  test_all: true
+  test_priority: "high_first"
+  completion_summary: "🛠️ IMPLEMENTATION COMPLETE: Fixed customer dashboard quick action navigation and implemented comprehensive cart management system with React Context, localStorage persistence, and dynamic cart functionality across all pages."
 
 agent_communication:
     - agent: "main"
-      message: "Customer role implementation completed. Login functionality was already present in the system. Created full-featured Customer Dashboard replacing the 'Coming Soon' placeholder. Dashboard includes Overview with key metrics, Order history with status tracking, Favorites management, and Profile information. All functionality is working and tested via browser automation."
+      message: "Successfully implemented cart management system with React Context and fixed all navigation issues in customer dashboard. Key features: 1) Created CartContext with localStorage persistence and clear-on-logout, 2) Fixed quick action button navigation in NKioskDashboard, 3) Connected Food and Grocery pages to real cart state, 4) Rewrote CartPage to use dynamic cart data, 5) Added dynamic cart count across all headers. Ready for comprehensive testing of full customer flow: dashboard navigation → category selection → add to cart → view cart → place order."
 
 user_problem_statement: "Test all the new Super Admin backend API endpoints that were just added"
 
