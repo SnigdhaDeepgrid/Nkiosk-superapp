@@ -71,6 +71,7 @@ const NKioskDashboard = ({ user }) => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("selectedLocation");
+    clearCartOnLogout(); // Clear cart on logout
     toast({
       title: "Logged Out",
       description: "Successfully logged out from your account",
