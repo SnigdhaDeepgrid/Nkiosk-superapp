@@ -19,20 +19,16 @@ const CartPage = () => {
     clearCart 
   } = useCart();
 
-  const updateQuantity = (id, newQuantity) => {
-    if (newQuantity === 0) {
-      removeItem(id);
+  const handleQuantityUpdate = (id, newQuantity) => {
+    if (newQuantity <= 0) {
+      handleRemoveItem(id);
       return;
     }
-    setCartItems(prev => 
-      prev.map(item => 
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
+    updateQuantity(id, newQuantity);
   };
 
-  const removeItem = (id) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+  const handleRemoveItem = (id) => {
+    removeItem(id);
     toast({
       title: "Item Removed",
       description: "Item has been removed from your cart",
@@ -40,31 +36,61 @@ const CartPage = () => {
   };
 
   const clearProducts = () => {
-    setCartItems([]);
+    const productItems = cartItems.filter(item => item.type !== 'food');
+    if (productItems.length === 0) {
+      toast({
+        title: "No Product Items",
+        description: "There are no product items in your cart to clear",
+      });
+      return;
+    }
+    
+    // Remove only product items
+    productItems.forEach(item => removeItem(item.id));
     toast({
-      title: "Cart Cleared",
-      description: "All products have been removed from your cart",
+      title: "Products Cleared",
+      description: "All product items have been removed from your cart",
     });
   };
 
   const clearFood = () => {
+    const foodItems = cartItems.filter(item => item.type === 'food');
+    if (foodItems.length === 0) {
+      toast({
+        title: "No Food Items",
+        description: "There are no food items in your cart to clear",
+      });
+      return;
+    }
+    
+    // Remove only food items
+    foodItems.forEach(item => removeItem(item.id));
     toast({
-      title: "No Food Items",
-      description: "There are no food items in your cart to clear",
+      title: "Food Items Cleared", 
+      description: "All food items have been removed from your cart",
     });
   };
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const delivery = 3.99;
-  const tax = 2.00;
+  const subtotal = totalPrice;
+  const delivery = cartItems.length > 0 ? 3.99 : 0;
+  const tax = cartItems.length > 0 ? 2.00 : 0;
   const total = subtotal + delivery + tax;
 
   const handlePlaceOrder = () => {
+    if (cartItems.length === 0) {
+      toast({
+        title: "Cart Empty",
+        description: "Please add items to your cart before placing an order",
+        variant: "destructive"
+      });
+      return;
+    }
+
     toast({
       title: "Order Placed Successfully!",
       description: `Your order of $${total.toFixed(2)} has been placed.`,
     });
-    setCartItems([]);
+    clearCart();
     navigate('/customer-app/orders');
   };
 
@@ -109,9 +135,11 @@ const CartPage = () => {
                 className="relative text-blue-600 hover:text-blue-700 bg-blue-50"
               >
                 <ShoppingCart className="w-5 h-5" />
-                <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
-                  1
-                </Badge>
+                {totalItems > 0 && (
+                  <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                    {totalItems}
+                  </Badge>
+                )}
               </Button>
 
               <div className="flex items-center gap-2">
@@ -156,7 +184,9 @@ const CartPage = () => {
         {/* Cart Items */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>Products (1 items)</CardTitle>
+            <CardTitle>
+              {cartItems.length > 0 ? `Cart Items (${totalItems} items)` : 'Cart Items'}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {cartItems.length > 0 ? (
@@ -170,6 +200,11 @@ const CartPage = () => {
                       <div>
                         <h3 className="font-bold text-lg">{item.name}</h3>
                         <p className="text-gray-600">${item.price} each</p>
+                        {item.type && (
+                          <Badge variant="secondary" className="text-xs mt-1">
+                            {item.type === 'food' ? '🍽️ Food' : '🛒 Product'}
+                          </Badge>
+                        )}
                       </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -177,7 +212,7 @@ const CartPage = () => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => handleQuantityUpdate(item.id, item.quantity - 1)}
                           className="w-8 h-8 p-0"
                         >
                           <Minus className="w-4 h-4" />
@@ -186,7 +221,7 @@ const CartPage = () => {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => handleQuantityUpdate(item.id, item.quantity + 1)}
                           className="w-8 h-8 p-0"
                         >
                           <Plus className="w-4 h-4" />
@@ -196,7 +231,7 @@ const CartPage = () => {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => removeItem(item.id)}
+                        onClick={() => handleRemoveItem(item.id)}
                         className="text-red-500 hover:text-red-600"
                       >
                         Remove
@@ -223,7 +258,7 @@ const CartPage = () => {
           <Card className="mb-8">
             <CardContent className="pt-6">
               <div className="flex justify-between text-lg font-bold">
-                <span>Products Subtotal:</span>
+                <span>Subtotal:</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
             </CardContent>
@@ -238,7 +273,7 @@ const CartPage = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between">
-                <span>Products:</span>
+                <span>Subtotal:</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
@@ -266,7 +301,7 @@ const CartPage = () => {
               className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-4"
               onClick={handlePlaceOrder}
             >
-              🛒 Place Product Order (${total.toFixed(2)})
+              🛒 Place Order (${total.toFixed(2)})
             </Button>
             
             <div className="grid grid-cols-2 gap-4">
