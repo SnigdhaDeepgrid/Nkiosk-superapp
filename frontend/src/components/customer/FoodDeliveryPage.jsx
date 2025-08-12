@@ -44,6 +44,18 @@ const FoodDeliveryPage = () => {
   ];
 
   const addToCart = (dish) => {
+    // Create cart item with required properties
+    const cartItem = {
+      id: dish.id,
+      name: dish.name,
+      price: dish.price,
+      image: "🍽️", // Food emoji
+      type: "food",
+      restaurant: dish.restaurant,
+      description: dish.description
+    };
+    
+    addItem(cartItem);
     toast({
       title: "Added to Cart",
       description: `${dish.name} has been added to your cart`,
