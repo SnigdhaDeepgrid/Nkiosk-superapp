@@ -5,10 +5,12 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { useCart } from '../../contexts/CartContext';
 
 const OrderHistoryPage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
+  const { totalItems } = useCart();
 
   const orders = [
     {
@@ -83,6 +85,11 @@ const OrderHistoryPage = () => {
                 className="relative text-blue-600 hover:text-blue-700"
               >
                 <ShoppingCart className="w-5 h-5" />
+                {totalItems > 0 && (
+                  <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                    {totalItems}
+                  </Badge>
+                )}
               </Button>
 
               <div className="flex items-center gap-2">

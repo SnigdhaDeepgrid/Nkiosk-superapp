@@ -5,10 +5,12 @@ import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { useToast } from '../../hooks/use-toast';
+import { useCart } from '../../contexts/CartContext';
 
 const FoodDeliveryPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { addItem, totalItems } = useCart();
 
   const features = [
     { icon: '🔥', text: 'Hot & Fresh' },
@@ -42,6 +44,18 @@ const FoodDeliveryPage = () => {
   ];
 
   const addToCart = (dish) => {
+    // Create cart item with required properties
+    const cartItem = {
+      id: dish.id,
+      name: dish.name,
+      price: dish.price,
+      image: "🍽️", // Food emoji
+      type: "food",
+      restaurant: dish.restaurant,
+      description: dish.description
+    };
+    
+    addItem(cartItem);
     toast({
       title: "Added to Cart",
       description: `${dish.name} has been added to your cart`,
@@ -90,6 +104,11 @@ const FoodDeliveryPage = () => {
                 className="relative text-blue-600 hover:text-blue-700"
               >
                 <ShoppingCart className="w-5 h-5" />
+                {totalItems > 0 && (
+                  <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                    {totalItems}
+                  </Badge>
+                )}
               </Button>
 
               <div className="flex items-center gap-2">

@@ -6,13 +6,14 @@ import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useToast } from "../../hooks/use-toast";
+import { useCart } from "../../contexts/CartContext";
 import LocationSelector from "./LocationSelector";
 
 const NKioskDashboard = ({ user }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { totalItems, clearCartOnLogout } = useCart();
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [cartItems, setCartItems] = useState(0);
 
   // Location-based category availability
   const locationCategories = {
@@ -70,6 +71,7 @@ const NKioskDashboard = ({ user }) => {
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("selectedLocation");
+    clearCartOnLogout(); // Clear cart on logout
     toast({
       title: "Logged Out",
       description: "Successfully logged out from your account",
@@ -106,25 +108,22 @@ const NKioskDashboard = ({ user }) => {
   }, []);
 
   const handleViewOrders = () => {
-    navigate("/orders");
+    navigate("/customer-app/orders");
   };
 
    const handleCategorySelect = (categoryId) => {
     switch (categoryId) {
       case "grocery":
-        navigate("/grocery");
+        navigate("/customer-app/grocery");
         break;
       case "pharmacy":
-        // Navigate to pharmacy route when created
-        navigate("/pharmacy");
+        navigate("/customer-app/pharmacy");
         break;
       case "food":
-        // Navigate to food route when created
-        navigate("/food");
+        navigate("/customer-app/food");
         break;
       case "electronics":
-        // Navigate to electronics route when created
-        navigate("/electronics");
+        navigate("/customer-app/electronics");
         break;
       default:
         console.log("Unknown category:", categoryId);
@@ -190,9 +189,9 @@ const NKioskDashboard = ({ user }) => {
                 className="relative text-blue-600 hover:text-blue-700"
               >
                 <ShoppingCart className="w-5 h-5" />
-                {cartItems > 0 && (
+                {totalItems > 0 && (
                   <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
-                    {cartItems}
+                    {totalItems}
                   </Badge>
                 )}
               </Button>

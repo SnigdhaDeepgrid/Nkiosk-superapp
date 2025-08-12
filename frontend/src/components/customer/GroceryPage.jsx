@@ -6,10 +6,12 @@ import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
 import { useToast } from '../../hooks/use-toast';
+import { useCart } from '../../contexts/CartContext';
 
 const GroceryPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { addItem, totalItems } = useCart();
   const [searchTerm, setSearchTerm] = useState('');
 
   const features = [
@@ -47,6 +49,18 @@ const GroceryPage = () => {
   ];
 
   const addToCart = (product) => {
+    // Create cart item with required properties
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      type: "grocery",
+      unit: product.unit,
+      inStock: product.inStock
+    };
+    
+    addItem(cartItem);
     toast({
       title: "Added to Cart",
       description: `${product.name} has been added to your cart`,
@@ -95,6 +109,11 @@ const GroceryPage = () => {
                 className="relative text-blue-600 hover:text-blue-700"
               >
                 <ShoppingCart className="w-5 h-5" />
+                {totalItems > 0 && (
+                  <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                    {totalItems}
+                  </Badge>
+                )}
               </Button>
 
               <div className="flex items-center gap-2">

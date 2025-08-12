@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "./components/ui/toaster";
+import { CartProvider } from "./contexts/CartContext";
 import LoginForm from "./components/auth/LoginForm";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import SaasAdminDashboard from "./components/dashboard/SaasAdminDashboard";
@@ -66,72 +67,74 @@ const Dashboard = () => {
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          } />
-          {/* Placeholder routes for other sections */}
-          <Route path="/tenants" element={
-            <ProtectedRoute>
-              <div>Tenants Page - Coming Soon</div>
-            </ProtectedRoute>
-          } />
-          <Route path="/analytics" element={
-            <ProtectedRoute>
-              <div>Analytics Page - Coming Soon</div>
-            </ProtectedRoute>
-          } />
-          <Route path="/settings" element={
-            <ProtectedRoute>
-              <div>Settings Page - Coming Soon</div>
-            </ProtectedRoute>
-          } />
-          {/* Customer App Routes */}
-          <Route path="/customer-app" element={
-            <ProtectedRoute>
-              <NKioskDashboard user={JSON.parse(localStorage.getItem('user') || 'null')} />
-            </ProtectedRoute>
-          } />
-          <Route path="/customer-app/grocery" element={
-            <ProtectedRoute>
-              <GroceryPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/customer-app/pharmacy" element={
-            <ProtectedRoute>
-              <PharmacyPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/customer-app/food" element={
-            <ProtectedRoute>
-              <FoodDeliveryPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/customer-app/electronics" element={
-            <ProtectedRoute>
-              <ElectronicsPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/customer-app/orders" element={
-            <ProtectedRoute>
-              <OrderHistoryPage />
-            </ProtectedRoute>
-          } />
-          <Route path="/customer-app/cart" element={
-            <ProtectedRoute>
-              <CartPage />
-            </ProtectedRoute>
-          } />
-        </Routes>
-        <Toaster />
-      </BrowserRouter>
-    </div>
+    <CartProvider>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            {/* Placeholder routes for other sections */}
+            <Route path="/tenants" element={
+              <ProtectedRoute>
+                <div>Tenants Page - Coming Soon</div>
+              </ProtectedRoute>
+            } />
+            <Route path="/analytics" element={
+              <ProtectedRoute>
+                <div>Analytics Page - Coming Soon</div>
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <div>Settings Page - Coming Soon</div>
+              </ProtectedRoute>
+            } />
+            {/* Customer App Routes */}
+            <Route path="/customer-app" element={
+              <ProtectedRoute>
+                <NKioskDashboard user={JSON.parse(localStorage.getItem('user') || 'null')} />
+              </ProtectedRoute>
+            } />
+            <Route path="/customer-app/grocery" element={
+              <ProtectedRoute>
+                <GroceryPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/customer-app/pharmacy" element={
+              <ProtectedRoute>
+                <PharmacyPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/customer-app/food" element={
+              <ProtectedRoute>
+                <FoodDeliveryPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/customer-app/electronics" element={
+              <ProtectedRoute>
+                <ElectronicsPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/customer-app/orders" element={
+              <ProtectedRoute>
+                <OrderHistoryPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/customer-app/cart" element={
+              <ProtectedRoute>
+                <CartPage />
+              </ProtectedRoute>
+            } />
+          </Routes>
+          <Toaster />
+        </BrowserRouter>
+      </div>
+    </CartProvider>
   );
 }
 
