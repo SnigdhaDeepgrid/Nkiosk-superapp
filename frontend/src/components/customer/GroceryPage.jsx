@@ -49,6 +49,18 @@ const GroceryPage = () => {
   ];
 
   const addToCart = (product) => {
+    // Create cart item with required properties
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      type: "grocery",
+      unit: product.unit,
+      inStock: product.inStock
+    };
+    
+    addItem(cartItem);
     toast({
       title: "Added to Cart",
       description: `${product.name} has been added to your cart`,
