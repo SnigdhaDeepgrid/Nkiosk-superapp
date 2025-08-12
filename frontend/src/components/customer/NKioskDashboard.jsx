@@ -192,9 +192,9 @@ const NKioskDashboard = ({ user }) => {
                 className="relative text-blue-600 hover:text-blue-700"
               >
                 <ShoppingCart className="w-5 h-5" />
-                {cartItems > 0 && (
+                {totalItems > 0 && (
                   <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
-                    {cartItems}
+                    {totalItems}
                   </Badge>
                 )}
               </Button>
