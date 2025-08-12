@@ -6,6 +6,7 @@ import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useToast } from "../../hooks/use-toast";
+import { useCart } from "../../contexts/CartContext";
 import LocationSelector from "./LocationSelector";
 
 const NKioskDashboard = ({ user }) => {
