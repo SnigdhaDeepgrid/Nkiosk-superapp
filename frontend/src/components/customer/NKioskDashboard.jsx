@@ -108,25 +108,22 @@ const NKioskDashboard = ({ user }) => {
   }, []);
 
   const handleViewOrders = () => {
-    navigate("/orders");
+    navigate("/customer-app/orders");
   };
 
    const handleCategorySelect = (categoryId) => {
     switch (categoryId) {
       case "grocery":
-        navigate("/grocery");
+        navigate("/customer-app/grocery");
         break;
       case "pharmacy":
-        // Navigate to pharmacy route when created
-        navigate("/pharmacy");
+        navigate("/customer-app/pharmacy");
         break;
       case "food":
-        // Navigate to food route when created
-        navigate("/food");
+        navigate("/customer-app/food");
         break;
       case "electronics":
-        // Navigate to electronics route when created
-        navigate("/electronics");
+        navigate("/customer-app/electronics");
         break;
       default:
         console.log("Unknown category:", categoryId);
