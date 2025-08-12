@@ -190,6 +190,47 @@ const GroceryPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Additional Features - Circular Gradient Cards */}
+          <div className="p-6">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
+              Why Shop Groceries with Us?
+            </h3>
+
+            <div className="flex flex-wrap justify-center gap-16">
+              {[
+                {
+                  icon: "🌱",
+                  title: "Organic Options",
+                  desc: "Organic produce available",
+                },
+                {
+                  icon: "⏰",
+                  title: "1-Hour Delivery",
+                  desc: "Lightning-fast delivery",
+                },
+                {
+                  icon: "💰",
+                  title: "Best Prices",
+                  desc: "Amazing deals & discounts",
+                },
+                {
+                  icon: "📱",
+                  title: "Easy Reordering",
+                  desc: "Quick reordering options",
+                },
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className="w-40 h-40 rounded-full bg-gradient-to-br from-blue-100 to-green-200 shadow-lg flex flex-col items-center justify-center text-green-900 text-center p-4 hover:scale-105 transition-transform duration-300"
+                >
+                  <span className="text-3xl mb-2">{feature.icon}</span>
+                  <h4 className="text-md font-semibold">{feature.title}</h4>
+                  <p className="text-xs">{feature.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
     </div>
   );
 };

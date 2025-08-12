@@ -189,6 +189,45 @@ const FoodDeliveryPage = () => {
             ))}
           </div>
         </div>
+      {/* Features Grid */}
+          <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-orange-800 dark:text-orange-200 mb-8 text-center">
+              Why Order From Us?
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-items-center">
+              {[
+                {
+                  icon: "⚡",
+                  title: "Lightning Fast",
+                  desc: "Avg delivery time under 30 min",
+                },
+                {
+                  icon: "🌶️",
+                  title: "Authentic Flavors",
+                  desc: "Traditional Telugu & Indian cuisines",
+                },
+                {
+                  icon: "💰",
+                  title: "Best Prices",
+                  desc: "Competitive pricing, no hidden charges",
+                },
+                {
+                  icon: "🏆",
+                  title: "Top Quality",
+                  desc: "Only highly rated restaurants",
+                },
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className="w-40 h-40 flex flex-col items-center justify-center text-center rounded-full shadow-lg p-4 text-white bg-gradient-to-br from-orange-300 to-red-500"
+                >
+                  <div className="text-3xl mb-1">{feature.icon}</div>
+                  <h4 className="text-sm font-semibold">{feature.title}</h4>
+                  <p className="text-xs">{feature.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
       </div>
     </div>
   );

@@ -327,7 +327,7 @@ const NKioskDashboard = ({ user }) => {
 
         {/* Available Categories Notice */}
         {selectedLocation && availableCategories.length < 4 && (
-          <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+          <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg mb-6">
             <p className="text-amber-800 text-center">
               <span className="font-medium">Note:</span> Some services may not
               be available in your selected location. Try changing your location

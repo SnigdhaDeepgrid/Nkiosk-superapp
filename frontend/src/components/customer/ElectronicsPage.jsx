@@ -189,6 +189,73 @@ const ElectronicsPage = () => {
             ))}
           </div>
         </div>
+
+        {/* Features Grid */}
+          <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-primary-800 dark:text-primary-200 mb-6">
+              Why Choose Our Electronics Store?
+            </h3>
+            <div className="flex flex-wrap justify-between gap-4">
+              {[
+                {
+                  icon: "🛡️",
+                  title: "Manufacturer Warranty",
+                  desc: "All products come with official warranty",
+                },
+                {
+                  icon: "🔧",
+                  title: "Free Installation",
+                  desc: "Professional setup for complex devices",
+                },
+                {
+                  icon: "💰",
+                  title: "Best Price Guarantee",
+                  desc: "Competitive prices with price matching",
+                },
+                {
+                  icon: "🚚",
+                  title: "Safe Delivery",
+                  desc: "Secure packaging for fragile electronics",
+                },
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className="w-40 h-40 flex flex-col items-center justify-center text-center rounded-full shadow-md bg-gradient-to-br from-blue-100 to-green-200 text-blue-900 dark:text-white"
+                >
+                  <div className="text-2xl mb-1">{feature.icon}</div>
+                  <div className="text-sm font-semibold px-2">
+                    {feature.title}
+                  </div>
+                  <div className="text-xs text-blue-800 dark:text-gray-300 px-3 mt-1">
+                    {feature.desc}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Trending Products Placeholder */}
+          <div className="bg-gradient-to-r from-primary-50 to-accent-200 rounded-lg p-6 text-blue-900">
+            <h3 className="text-xl font-semibold mb-4">🔥 Trending Now</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-white rounded-lg p-4">
+                <div className="text-2xl mb-2">📱</div>
+                <h4 className="font-semibold">Latest iPhones</h4>
+                <p className="text-sm opacity-90">From $999</p>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <div className="text-2xl mb-2">💻</div>
+                <h4 className="font-semibold">MacBook Pro</h4>
+                <p className="text-sm opacity-90">From $2,399</p>
+              </div>
+              <div className="bg-white rounded-lg p-4">
+                <div className="text-2xl mb-2">🎧</div>
+                <h4 className="font-semibold">AirPods Pro</h4>
+                <p className="text-sm opacity-90">From $249</p>
+              </div>
+            </div>
+          </div>
+          
       </div>
     </div>
   );

@@ -201,6 +201,30 @@ const PharmacyPage = () => {
             ))}
           </div>
         </div>
+
+        {/* Features Grid */}
+          <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-6">
+            <h3 className="text-xl font-semibold text-red-800 dark:text-red-200 mb-8 text-center">
+              Why Choose Our Pharmacy?
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6 justify-items-center">
+              {[
+                { icon: "✅", desc: "Licensed Pharmacists" },
+                { icon: "🚨", desc: "Emergency Service" },
+                { icon: "💳", desc: "Insurance Support" },
+                { icon: "🔒", desc: "Secure Storage" },
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className="w-36 h-36 flex flex-col items-center justify-center text-center rounded-full shadow-lg p-4 text-white bg-gradient-to-br from-orange-200 to-red-500"
+                >
+                  <div className="text-3xl mb-2">{feature.icon}</div>
+                  <p className="text-sm font-medium">{feature.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          
       </div>
     </div>
   );
