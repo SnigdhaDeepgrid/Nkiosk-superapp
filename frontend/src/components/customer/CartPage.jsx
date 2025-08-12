@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { useToast } from '../../hooks/use-toast';
+import { useCart } from '../../contexts/CartContext';
 
 const CartPage = () => {
   const navigate = useNavigate();
