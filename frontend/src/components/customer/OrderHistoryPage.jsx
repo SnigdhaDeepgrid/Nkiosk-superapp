@@ -10,6 +10,7 @@ import { useCart } from '../../contexts/CartContext';
 const OrderHistoryPage = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('all');
+  const { totalItems } = useCart();
 
   const orders = [
     {
