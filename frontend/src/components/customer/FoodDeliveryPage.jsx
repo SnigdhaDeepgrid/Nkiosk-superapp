@@ -10,6 +10,7 @@ import { useCart } from '../../contexts/CartContext';
 const FoodDeliveryPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { addItem, totalItems } = useCart();
 
   const features = [
     { icon: '🔥', text: 'Hot & Fresh' },
