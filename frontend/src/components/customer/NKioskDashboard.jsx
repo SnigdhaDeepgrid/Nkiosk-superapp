@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { MapPin, ShoppingCart, User, LogOut, Bell } from 'lucide-react';
-import { Button } from '../ui/button';
-import { Card, CardContent } from '../ui/card';
-import { Badge } from '../ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { useToast } from '../../hooks/use-toast';
-import LocationSelector from './LocationSelector';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { MapPin, ShoppingCart, User, LogOut, Bell } from "lucide-react";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useToast } from "../../hooks/use-toast";
+import LocationSelector from "./LocationSelector";
 
 const NKioskDashboard = ({ user }) => {
   const navigate = useNavigate();
@@ -16,70 +16,70 @@ const NKioskDashboard = ({ user }) => {
 
   // Location-based category availability
   const locationCategories = {
-    'downtown': ['grocery', 'pharmacy', 'food', 'electronics'],
-    'mall': ['grocery', 'pharmacy', 'food', 'electronics'],
-    'suburbs': ['grocery', 'pharmacy', 'food'],
-    'airport': ['pharmacy', 'food'],
-    'hospital': ['pharmacy'],
-    'university': ['grocery', 'food', 'electronics']
+    downtown: ["grocery", "pharmacy", "food", "electronics"],
+    mall: ["grocery", "pharmacy", "food", "electronics"],
+    suburbs: ["grocery", "pharmacy", "food"],
+    airport: ["pharmacy", "food"],
+    hospital: ["pharmacy"],
+    university: ["grocery", "food", "electronics"],
   };
 
   const categories = [
     {
-      id: 'grocery',
-      title: 'Grocery',
-      subtitle: 'Fresh groceries delivered to your door',
-      icon: '🥬',
-      items: '50+ Items',
-      color: 'bg-green-100',
-      textColor: 'text-green-800',
-      route: '/customer-app/grocery'
+      id: "grocery",
+      title: "Grocery",
+      subtitle: "Fresh groceries delivered to your door",
+      icon: "🥬",
+      items: "50+ Items",
+      color: "bg-green-100",
+      textColor: "text-green-800",
+      route: "/customer-app/grocery",
     },
     {
-      id: 'pharmacy',
-      title: 'Pharmacy',
-      subtitle: 'Medicines and health products',
-      icon: '💊',
-      items: '50+ Products',
-      color: 'bg-red-100',
-      textColor: 'text-red-800',
-      route: '/customer-app/pharmacy'
+      id: "pharmacy",
+      title: "Pharmacy",
+      subtitle: "Medicines and health products",
+      icon: "💊",
+      items: "50+ Products",
+      color: "bg-red-100",
+      textColor: "text-red-800",
+      route: "/customer-app/pharmacy",
     },
     {
-      id: 'food',
-      title: 'Food Delivery',
-      subtitle: 'Delicious meals from top restaurants',
-      icon: '🍽️',
-      items: '25+ Restaurants',
-      color: 'bg-orange-100',
-      textColor: 'text-orange-800',
-      route: '/customer-app/food'
+      id: "food",
+      title: "Food Delivery",
+      subtitle: "Delicious meals from top restaurants",
+      icon: "🍽️",
+      items: "25+ Restaurants",
+      color: "bg-orange-100",
+      textColor: "text-orange-800",
+      route: "/customer-app/food",
     },
     {
-      id: 'electronics',
-      title: 'Electronics',
-      subtitle: 'Latest gadgets and electronics',
-      icon: '📱',
-      items: '200+ Items',
-      color: 'bg-blue-100',
-      textColor: 'text-blue-800',
-      route: '/customer-app/electronics'
-    }
+      id: "electronics",
+      title: "Electronics",
+      subtitle: "Latest gadgets and electronics",
+      icon: "📱",
+      items: "200+ Items",
+      color: "bg-blue-100",
+      textColor: "text-blue-800",
+      route: "/customer-app/electronics",
+    },
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('selectedLocation');
+    localStorage.removeItem("user");
+    localStorage.removeItem("selectedLocation");
     toast({
       title: "Logged Out",
       description: "Successfully logged out from your account",
     });
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleLocationSelect = (location) => {
     setSelectedLocation(location);
-    localStorage.setItem('selectedLocation', JSON.stringify(location));
+    localStorage.setItem("selectedLocation", JSON.stringify(location));
     toast({
       title: "Location Updated",
       description: `Shopping location set to ${location.name}`,
@@ -91,7 +91,7 @@ const NKioskDashboard = ({ user }) => {
       toast({
         title: "Location Required",
         description: "Please select your location first to continue shopping",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -99,23 +99,57 @@ const NKioskDashboard = ({ user }) => {
   };
 
   useEffect(() => {
-    const savedLocation = localStorage.getItem('selectedLocation');
+    const savedLocation = localStorage.getItem("selectedLocation");
     if (savedLocation) {
       setSelectedLocation(JSON.parse(savedLocation));
     }
   }, []);
 
+  const handleViewOrders = () => {
+    navigate("/orders");
+  };
+
+   const handleCategorySelect = (categoryId) => {
+    switch (categoryId) {
+      case "grocery":
+        navigate("/grocery");
+        break;
+      case "pharmacy":
+        // Navigate to pharmacy route when created
+        navigate("/pharmacy");
+        break;
+      case "food":
+        // Navigate to food route when created
+        navigate("/food");
+        break;
+      case "electronics":
+        // Navigate to electronics route when created
+        navigate("/electronics");
+        break;
+      default:
+        console.log("Unknown category:", categoryId);
+    }
+  };
+
   // Filter categories based on selected location
-  const availableCategories = selectedLocation 
-    ? categories.filter(cat => locationCategories[selectedLocation.type]?.includes(cat.id))
+  const availableCategories = selectedLocation
+    ? categories.filter((cat) =>
+        locationCategories[selectedLocation.type]?.includes(cat.id)
+      )
     : [];
 
   if (!selectedLocation) {
-    return <LocationSelector onLocationSelect={handleLocationSelect} user={user} onLogout={handleLogout} />;
+    return (
+      <LocationSelector
+        onLocationSelect={handleLocationSelect}
+        user={user}
+        onLogout={handleLogout}
+      />
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -123,12 +157,12 @@ const NKioskDashboard = ({ user }) => {
             <div className="flex items-center gap-4">
               <h1 className="text-3xl font-bold text-blue-600">NKiosk</h1>
             </div>
-            
+
             <div className="flex items-center gap-4">
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/customer-app/orders')}
+                onClick={() => navigate("/customer-app/orders")}
                 className="flex items-center gap-2 text-orange-600 hover:text-orange-700"
               >
                 <div className="w-6 h-6 flex items-center justify-center">
@@ -136,11 +170,11 @@ const NKioskDashboard = ({ user }) => {
                 </div>
                 Dashboard
               </Button>
-              
+
               <Button
-                variant="ghost" 
+                variant="ghost"
                 size="sm"
-                onClick={() => navigate('/customer-app/orders')}
+                onClick={() => navigate("/customer-app/orders")}
                 className="flex items-center gap-2 text-orange-600 hover:text-orange-700"
               >
                 <div className="w-6 h-6 flex items-center justify-center">
@@ -152,7 +186,7 @@ const NKioskDashboard = ({ user }) => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => navigate('/customer-app/cart')}
+                onClick={() => navigate("/customer-app/cart")}
                 className="relative text-blue-600 hover:text-blue-700"
               >
                 <ShoppingCart className="w-5 h-5" />
@@ -184,19 +218,23 @@ const NKioskDashboard = ({ user }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Welcome Section */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+          <h1
+            className={`text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-400 to-green-600 animate-pulse-slow`}
+          >
             Welcome to NKiosk SuperApp
           </h1>
-          <p className="text-xl text-gray-600 mb-6">Your one-stop destination for all your needs</p>
-          
+          <p className="text-xl text-gray-600 mb-6">
+            Your one-stop destination for all your needs
+          </p>
+
           {/* Location Display */}
           <div className="flex items-center justify-center gap-2 mb-8">
             <MapPin className="w-5 h-5 text-green-600" />
             <span className="text-lg font-medium text-gray-700">
               Shopping at: {selectedLocation.name}
             </span>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="destructive"
               size="sm"
               onClick={() => setSelectedLocation(null)}
               className="ml-2"
@@ -206,77 +244,157 @@ const NKioskDashboard = ({ user }) => {
           </div>
         </div>
 
-        {/* 3D Phone Illustration */}
-        <div className="flex justify-center mb-16">
-          <div className="relative">
-            <img 
-              src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=500&fit=crop&crop=center"
-              alt="Shopping App Illustration"
-              className="w-80 h-96 object-cover rounded-3xl shadow-2xl"
-            />
-            <div className="absolute -left-12 top-8 bg-orange-500 text-white px-3 py-2 rounded-lg text-sm font-medium">
-              🥖 Bakery
-            </div>
-            <div className="absolute -right-8 top-16 bg-blue-500 text-white px-3 py-2 rounded-lg text-sm font-medium">
-              🐟 Seafood
-            </div>
-            <div className="absolute -left-8 top-32 bg-green-500 text-white px-3 py-2 rounded-lg text-sm font-medium">
-              🥕 Vegetables
-            </div>
-            <div className="absolute -right-12 bottom-24 bg-red-500 text-white px-3 py-2 rounded-lg text-sm font-medium">
-              🥛 Dairy
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-8 items-center">
+          {/* 3D Phone Illustration (2 columns on large screens) */}
+          <div className="col-span-1 lg:col-span-2 flex justify-center">
+            <div className="relative w-full max-w-md">
+              <img
+                src="/images/shopping3d.png"
+                alt="3D Gifts"
+                className="rounded-2xl w-full max-w-md"
+              />
             </div>
           </div>
-        </div>
 
-        {/* Category Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-          {availableCategories.map((category) => (
-            <Card 
-              key={category.id}
-              className="cursor-pointer hover:shadow-lg transition-all duration-200 transform hover:scale-105"
-              onClick={() => handleCategoryClick(category)}
-            >
-              <CardContent className="p-8">
-                <div className="flex items-center justify-between mb-4">
-                  <div className={`w-16 h-16 rounded-xl ${category.color} flex items-center justify-center text-3xl`}>
-                    {category.icon}
-                  </div>
-                  <div className="text-right">
-                    <Badge variant="secondary" className="bg-green-100 text-green-700">
-                      {category.items}
-                    </Badge>
+          {/* Category Cards (3 columns on large screens) */}
+          <div className="col-span-1 lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {availableCategories.map((category, index) => {
+              const theme = {
+                primary:
+                  category.textColor?.replace("text-", "") || "green-600",
+                secondary: category.color?.replace("bg-", "") || "green-100",
+                text: category.textColor?.replace("text-", "") || "green-800",
+              };
+
+              return (
+                <div
+                  key={category.id}
+                  className="animate-slideUp"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div
+                    onClick={() => handleCategoryClick(category)}
+                    className={`
+            relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-500 
+            hover:scale-105 hover:shadow-2xl group
+            bg-white text-neutral-900
+            border-2 border-transparent hover:border-${theme.primary}
+          `}
+                  >
+                    {/* Background gradient */}
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br from-${theme.secondary} to-transparent opacity-20 group-hover:opacity-40 transition-opacity`}
+                    />
+
+                    <div className="relative p-6 text-center h-55 flex flex-col justify-between">
+                      {/* Icon */}
+                      <div className="group text-5xl mb-2 transform transition-transform duration-300 group-hover:scale-110">
+                        <div className="group-hover:animate-bounce">
+                          {category.icon}
+                        </div>
+                      </div>
+
+                      {/* Title */}
+                      <h3
+                        className={`text-3xl font-bold mb-3 ${category.textColor} group-hover:text-gradient transition-all duration-300`}
+                      >
+                        {category.title}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-sm text-neutral-600 mb-3">
+                        {category.subtitle}
+                      </p>
+
+                      {/* Stats */}
+                      <div
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-medium bg-${theme.secondary} text-${theme.text}`}
+                      >
+                        {category.items}
+                      </div>
+
+                      {/* Hover underline effect */}
+                      <div
+                        className={`absolute bottom-0 left-0 right-0 h-1 bg-${theme.primary} transform scale-x-0 group-hover:scale-x-100 transition-transform`}
+                      />
+                    </div>
                   </div>
                 </div>
-                <h3 className={`text-2xl font-bold ${category.textColor} mb-2`}>
-                  {category.title}
-                </h3>
-                <p className="text-gray-600 text-lg">
-                  {category.subtitle}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+              );
+            })}
+          </div>
         </div>
 
         {/* Available Categories Notice */}
         {selectedLocation && availableCategories.length < 4 && (
           <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg">
             <p className="text-amber-800 text-center">
-              <span className="font-medium">Note:</span> Some services may not be available in your selected location. 
-              Try changing your location to access more categories.
+              <span className="font-medium">Note:</span> Some services may not
+              be available in your selected location. Try changing your location
+              to access more categories.
             </p>
           </div>
         )}
-      </div>
-
-      {/* Footer */}
-      <div className="bg-gray-50 border-t mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-end">
-            <Badge variant="outline" className="text-xs text-gray-500">
-              Made with Emergent
-            </Badge>
+        {/* Quick Actions */}
+        <div className="text-center">
+          <div className="w-full px-0 bg-gradient-to-r from-blue-300 via-blue-200 to-green-300 py-6 flex flex-wrap justify-center gap-4 rounded-lg">
+            <button
+              onClick={handleViewOrders}
+              className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-full shadow-md transition"
+            >
+              📦 View My Orders
+            </button>
+            <button
+              onClick={() => handleCategorySelect("food")}
+              className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full shadow-md transition"
+            >
+              🔥 Order Food Now
+            </button>
+            <button
+              onClick={() => handleCategorySelect("grocery")}
+              className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full shadow-md transition"
+            >
+              🥬 Fresh Groceries
+            </button>
+          </div>
+        </div>
+        {/* Features Section */}
+        <div className="mt-16 px-10 mb-8">
+          <h2 className="text-3xl font-bold text-center mb-8 text-neutral-900">
+            Why Choose NKiosk?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                icon: "🚚",
+                title: "Fast Delivery",
+                description:
+                  "Get your orders delivered quickly with our Telugu-speaking delivery team",
+              },
+              {
+                icon: "🛡️",
+                title: "Quality Assured",
+                description:
+                  "All products are verified and quality-checked by our vendors",
+              },
+              {
+                icon: "💰",
+                title: "Best Prices",
+                description:
+                  "Competitive prices across all categories with regular discounts",
+              },
+            ].map((feature, index) => (
+              <div
+                key={index}
+                className="text-center p-6 rounded-xl bg-white shadow-lg"
+              >
+                <div className="text-4xl mb-4">{feature.icon}</div>
+                <h3 className="text-xl font-semibold mb-2 text-neutral-900">
+                  {feature.title}
+                </h3>
+                <p className="text-neutral-600">{feature.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
