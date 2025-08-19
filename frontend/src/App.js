@@ -51,26 +51,34 @@ const Dashboard = () => {
     console.log('❌ Dashboard - No user found, redirecting to /auth');
     return <Navigate to="/auth" replace />; // Changed from /login to /auth
   }
-    return <Navigate to="/auth" replace />; // Changed from /login to /auth
-  }
+
+  console.log('✅ Dashboard - User found, routing to role:', user.role);
 
   // Route to appropriate dashboard based on role
   switch (user.role) {
     case 'saas_admin':
+      console.log('🏢 Routing to SaaS Admin Dashboard');
       return <SaasAdminDashboard user={user} />;
     case 'super_admin':
+      console.log('👑 Routing to Super Admin Dashboard');
       return <SuperAdminDashboard user={user} />;
     case 'store_manager':
+      console.log('🏪 Routing to Store Manager Dashboard');
       return <StoreManagerDashboard user={user} />;
     case 'vendor':
+      console.log('🛒 Routing to Vendor Dashboard');
       return <VendorDashboard user={user} />;
     case 'delivery_partner':
+      console.log('🚚 Routing to Delivery Partner Dashboard');
       return <div>Delivery Partner Dashboard - Coming Soon</div>;
     case 'customer':
+      console.log('👤 Routing to Customer Dashboard');
       return <NKioskDashboard user={user} />;
     case 'support_staff':
+      console.log('💬 Routing to Support Staff Dashboard');
       return <div>Support Staff Dashboard - Coming Soon</div>;
     default:
+      console.log('❌ Invalid role:', user.role);
       return <div>Invalid Role</div>;
   }
 };
