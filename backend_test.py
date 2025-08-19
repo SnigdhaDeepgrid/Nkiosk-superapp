@@ -12,7 +12,7 @@ import sys
 import os
 
 # Get backend URL from environment
-BACKEND_URL = "https://menu-order-patch.preview.emergentagent.com/api"
+BACKEND_URL = "https://chromatic-app.preview.emergentagent.com/api"
 
 class SuperAdminAPITester:
     def __init__(self, base_url: str):
