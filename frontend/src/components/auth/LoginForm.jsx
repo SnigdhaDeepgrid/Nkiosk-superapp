@@ -19,26 +19,25 @@ const LoginForm = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    // Mock authentication - simulate API call
-    setTimeout(() => {
-      const mockUser = getMockUserByEmail(email);
-      
-      if (mockUser && password === 'password123') {
-        localStorage.setItem('user', JSON.stringify(mockUser));
-        toast({
-          title: "Welcome to Nkiosk!",
-          description: `Successfully logged in as ${mockUser.name}`,
-        });
-        navigate('/dashboard');
-      } else {
-        toast({
-          title: "Login Failed",
-          description: "Invalid credentials. Try: admin@saas.com with password123",
-          variant: "destructive",
-        });
-      }
+    // Mock authentication - direct authentication without timeout
+    const mockUser = getMockUserByEmail(email);
+    
+    if (mockUser && password === 'password123') {
+      localStorage.setItem('user', JSON.stringify(mockUser));
+      toast({
+        title: "Welcome to Nkiosk!",
+        description: `Successfully logged in as ${mockUser.name}`,
+      });
       setIsLoading(false);
-    }, 1000);
+      navigate('/dashboard');
+    } else {
+      toast({
+        title: "Login Failed",
+        description: "Invalid credentials. Try: admin@saas.com with password123",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+    }
   };
 
   const getMockUserByEmail = (email) => {
