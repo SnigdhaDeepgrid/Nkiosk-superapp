@@ -32,8 +32,8 @@ const NKioskDashboard = ({ user }) => {
       subtitle: "Fresh groceries delivered to your door",
       icon: "🥬",
       items: "50+ Items",
-      color: "bg-green-100",
-      textColor: "text-green-800",
+      color: "bg-success-green-100",
+      textColor: "text-success-green-800",
       route: "/customer-app/grocery",
     },
     {
@@ -42,8 +42,8 @@ const NKioskDashboard = ({ user }) => {
       subtitle: "Medicines and health products",
       icon: "💊",
       items: "50+ Products",
-      color: "bg-red-100",
-      textColor: "text-red-800",
+      color: "bg-deep-red-100",
+      textColor: "text-deep-red-800",
       route: "/customer-app/pharmacy",
     },
     {
@@ -52,8 +52,8 @@ const NKioskDashboard = ({ user }) => {
       subtitle: "Delicious meals from top restaurants",
       icon: "🍽️",
       items: "25+ Restaurants",
-      color: "bg-orange-100",
-      textColor: "text-orange-800",
+      color: "bg-coral-red-100",
+      textColor: "text-coral-red-800",
       route: "/customer-app/food",
     },
     {
@@ -62,8 +62,8 @@ const NKioskDashboard = ({ user }) => {
       subtitle: "Latest gadgets and electronics",
       icon: "📱",
       items: "200+ Items",
-      color: "bg-blue-100",
-      textColor: "text-blue-800",
+      color: "bg-app-gray-100",
+      textColor: "text-app-gray-800",
       route: "/customer-app/electronics",
     },
   ];
@@ -148,13 +148,13 @@ const NKioskDashboard = ({ user }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-green-100">
+    <div className="min-h-screen bg-gradient-to-br from-coral-red-50 to-app-gray-100">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white shadow-sm border-b border-app-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center gap-4">
-              <h1 className="text-3xl font-bold text-blue-600">NKiosk</h1>
+              <h1 className="text-3xl font-bold text-coral-red">NKiosk</h1>
             </div>
 
             <div className="flex items-center gap-4">
@@ -162,7 +162,7 @@ const NKioskDashboard = ({ user }) => {
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/customer-app/orders")}
-                className="flex items-center gap-2 text-orange-600 hover:text-orange-700"
+                className="flex items-center gap-2 text-coral-red hover:text-coral-red-700 hover:bg-coral-red-50"
               >
                 <div className="w-6 h-6 flex items-center justify-center">
                   <span className="text-lg">📦</span>
@@ -174,7 +174,7 @@ const NKioskDashboard = ({ user }) => {
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/customer-app/orders")}
-                className="flex items-center gap-2 text-orange-600 hover:text-orange-700"
+                className="flex items-center gap-2 text-coral-red hover:text-coral-red-700 hover:bg-coral-red-50"
               >
                 <div className="w-6 h-6 flex items-center justify-center">
                   <span className="text-lg">📦</span>
@@ -186,25 +186,25 @@ const NKioskDashboard = ({ user }) => {
                 variant="ghost"
                 size="sm"
                 onClick={() => navigate("/customer-app/cart")}
-                className="relative text-blue-600 hover:text-blue-700"
+                className="relative text-coral-red hover:text-coral-red-700 hover:bg-coral-red-50"
               >
                 <ShoppingCart className="w-5 h-5" />
                 {totalItems > 0 && (
-                  <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center">
+                  <Badge className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-deep-red text-white text-xs flex items-center justify-center">
                     {totalItems}
                   </Badge>
                 )}
               </Button>
 
               <div className="flex items-center gap-2">
-                <span className="text-yellow-500 text-lg">👤</span>
-                <span className="text-sm font-medium">John Smith</span>
-                <span className="text-xs text-gray-500">customer</span>
+                <span className="text-coral-red text-lg">👤</span>
+                <span className="text-sm font-medium text-app-gray-900">John Smith</span>
+                <span className="text-xs text-app-gray-500">customer</span>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={handleLogout}
-                  className="ml-2"
+                  className="ml-2 border-app-gray-300 text-app-gray-700 hover:bg-app-gray-50"
                 >
                   Logout
                 </Button>
@@ -218,25 +218,25 @@ const NKioskDashboard = ({ user }) => {
         {/* Welcome Section */}
         <div className="text-center mb-12">
           <h1
-            className={`text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-700 via-blue-400 to-green-600 animate-pulse-slow`}
+            className={`text-4xl md:text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-coral-red via-coral-red-600 to-deep-red animate-pulse-slow`}
           >
             Welcome to NKiosk SuperApp
           </h1>
-          <p className="text-xl text-gray-600 mb-6">
+          <p className="text-xl text-app-gray-600 mb-6">
             Your one-stop destination for all your needs
           </p>
 
           {/* Location Display */}
           <div className="flex items-center justify-center gap-2 mb-8">
-            <MapPin className="w-5 h-5 text-green-600" />
-            <span className="text-lg font-medium text-gray-700">
+            <MapPin className="w-5 h-5 text-success-green" />
+            <span className="text-lg font-medium text-app-gray-700">
               Shopping at: {selectedLocation.name}
             </span>
             <Button
               variant="destructive"
               size="sm"
               onClick={() => setSelectedLocation(null)}
-              className="ml-2"
+              className="ml-2 bg-deep-red hover:bg-deep-red-700"
             >
               Change Location
             </Button>
@@ -260,9 +260,9 @@ const NKioskDashboard = ({ user }) => {
             {availableCategories.map((category, index) => {
               const theme = {
                 primary:
-                  category.textColor?.replace("text-", "") || "green-600",
-                secondary: category.color?.replace("bg-", "") || "green-100",
-                text: category.textColor?.replace("text-", "") || "green-800",
+                  category.textColor?.replace("text-", "") || "success-green-600",
+                secondary: category.color?.replace("bg-", "") || "success-green-100",
+                text: category.textColor?.replace("text-", "") || "success-green-800",
               };
 
               return (
@@ -276,13 +276,13 @@ const NKioskDashboard = ({ user }) => {
                     className={`
             relative overflow-hidden rounded-xl cursor-pointer transform transition-all duration-500 
             hover:scale-105 hover:shadow-2xl group
-            bg-white text-neutral-900
-            border-2 border-transparent hover:border-${theme.primary}
+            bg-white text-app-gray-900
+            border-2 border-transparent hover:border-coral-red
           `}
                   >
                     {/* Background gradient */}
                     <div
-                      className={`absolute inset-0 bg-gradient-to-br from-${theme.secondary} to-transparent opacity-20 group-hover:opacity-40 transition-opacity`}
+                      className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-20 group-hover:opacity-40 transition-opacity`}
                     />
 
                     <div className="relative p-6 text-center h-55 flex flex-col justify-between">
@@ -295,26 +295,26 @@ const NKioskDashboard = ({ user }) => {
 
                       {/* Title */}
                       <h3
-                        className={`text-3xl font-bold mb-3 ${category.textColor} group-hover:text-gradient transition-all duration-300`}
+                        className={`text-3xl font-bold mb-3 ${category.textColor} group-hover:text-coral-red transition-all duration-300`}
                       >
                         {category.title}
                       </h3>
 
                       {/* Description */}
-                      <p className="text-sm text-neutral-600 mb-3">
+                      <p className="text-sm text-app-gray-600 mb-3">
                         {category.subtitle}
                       </p>
 
                       {/* Stats */}
                       <div
-                        className={`inline-block px-3 py-1 rounded-full text-xs font-medium bg-${theme.secondary} text-${theme.text}`}
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${category.color} ${category.textColor}`}
                       >
                         {category.items}
                       </div>
 
                       {/* Hover underline effect */}
                       <div
-                        className={`absolute bottom-0 left-0 right-0 h-1 bg-${theme.primary} transform scale-x-0 group-hover:scale-x-100 transition-transform`}
+                        className={`absolute bottom-0 left-0 right-0 h-1 bg-coral-red transform scale-x-0 group-hover:scale-x-100 transition-transform`}
                       />
                     </div>
                   </div>
@@ -326,8 +326,8 @@ const NKioskDashboard = ({ user }) => {
 
         {/* Available Categories Notice */}
         {selectedLocation && availableCategories.length < 4 && (
-          <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg mb-6">
-            <p className="text-amber-800 text-center">
+          <div className="mt-8 p-4 bg-coral-red-50 border border-coral-red-200 rounded-lg mb-6">
+            <p className="text-coral-red-800 text-center">
               <span className="font-medium">Note:</span> Some services may not
               be available in your selected location. Try changing your location
               to access more categories.
@@ -336,22 +336,22 @@ const NKioskDashboard = ({ user }) => {
         )}
         {/* Quick Actions */}
         <div className="text-center">
-          <div className="w-full px-0 bg-gradient-to-r from-blue-300 via-blue-200 to-green-300 py-6 flex flex-wrap justify-center gap-4 rounded-lg">
+          <div className="w-full px-0 bg-gradient-to-r from-coral-red-100 via-coral-red-50 to-app-gray-100 py-6 flex flex-wrap justify-center gap-4 rounded-lg">
             <button
               onClick={handleViewOrders}
-              className="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-full shadow-md transition"
+              className="px-6 py-3 bg-coral-red hover:bg-coral-red-700 text-white font-semibold rounded-full shadow-md transition"
             >
               📦 View My Orders
             </button>
             <button
               onClick={() => handleCategorySelect("food")}
-              className="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full shadow-md transition"
+              className="px-6 py-3 bg-deep-red hover:bg-deep-red-700 text-white font-semibold rounded-full shadow-md transition"
             >
               🔥 Order Food Now
             </button>
             <button
               onClick={() => handleCategorySelect("grocery")}
-              className="px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-full shadow-md transition"
+              className="px-6 py-3 bg-success-green hover:bg-success-green-700 text-white font-semibold rounded-full shadow-md transition"
             >
               🥬 Fresh Groceries
             </button>
@@ -359,7 +359,7 @@ const NKioskDashboard = ({ user }) => {
         </div>
         {/* Features Section */}
         <div className="mt-16 px-10 mb-8">
-          <h2 className="text-3xl font-bold text-center mb-8 text-neutral-900">
+          <h2 className="text-3xl font-bold text-center mb-8 text-app-gray-900">
             Why Choose NKiosk?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -385,13 +385,13 @@ const NKioskDashboard = ({ user }) => {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="text-center p-6 rounded-xl bg-white shadow-lg"
+                className="text-center p-6 rounded-xl bg-white shadow-lg border border-app-gray-100"
               >
                 <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="text-xl font-semibold mb-2 text-neutral-900">
+                <h3 className="text-xl font-semibold mb-2 text-app-gray-900">
                   {feature.title}
                 </h3>
-                <p className="text-neutral-600">{feature.description}</p>
+                <p className="text-app-gray-600">{feature.description}</p>
               </div>
             ))}
           </div>
