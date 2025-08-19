@@ -36,7 +36,7 @@ const Homepage = () => {
           <div className="flex justify-between items-center">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <div className="text-2xl font-bold text-[#F25C44]">Nkiosk</div>
+              <div className="text-2xl font-bold text-[#D94436]">Nkiosk</div>
             </div>
 
             {/* Desktop Navigation */}
