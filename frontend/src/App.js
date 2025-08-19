@@ -3,6 +3,8 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "./components/ui/toaster";
 import { CartProvider } from "./contexts/CartContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import Homepage from "./components/Homepage";
 import LoginForm from "./components/auth/LoginForm";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import SaasAdminDashboard from "./components/dashboard/SaasAdminDashboard";
@@ -22,7 +24,7 @@ const ProtectedRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/auth" replace />; // Changed from /login to /auth to match your Homepage navigation
   }
 
   // For SaaS Admin, Super Admin, and Customer, we need to handle tab changes in their own components
@@ -41,7 +43,7 @@ const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/auth" replace />; // Changed from /login to /auth
   }
 
   // Route to appropriate dashboard based on role
@@ -67,74 +69,84 @@ const Dashboard = () => {
 
 function App() {
   return (
-    <CartProvider>
-      <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            } />
-            {/* Placeholder routes for other sections */}
-            <Route path="/tenants" element={
-              <ProtectedRoute>
-                <div>Tenants Page - Coming Soon</div>
-              </ProtectedRoute>
-            } />
-            <Route path="/analytics" element={
-              <ProtectedRoute>
-                <div>Analytics Page - Coming Soon</div>
-              </ProtectedRoute>
-            } />
-            <Route path="/settings" element={
-              <ProtectedRoute>
-                <div>Settings Page - Coming Soon</div>
-              </ProtectedRoute>
-            } />
-            {/* Customer App Routes */}
-            <Route path="/customer-app" element={
-              <ProtectedRoute>
-                <NKioskDashboard user={JSON.parse(localStorage.getItem('user') || 'null')} />
-              </ProtectedRoute>
-            } />
-            <Route path="/customer-app/grocery" element={
-              <ProtectedRoute>
-                <GroceryPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/customer-app/pharmacy" element={
-              <ProtectedRoute>
-                <PharmacyPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/customer-app/food" element={
-              <ProtectedRoute>
-                <FoodDeliveryPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/customer-app/electronics" element={
-              <ProtectedRoute>
-                <ElectronicsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/customer-app/orders" element={
-              <ProtectedRoute>
-                <OrderHistoryPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/customer-app/cart" element={
-              <ProtectedRoute>
-                <CartPage />
-              </ProtectedRoute>
-            } />
-          </Routes>
-          <Toaster />
-        </BrowserRouter>
-      </div>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <div className="App">
+          <BrowserRouter>
+            <Routes>
+              {/* Homepage route - this will be the landing page */}
+              <Route path="/" element={<Homepage />} />
+              
+              {/* Auth routes */}
+              <Route path="/auth" element={<LoginForm />} />
+              <Route path="/login" element={<Navigate to="/auth" replace />} /> {/* Redirect old login route */}
+              
+              {/* Dashboard routes */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              
+              {/* Placeholder routes for other sections */}
+              <Route path="/tenants" element={
+                <ProtectedRoute>
+                  <div>Tenants Page - Coming Soon</div>
+                </ProtectedRoute>
+              } />
+              <Route path="/analytics" element={
+                <ProtectedRoute>
+                  <div>Analytics Page - Coming Soon</div>
+                </ProtectedRoute>
+              } />
+              <Route path="/settings" element={
+                <ProtectedRoute>
+                  <div>Settings Page - Coming Soon</div>
+                </ProtectedRoute>
+              } />
+              
+              {/* Customer App Routes */}
+              <Route path="/customer-app" element={
+                <ProtectedRoute>
+                  <NKioskDashboard user={JSON.parse(localStorage.getItem('user') || 'null')} />
+                </ProtectedRoute>
+              } />
+              <Route path="/customer-app/grocery" element={
+                <ProtectedRoute>
+                  <GroceryPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/customer-app/pharmacy" element={
+                <ProtectedRoute>
+                  <PharmacyPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/customer-app/food" element={
+                <ProtectedRoute>
+                  <FoodDeliveryPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/customer-app/electronics" element={
+                <ProtectedRoute>
+                  <ElectronicsPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/customer-app/orders" element={
+                <ProtectedRoute>
+                  <OrderHistoryPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/customer-app/cart" element={
+                <ProtectedRoute>
+                  <CartPage />
+                </ProtectedRoute>
+              } />
+            </Routes>
+            <Toaster />
+          </BrowserRouter>
+        </div>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
