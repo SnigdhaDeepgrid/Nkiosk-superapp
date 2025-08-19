@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Frontend Debug Test</title>
+</head>
+<body>
+    <h1>Frontend Debug Test</h1>
+    <div id="test-results"></div>
+    
+    <script>
+        // Test if we can access the frontend
+        fetch('https://chromatic-app.preview.emergentagent.com/auth')
+            .then(response => response.text())
+            .then(html => {
+                const results = document.getElementById('test-results');
+                
+                // Check if the HTML contains the React root div
+                const hasRootDiv = html.includes('id="root"');
+                const hasJSBundle = html.includes('bundle.js');
+                const hasNkioskTitle = html.includes('Nkiosk');
+                
+                results.innerHTML = `
+                    <h2>Frontend Analysis:</h2>
+                    <p>Has root div: ${hasRootDiv}</p>
+                    <p>Has JS bundle: ${hasJSBundle}</p>
+                    <p>Has Nkiosk title: ${hasNkioskTitle}</p>
+                    <h3>HTML Preview (first 1000 chars):</h3>
+                    <pre>${html.substring(0, 1000)}</pre>
+                `;
+                
+                // Now test the JS bundle
+                return fetch('https://chromatic-app.preview.emergentagent.com/static/js/bundle.js');
+            })
+            .then(response => response.text())
+            .then(jsContent => {
+                const results = document.getElementById('test-results');
+                
+                // Check if the bundle contains our components
+                const hasLoginForm = jsContent.includes('LoginForm');
+                const hasProtectedRoute = jsContent.includes('ProtectedRoute');
+                const hasAuthContext = jsContent.includes('AuthContext');
+                
+                results.innerHTML += `
+                    <h2>JavaScript Bundle Analysis:</h2>
+                    <p>Has LoginForm: ${hasLoginForm}</p>
+                    <p>Has ProtectedRoute: ${hasProtectedRoute}</p>
+                    <p>Has AuthContext: ${hasAuthContext}</p>
+                    <p>Bundle size: ${jsContent.length} characters</p>
+                `;
+            })
+            .catch(error => {
+                document.getElementById('test-results').innerHTML = `
+                    <h2>Error:</h2>
+                    <p>${error.message}</p>
+                `;
+            });
+    </script>
+</body>
+</html>
