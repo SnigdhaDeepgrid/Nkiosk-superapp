@@ -15,17 +15,17 @@ module.exports = {
                 colors: {
                         // Exact Brand Colors from Palette
                         'coral-red': {
-                                DEFAULT: '#F25C44',
-                                50: '#FEF4F2',
-                                100: '#FDE8E5',
-                                200: '#FBD5CE',
-                                300: '#F8B5A7',
-                                400: '#F58A76',
-                                500: '#F25C44',
-                                600: '#E53E2A',
-                                700: '#C2291B',
-                                800: '#A1221A',
-                                900: '#85201C'
+                                DEFAULT: '#D94436',
+                                50: '#FDF2F1',
+                                100: '#FCE4E2',
+                                200: '#F9CDCA',
+                                300: '#F5AAA5',
+                                400: '#EE7A72',
+                                500: '#D94436',
+                                600: '#C53529',
+                                700: '#A4291F',
+                                800: '#87251D',
+                                900: '#70241E'
                         },
                         'deep-red': {
                                 DEFAULT: '#D94436',
