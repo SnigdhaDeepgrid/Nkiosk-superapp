@@ -151,7 +151,7 @@ const Homepage = () => {
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#2E2E2E] leading-tight mb-6">
                 Build Your
-                <span className="text-[#F25C44]"> Multi-Vendor</span>
+                <span className="text-[#D94436]"> Multi-Vendor</span>
                 <br />
                 eCommerce Empire
               </h1>
