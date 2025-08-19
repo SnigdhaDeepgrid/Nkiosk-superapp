@@ -107,22 +107,22 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-app-gray-50 via-white to-app-gray-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#F5F5F5] via-white to-[#EAEAEA] flex items-center justify-center p-4">
       <Card className="w-full max-w-md shadow-2xl border-0 bg-white/90 backdrop-blur-sm">
         <CardHeader className="space-y-6 pb-8 text-center">
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-gradient-to-tr from-coral-red to-deep-red rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="w-16 h-16 bg-gradient-to-tr from-[#F25C44] to-[#D94436] rounded-2xl flex items-center justify-center shadow-lg">
               <Store className="w-8 h-8 text-white" />
             </div>
           </div>
           <div className="space-y-2">
-            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-coral-red to-deep-red bg-clip-text text-transparent">
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-[#F25C44] to-[#D94436] bg-clip-text text-transparent">
               Nkiosk
             </CardTitle>
-            <p className="text-app-gray-600 text-lg font-medium">
+            <p className="text-[#737373] text-lg font-medium">
               Multi-Vendor eCommerce Platform
             </p>
-            <p className="text-sm text-app-gray-500">
+            <p className="text-sm text-[#A3A3A3]">
               Sign in to your dashboard
             </p>
           </div>
@@ -131,7 +131,7 @@ const LoginForm = () => {
         <CardContent className="space-y-6">
           <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-app-gray-700 font-semibold text-sm">
+              <Label htmlFor="email" className="text-[#2E2E2E] font-semibold text-sm">
                 Email Address
               </Label>
               <Input
@@ -140,13 +140,13 @@ const LoginForm = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
-                className="h-12 border-app-gray-200 focus:border-coral-red focus:ring-coral-red rounded-xl"
+                className="h-12 border-[#EAEAEA] focus:border-[#F25C44] focus:ring-[#F25C44] rounded-xl"
                 required
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-app-gray-700 font-semibold text-sm">
+              <Label htmlFor="password" className="text-[#2E2E2E] font-semibold text-sm">
                 Password
               </Label>
               <div className="relative">
@@ -156,20 +156,20 @@ const LoginForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
-                  className="h-12 border-app-gray-200 focus:border-coral-red focus:ring-coral-red rounded-xl pr-12"
+                  className="h-12 border-[#EAEAEA] focus:border-[#F25C44] focus:ring-[#F25C44] rounded-xl pr-12"
                   required
                 />
                 <Button
                   type="button"
                   variant="ghost"
                   size="sm"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-coral-red-50"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0 hover:bg-[#F25C44]/10"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? (
-                    <EyeOff className="w-4 h-4 text-app-gray-500" />
+                    <EyeOff className="w-4 h-4 text-[#A3A3A3]" />
                   ) : (
-                    <Eye className="w-4 h-4 text-app-gray-500" />
+                    <Eye className="w-4 h-4 text-[#A3A3A3]" />
                   )}
                 </Button>
               </div>
@@ -177,7 +177,7 @@ const LoginForm = () => {
 
             <Button
               type="submit"
-              className="w-full h-12 bg-gradient-to-r from-coral-red to-deep-red hover:from-coral-red-700 hover:to-deep-red-700 text-white font-semibold rounded-xl transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02]"
+              className="w-full h-12 bg-gradient-to-r from-[#F25C44] to-[#D94436] hover:from-[#E53E2A] hover:to-[#C53529] text-white font-semibold rounded-xl transition-all duration-200 hover:shadow-lg transform hover:scale-[1.02]"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -191,31 +191,31 @@ const LoginForm = () => {
             </Button>
           </form>
 
-          <div className="mt-8 p-5 bg-gradient-to-r from-coral-red-50 to-app-gray-50 rounded-xl border border-coral-red-100">
-            <h4 className="font-semibold text-app-gray-800 mb-3 flex items-center gap-2">
-              <div className="w-2 h-2 bg-coral-red rounded-full"></div>
+          <div className="mt-8 p-5 bg-gradient-to-r from-[#F25C44]/5 to-[#EAEAEA]/20 rounded-xl border border-[#F25C44]/20">
+            <h4 className="font-semibold text-[#2E2E2E] mb-3 flex items-center gap-2">
+              <div className="w-2 h-2 bg-[#F25C44] rounded-full"></div>
               Demo Accounts
             </h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-app-gray-600 font-medium">SaaS Admin:</span>
-                <span className="text-app-gray-800">admin@saas.com</span>
+                <span className="text-[#737373] font-medium">SaaS Admin:</span>
+                <span className="text-[#2E2E2E]">admin@saas.com</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-app-gray-600 font-medium">Super Admin:</span>
-                <span className="text-app-gray-800">superadmin@tenant1.com</span>
+                <span className="text-[#737373] font-medium">Super Admin:</span>
+                <span className="text-[#2E2E2E]">superadmin@tenant1.com</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-app-gray-600 font-medium">Store Manager:</span>
-                <span className="text-app-gray-800">manager@store1.com</span>
+                <span className="text-[#737373] font-medium">Store Manager:</span>
+                <span className="text-[#2E2E2E]">manager@store1.com</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-app-gray-600 font-medium">Vendor:</span>
-                <span className="text-app-gray-800">vendor@foodie.com</span>
+                <span className="text-[#737373] font-medium">Vendor:</span>
+                <span className="text-[#2E2E2E]">vendor@foodie.com</span>
               </div>
-              <div className="mt-3 pt-3 border-t border-coral-red-200 flex justify-between">
-                <span className="text-app-gray-600 font-medium">Password:</span>
-                <span className="text-app-gray-800 font-mono bg-white px-2 py-1 rounded text-xs">password123</span>
+              <div className="mt-3 pt-3 border-t border-[#F25C44]/30 flex justify-between">
+                <span className="text-[#737373] font-medium">Password:</span>
+                <span className="text-[#2E2E2E] font-mono bg-white px-2 py-1 rounded text-xs">password123</span>
               </div>
             </div>
           </div>
