@@ -99,9 +99,9 @@ module.exports = {
                         },
                         border: '#EAEAEA',
                         input: '#EAEAEA',
-                        ring: '#F25C44',
+                        ring: '#D94436',
                         chart: {
-                                '1': '#F25C44',
+                                '1': '#D94436',
                                 '2': '#4CAF50',
                                 '3': '#D94436',
                                 '4': '#737373',
