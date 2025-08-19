@@ -61,7 +61,7 @@ const Homepage = () => {
               </a>
               <a
                 href="#services"
-                className="text-[#2E2E2E] hover:text-[#F25C44] font-medium transition-colors"
+                className="text-[#2E2E2E] hover:text-[#D94436] font-medium transition-colors"
               >
                 Services
               </a>
