@@ -17,20 +17,31 @@ const LoginForm = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log('🔍 Login form submitted!');
+    console.log('📧 Email:', email);
+    console.log('🔑 Password:', password);
     setIsLoading(true);
 
     // Mock authentication - direct authentication without timeout
     const mockUser = getMockUserByEmail(email);
+    console.log('👤 Found mock user:', mockUser);
     
     if (mockUser && password === 'password123') {
+      console.log('✅ Authentication successful');
       localStorage.setItem('user', JSON.stringify(mockUser));
+      console.log('💾 User saved to localStorage');
+      
       toast({
         title: "Welcome to Nkiosk!",
         description: `Successfully logged in as ${mockUser.name}`,
       });
+      console.log('🍞 Toast displayed');
+      
       setIsLoading(false);
+      console.log('🔄 Navigating to dashboard...');
       navigate('/dashboard');
     } else {
+      console.log('❌ Authentication failed');
       toast({
         title: "Login Failed",
         description: "Invalid credentials. Try: admin@saas.com with password123",
