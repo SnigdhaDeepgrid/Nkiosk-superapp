@@ -316,12 +316,12 @@ const Homepage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-indigo-700">
+      <section className="py-20 bg-gradient-to-br from-coral-red to-deep-red">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
             Build Your eCommerce Empire Today
           </h2>
-          <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-12">
+          <p className="text-xl text-coral-red-100 max-w-3xl mx-auto mb-12">
             Join thousands of successful marketplace owners who chose Nkiosk to
             power their business. Start your journey to eCommerce success today.
           </p>
@@ -329,11 +329,11 @@ const Homepage = () => {
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-16">
             <button
               onClick={handleGetStarted}
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg shadow-lg"
+              className="bg-white text-coral-red px-8 py-4 rounded-lg hover:bg-app-gray-100 transition-colors font-semibold text-lg shadow-lg"
             >
               Start Free Trial
             </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-blue-600 transition-colors font-semibold text-lg">
+            <button className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-coral-red transition-colors font-semibold text-lg">
               Schedule Demo
             </button>
           </div>
@@ -341,27 +341,27 @@ const Homepage = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">30 Days</div>
-              <div className="text-blue-200">Free Trial</div>
+              <div className="text-coral-red-200">Free Trial</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">24/7</div>
-              <div className="text-blue-200">Support</div>
+              <div className="text-coral-red-200">Support</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-white mb-2">No Setup</div>
-              <div className="text-blue-200">Fees</div>
+              <div className="text-coral-red-200">Fees</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-app-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-2">
               <div className="text-2xl font-bold text-white mb-4">Nkiosk</div>
-              <p className="text-gray-400 mb-6 max-w-md">
+              <p className="text-app-gray-400 mb-6 max-w-md">
                 Empowering businesses to build successful multi-vendor
                 marketplaces with cutting-edge technology and comprehensive
                 support.
@@ -373,7 +373,7 @@ const Homepage = () => {
                 <li>
                   <a
                     href="#home"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-app-gray-400 hover:text-white transition-colors"
                   >
                     Home
                   </a>
@@ -381,7 +381,7 @@ const Homepage = () => {
                 <li>
                   <a
                     href="#features"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-app-gray-400 hover:text-white transition-colors"
                   >
                     Features
                   </a>
@@ -389,7 +389,7 @@ const Homepage = () => {
                 <li>
                   <a
                     href="#industries"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-app-gray-400 hover:text-white transition-colors"
                   >
                     Industries
                   </a>
@@ -397,7 +397,7 @@ const Homepage = () => {
                 <li>
                   <a
                     href="#services"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-app-gray-400 hover:text-white transition-colors"
                   >
                     Services
                   </a>
@@ -410,7 +410,7 @@ const Homepage = () => {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-app-gray-400 hover:text-white transition-colors"
                   >
                     Documentation
                   </a>
@@ -418,7 +418,7 @@ const Homepage = () => {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-app-gray-400 hover:text-white transition-colors"
                   >
                     API Reference
                   </a>
@@ -426,7 +426,7 @@ const Homepage = () => {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-app-gray-400 hover:text-white transition-colors"
                   >
                     Support Center
                   </a>
@@ -434,7 +434,7 @@ const Homepage = () => {
                 <li>
                   <a
                     href="#"
-                    className="text-gray-400 hover:text-white transition-colors"
+                    className="text-app-gray-400 hover:text-white transition-colors"
                   >
                     Blog
                   </a>
@@ -442,8 +442,8 @@ const Homepage = () => {
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-            <div className="text-gray-400 text-sm">
+          <div className="border-t border-app-gray-800 mt-12 pt-8 text-center">
+            <div className="text-app-gray-400 text-sm">
               © 2024 Nkiosk. All rights reserved.
             </div>
           </div>
