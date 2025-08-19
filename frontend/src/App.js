@@ -22,11 +22,15 @@ import VendorDashboard from "./components/vendor/VendorDashboard";
 
 const ProtectedRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
+  console.log('🔒 ProtectedRoute - User from localStorage:', user);
   
   if (!user) {
+    console.log('❌ ProtectedRoute - No user found, redirecting to /auth');
     return <Navigate to="/auth" replace />; // Changed from /login to /auth to match your Homepage navigation
   }
 
+  console.log('✅ ProtectedRoute - User found, allowing access');
+  
   // For SaaS Admin, Super Admin, and Customer, we need to handle tab changes in their own components
   if (user.role === 'saas_admin' || user.role === 'super_admin' || user.role === 'customer') {
     return children; // Let the Dashboard component handle its own layout
@@ -41,8 +45,12 @@ const ProtectedRoute = ({ children }) => {
 
 const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
+  console.log('📊 Dashboard - User from localStorage:', user);
   
   if (!user) {
+    console.log('❌ Dashboard - No user found, redirecting to /auth');
+    return <Navigate to="/auth" replace />; // Changed from /login to /auth
+  }
     return <Navigate to="/auth" replace />; // Changed from /login to /auth
   }
 
