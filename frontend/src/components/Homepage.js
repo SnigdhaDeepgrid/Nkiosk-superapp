@@ -25,43 +25,43 @@ const Homepage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#EAEAEA]">
+    <div className="min-h-screen bg-app-gray-200">
       {/* Navigation Header */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-[#EAEAEA] shadow-lg py-3" : "bg-transparent py-4"
+          isScrolled ? "bg-app-gray-200 shadow-lg py-3" : "bg-transparent py-4"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <div className="text-2xl font-bold text-[#D94436]">Nkiosk</div>
+              <div className="text-2xl font-bold text-coral-red-600">Nkiosk</div>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               <a
                 href="#home"
-                className="text-gray-700 hover:text-red-600 font-medium transition-colors"
+                className="text-app-gray-700 hover:text-coral-red font-medium transition-colors"
               >
                 Home
               </a>
               <a
                 href="#features"
-                className="text-gray-700 hover:text-red-600 font-medium transition-colors"
+                className="text-app-gray-700 hover:text-coral-red font-medium transition-colors"
               >
                 Features
               </a>
               <a
                 href="#industries"
-                className="text-gray-700 hover:text-red-600 font-medium transition-colors"
+                className="text-app-gray-700 hover:text-coral-red font-medium transition-colors"
               >
                 Industries
               </a>
               <a
                 href="#services"
-                className="text-gray-700 hover:text-red-600 font-medium transition-colors"
+                className="text-app-gray-700 hover:text-coral-red font-medium transition-colors"
               >
                 Services
               </a>
@@ -71,7 +71,7 @@ const Homepage = () => {
             <div className="hidden md:flex">
               <button
                 onClick={handleGetStarted}
-                className="bg-[#D94436] text-white px-6 py-2 rounded-lg hover:bg-red-800 transition-colors font-medium"
+                className="bg-coral-red text-white px-6 py-2 rounded-lg hover:bg-coral-red-700 transition-colors font-medium"
               >
                 Get Started
               </button>
@@ -81,7 +81,7 @@ const Homepage = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-700 hover:text-[#D94436] focus:outline-none"
+                className="text-app-gray-700 hover:text-coral-red focus:outline-none"
               >
                 <svg
                   className="h-6 w-6"
@@ -106,31 +106,31 @@ const Homepage = () => {
               <div className="flex flex-col space-y-3">
                 <a
                   href="#home"
-                  className="text-gray-700 hover:text-blue-600 font-medium"
+                  className="text-app-gray-700 hover:text-coral-red font-medium"
                 >
                   Home
                 </a>
                 <a
                   href="#features"
-                  className="text-gray-700 hover:text-blue-600 font-medium"
+                  className="text-app-gray-700 hover:text-coral-red font-medium"
                 >
                   Features
                 </a>
                 <a
                   href="#industries"
-                  className="text-gray-700 hover:text-blue-600 font-medium"
+                  className="text-app-gray-700 hover:text-coral-red font-medium"
                 >
                   Industries
                 </a>
                 <a
                   href="#services"
-                  className="text-gray-700 hover:text-blue-600 font-medium"
+                  className="text-app-gray-700 hover:text-coral-red font-medium"
                 >
                   Services
                 </a>
                 <button
                   onClick={handleGetStarted}
-                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium mt-2 self-start"
+                  className="bg-coral-red text-white px-6 py-2 rounded-lg hover:bg-coral-red-700 transition-colors font-medium mt-2 self-start"
                 >
                   Get Started
                 </button>
