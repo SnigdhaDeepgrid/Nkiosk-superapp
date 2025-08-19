@@ -13,6 +13,60 @@ module.exports = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+  			// Custom Brand Colors from Palette
+  			'coral-red': {
+  				DEFAULT: '#FF6B47',
+  				50: '#FFF5F3',
+  				100: '#FFE8E3',
+  				200: '#FFD0C7',
+  				300: '#FFB4A3',
+  				400: '#FF8B6F',
+  				500: '#FF6B47',
+  				600: '#D94436',
+  				700: '#B33125',
+  				800: '#8D261D',
+  				900: '#6B1E17'
+  			},
+  			'deep-red': {
+  				DEFAULT: '#C73E2A',
+  				50: '#FDEAE8',
+  				100: '#FBD5D1',
+  				200: '#F6AAA2',
+  				300: '#F08074',
+  				400: '#EB5545',
+  				500: '#C73E2A',
+  				600: '#A03322',
+  				700: '#782719',
+  				800: '#511C11',
+  				900: '#291008'
+  			},
+  			'app-gray': {
+  				50: '#FAFAFA',
+  				100: '#F5F5F5',
+  				200: '#EAEAEA',
+  				300: '#D5D5D5',
+  				400: '#A3A3A3',
+  				500: '#737373',
+  				600: '#525252',
+  				700: '#404040',
+  				800: '#262626',
+  				900: '#171717'
+  			},
+  			'success-green': {
+  				DEFAULT: '#10B981',
+  				50: '#ECFDF5',
+  				100: '#D1FAE5',
+  				200: '#A7F3D0',
+  				300: '#6EE7B7',
+  				400: '#34D399',
+  				500: '#10B981',
+  				600: '#059669',
+  				700: '#047857',
+  				800: '#065F46',
+  				900: '#064E3B'
+  			},
+  			
+  			// Shadcn/UI Colors (keeping for compatibility)
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -24,34 +78,34 @@ module.exports = {
   				foreground: 'hsl(var(--popover-foreground))'
   			},
   			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
+  				DEFAULT: '#FF6B47',
+  				foreground: '#FFFFFF'
   			},
   			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
+  				DEFAULT: '#EAEAEA',
+  				foreground: '#262626'
   			},
   			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
+  				DEFAULT: '#F5F5F5',
+  				foreground: '#737373'
   			},
   			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
+  				DEFAULT: '#FF6B47',
+  				foreground: '#FFFFFF'
   			},
   			destructive: {
-  				DEFAULT: 'hsl(var(--destructive))',
-  				foreground: 'hsl(var(--destructive-foreground))'
+  				DEFAULT: '#C73E2A',
+  				foreground: '#FFFFFF'
   			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
+  			border: '#EAEAEA',
+  			input: '#EAEAEA',
+  			ring: '#FF6B47',
   			chart: {
-  				'1': 'hsl(var(--chart-1))',
-  				'2': 'hsl(var(--chart-2))',
-  				'3': 'hsl(var(--chart-3))',
-  				'4': 'hsl(var(--chart-4))',
-  				'5': 'hsl(var(--chart-5))'
+  				'1': '#FF6B47',
+  				'2': '#10B981',
+  				'3': '#C73E2A',
+  				'4': '#737373',
+  				'5': '#262626'
   			}
   		},
   		keyframes: {
