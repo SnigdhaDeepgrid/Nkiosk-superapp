@@ -71,7 +71,7 @@ const Homepage = () => {
             <div className="hidden md:flex">
               <button
                 onClick={handleGetStarted}
-                className="bg-[#F25C44] text-white px-6 py-2 rounded-lg hover:bg-[#D94436] transition-colors font-medium"
+                className="bg-[#D94436] text-white px-6 py-2 rounded-lg hover:bg-[#C53529] transition-colors font-medium"
               >
                 Get Started
               </button>
