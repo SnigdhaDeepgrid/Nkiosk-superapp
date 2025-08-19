@@ -143,21 +143,21 @@ const Homepage = () => {
       {/* Hero Section */}
       <section
         id="home"
-        className="relative pt-20 lg:pt-24 bg-[#EAEAEA] overflow-hidden pb-5 bg-cover bg-center"
+        className="relative pt-20 lg:pt-24 bg-app-gray-200 overflow-hidden pb-5 bg-cover bg-center"
         style={{ backgroundImage: "url('/images/herobg.png')" }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-12 items-center mt-17">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-app-gray-900 leading-tight mb-6">
                 Build Your
-                <span className="text-[#D94436]"> Multi-Vendor</span>
+                <span className="text-coral-red"> Multi-Vendor</span>
                 <br />
                 eCommerce Empire
               </h1>
 
               {/* Subheadline */}
-              <p className="text-lg md:text-xl text-gray-700 mb-10 leading-relaxed max-w-2xl mx-auto mt-6">
+              <p className="text-lg md:text-xl text-app-gray-700 mb-10 leading-relaxed max-w-2xl mx-auto mt-6">
                 Launch and scale your marketplace with Nkiosk - connect vendors,
                 delight customers, and grow your business.
               </p>
@@ -166,18 +166,18 @@ const Homepage = () => {
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <button
                   onClick={handleGetStarted}
-                  className="bg-[#D94436] text-white px-8 py-4 rounded-md hover:bg-red-800 transition-colors font-semibold text-lg"
+                  className="bg-coral-red text-white px-8 py-4 rounded-md hover:bg-coral-red-700 transition-colors font-semibold text-lg"
                 >
                   Start Free Trial
                 </button>
-                <button className="border-2 border-[#D94436] text-[#D94436] px-8 py-4 rounded-md hover:bg-red-800 hover:text-white transition-colors font-semibold text-lg">
+                <button className="border-2 border-coral-red text-coral-red px-8 py-4 rounded-md hover:bg-coral-red hover:text-white transition-colors font-semibold text-lg">
                   Book a Demo
                 </button>
               </div>
             </div>
 
             {/* Red Strip */}
-            <div className="absolute bottom-0 w-full h-28 bg-[#D94436]"></div>
+            <div className="absolute bottom-0 w-full h-28 bg-coral-red"></div>
 
             {/* Center Image */}
             <div className="relative z-10">
