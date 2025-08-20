@@ -34,7 +34,7 @@ const VendorDashboard = ({ user }) => {
     try {
       // Call backend logout API
       const token = localStorage.getItem('token');
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       
       if (token) {
         await fetch(`${backendUrl}/auth/logout`, {
