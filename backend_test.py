@@ -1466,6 +1466,12 @@ def main():
     print("🚀 Starting Comprehensive Backend API Testing Suite")
     print("=" * 80)
     
+    # Test Authentication APIs
+    auth_tester = AuthenticationAPITester(BACKEND_URL)
+    auth_success = auth_tester.run_all_authentication_tests()
+    
+    print("\n" + "=" * 80)
+    
     # Test Analytics APIs
     analytics_tester = AnalyticsAPITester(BACKEND_URL)
     analytics_success = analytics_tester.run_all_tests()
@@ -1481,20 +1487,24 @@ def main():
     print("🎯 OVERALL TEST SUMMARY")
     print("=" * 80)
     
+    auth_passed = sum(1 for result in auth_tester.test_results if result['success'])
+    auth_total = len(auth_tester.test_results)
+    
     analytics_passed = sum(1 for result in analytics_tester.test_results if result['success'])
     analytics_total = len(analytics_tester.test_results)
     
     super_admin_passed = sum(1 for result in super_admin_tester.test_results if result['success'])
     super_admin_total = len(super_admin_tester.test_results)
     
-    total_passed = analytics_passed + super_admin_passed
-    total_tests = analytics_total + super_admin_total
+    total_passed = auth_passed + analytics_passed + super_admin_passed
+    total_tests = auth_total + analytics_total + super_admin_total
     
+    print(f"Authentication API Tests: {auth_passed}/{auth_total} passed")
     print(f"Analytics API Tests: {analytics_passed}/{analytics_total} passed")
     print(f"Super Admin API Tests: {super_admin_passed}/{super_admin_total} passed")
     print(f"Overall: {total_passed}/{total_tests} passed ({(total_passed/total_tests)*100:.1f}%)")
     
-    if analytics_success and super_admin_success:
+    if auth_success and analytics_success and super_admin_success:
         print("\n🎉 All backend API tests passed successfully!")
         sys.exit(0)
     else:
