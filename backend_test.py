@@ -14,6 +14,380 @@ import os
 # Get backend URL from environment
 BACKEND_URL = "https://multi-role-portal.preview.emergentagent.com/api"
 
+class AuthenticationAPITester:
+    def __init__(self, base_url: str):
+        self.base_url = base_url
+        self.session = requests.Session()
+        self.test_results = []
+        self.auth_tokens = {}  # Store tokens for different users
+        
+    def log_test(self, test_name: str, success: bool, message: str, details: Dict = None):
+        """Log test results"""
+        result = {
+            "test": test_name,
+            "success": success,
+            "message": message,
+            "details": details or {}
+        }
+        self.test_results.append(result)
+        status = "✅ PASS" if success else "❌ FAIL"
+        print(f"{status}: {test_name} - {message}")
+        if details and not success:
+            print(f"   Details: {details}")
+    
+    def validate_login_response(self, data: Dict) -> tuple[bool, str]:
+        """Validate login response structure"""
+        required_fields = ['user', 'token', 'message']
+        
+        for field in required_fields:
+            if field not in data:
+                return False, f"Missing field: {field}"
+        
+        # Validate user object
+        user_required_fields = ['id', 'name', 'email', 'role', 'roleDisplay', 'created_at']
+        for field in user_required_fields:
+            if field not in data['user']:
+                return False, f"Missing user field: {field}"
+        
+        # Validate token is not empty
+        if not data['token'] or len(data['token']) < 10:
+            return False, "Token is empty or too short"
+        
+        return True, "Login response structure is valid"
+    
+    def validate_user_profile(self, data: Dict) -> tuple[bool, str]:
+        """Validate user profile response structure"""
+        required_fields = ['id', 'name', 'email', 'role', 'roleDisplay', 'created_at']
+        
+        for field in required_fields:
+            if field not in data:
+                return False, f"Missing field: {field}"
+        
+        return True, "User profile structure is valid"
+    
+    def validate_dashboard_response(self, data: Dict, expected_role: str) -> tuple[bool, str]:
+        """Validate dashboard response structure"""
+        required_fields = ['dashboard', 'user', 'data']
+        
+        for field in required_fields:
+            if field not in data:
+                return False, f"Missing field: {field}"
+        
+        # Validate dashboard matches expected role
+        expected_dashboard = expected_role.replace('_', '-')
+        if data['dashboard'] != expected_dashboard:
+            return False, f"Expected dashboard '{expected_dashboard}', got '{data['dashboard']}'"
+        
+        # Validate user object
+        if 'role' not in data['user']:
+            return False, "Missing role in user object"
+        
+        if data['user']['role'] != expected_role:
+            return False, f"Expected role '{expected_role}', got '{data['user']['role']}'"
+        
+        # Validate data object exists and has content
+        if not isinstance(data['data'], dict):
+            return False, "Dashboard data should be a dictionary"
+        
+        return True, "Dashboard response structure is valid"
+    
+    def test_user_login(self, email: str, password: str, expected_role: str):
+        """Test user login with specific credentials"""
+        try:
+            login_data = {
+                "email": email,
+                "password": password
+            }
+            
+            response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
+            
+            if response.status_code != 200:
+                self.log_test(f"Login ({expected_role})", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return None
+            
+            data = response.json()
+            is_valid, message = self.validate_login_response(data)
+            
+            if is_valid and data['user']['role'] == expected_role:
+                # Store token for later use
+                self.auth_tokens[expected_role] = data['token']
+                self.log_test(f"Login ({expected_role})", True, 
+                            f"Successfully logged in as {data['user']['roleDisplay']}",
+                            {"user_name": data['user']['name'], "email": data['user']['email']})
+                return data['token']
+            else:
+                self.log_test(f"Login ({expected_role})", False, 
+                            f"Validation failed: {message}")
+                return None
+                
+        except Exception as e:
+            self.log_test(f"Login ({expected_role})", False, f"Exception: {str(e)}")
+            return None
+    
+    def test_user_profile(self, role: str, token: str):
+        """Test getting user profile with authentication"""
+        try:
+            headers = {"Authorization": f"Bearer {token}"}
+            response = self.session.get(f"{self.base_url}/auth/profile", headers=headers)
+            
+            if response.status_code != 200:
+                self.log_test(f"Get Profile ({role})", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return
+            
+            data = response.json()
+            is_valid, message = self.validate_user_profile(data)
+            
+            if is_valid and data['role'] == role:
+                self.log_test(f"Get Profile ({role})", True, 
+                            f"Retrieved profile for {data['roleDisplay']}",
+                            {"user_name": data['name'], "email": data['email']})
+            else:
+                self.log_test(f"Get Profile ({role})", False, 
+                            f"Validation failed: {message}")
+                
+        except Exception as e:
+            self.log_test(f"Get Profile ({role})", False, f"Exception: {str(e)}")
+    
+    def test_dashboard_access(self, role: str, token: str):
+        """Test role-based dashboard access"""
+        try:
+            dashboard_endpoint = role.replace('_', '-')
+            headers = {"Authorization": f"Bearer {token}"}
+            response = self.session.get(f"{self.base_url}/dashboard/{dashboard_endpoint}", headers=headers)
+            
+            if response.status_code != 200:
+                self.log_test(f"Dashboard Access ({role})", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return
+            
+            data = response.json()
+            is_valid, message = self.validate_dashboard_response(data, role)
+            
+            if is_valid:
+                dashboard_data = data['data']
+                data_keys = list(dashboard_data.keys())
+                self.log_test(f"Dashboard Access ({role})", True, 
+                            f"Successfully accessed {role} dashboard",
+                            {"dashboard_data_keys": data_keys[:5]})  # Show first 5 keys
+            else:
+                self.log_test(f"Dashboard Access ({role})", False, 
+                            f"Validation failed: {message}")
+                
+        except Exception as e:
+            self.log_test(f"Dashboard Access ({role})", False, f"Exception: {str(e)}")
+    
+    def test_unauthorized_dashboard_access(self, role: str, wrong_token: str, target_role: str):
+        """Test that users cannot access dashboards they don't have permission for"""
+        try:
+            dashboard_endpoint = target_role.replace('_', '-')
+            headers = {"Authorization": f"Bearer {wrong_token}"}
+            response = self.session.get(f"{self.base_url}/dashboard/{dashboard_endpoint}", headers=headers)
+            
+            if response.status_code == 403:
+                self.log_test(f"Unauthorized Access ({role} -> {target_role})", True, 
+                            "Correctly denied access to unauthorized dashboard")
+            else:
+                self.log_test(f"Unauthorized Access ({role} -> {target_role})", False, 
+                            f"Expected 403 Forbidden, got {response.status_code}")
+                
+        except Exception as e:
+            self.log_test(f"Unauthorized Access ({role} -> {target_role})", False, f"Exception: {str(e)}")
+    
+    def test_token_refresh(self, role: str, token: str):
+        """Test JWT token refresh"""
+        try:
+            headers = {"Authorization": f"Bearer {token}"}
+            response = self.session.post(f"{self.base_url}/auth/refresh", headers=headers)
+            
+            if response.status_code != 200:
+                self.log_test(f"Token Refresh ({role})", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return
+            
+            data = response.json()
+            
+            if 'token' in data and 'message' in data:
+                # Verify new token is different from old token
+                if data['token'] != token:
+                    self.log_test(f"Token Refresh ({role})", True, 
+                                "Successfully refreshed token",
+                                {"message": data['message']})
+                else:
+                    self.log_test(f"Token Refresh ({role})", False, 
+                                "New token is same as old token")
+            else:
+                self.log_test(f"Token Refresh ({role})", False, 
+                            "Invalid refresh response structure")
+                
+        except Exception as e:
+            self.log_test(f"Token Refresh ({role})", False, f"Exception: {str(e)}")
+    
+    def test_logout(self, role: str):
+        """Test user logout"""
+        try:
+            response = self.session.post(f"{self.base_url}/auth/logout")
+            
+            if response.status_code != 200:
+                self.log_test(f"Logout ({role})", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return
+            
+            data = response.json()
+            
+            if 'message' in data:
+                self.log_test(f"Logout ({role})", True, 
+                            "Successfully logged out",
+                            {"message": data['message']})
+            else:
+                self.log_test(f"Logout ({role})", False, 
+                            "Invalid logout response structure")
+                
+        except Exception as e:
+            self.log_test(f"Logout ({role})", False, f"Exception: {str(e)}")
+    
+    def test_forgot_password(self):
+        """Test forgot password functionality"""
+        try:
+            email_data = {"email": "admin@saas.com"}
+            response = self.session.post(f"{self.base_url}/auth/forgot-password", json=email_data)
+            
+            if response.status_code != 200:
+                self.log_test("Forgot Password", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return
+            
+            data = response.json()
+            
+            if 'message' in data:
+                self.log_test("Forgot Password", True, 
+                            "Password reset request processed",
+                            {"message": data['message']})
+            else:
+                self.log_test("Forgot Password", False, 
+                            "Invalid forgot password response structure")
+                
+        except Exception as e:
+            self.log_test("Forgot Password", False, f"Exception: {str(e)}")
+    
+    def test_user_registration(self):
+        """Test user registration"""
+        try:
+            user_data = {
+                "name": "Test User",
+                "email": "testuser@example.com",
+                "password": "password123",
+                "role": "customer",
+                "phone": "+1-555-0000"
+            }
+            
+            response = self.session.post(f"{self.base_url}/auth/register", json=user_data)
+            
+            if response.status_code not in [200, 201]:
+                self.log_test("User Registration", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return
+            
+            data = response.json()
+            
+            if 'message' in data and 'user' in data:
+                self.log_test("User Registration", True, 
+                            "User registered successfully",
+                            {"message": data['message'], "user_email": data['user']['email']})
+            else:
+                self.log_test("User Registration", False, 
+                            "Invalid registration response structure")
+                
+        except Exception as e:
+            self.log_test("User Registration", False, f"Exception: {str(e)}")
+    
+    def run_all_authentication_tests(self):
+        """Run all authentication API tests"""
+        print("=" * 80)
+        print("AUTHENTICATION API TESTING SUITE")
+        print("=" * 80)
+        print(f"Testing backend URL: {self.base_url}")
+        print()
+        
+        # Test users with their credentials
+        test_users = [
+            ("admin@saas.com", "password123", "saas_admin"),
+            ("superadmin@tenant1.com", "password123", "super_admin"),
+            ("manager@store1.com", "password123", "store_manager"),
+            ("vendor@foodie.com", "password123", "vendor"),
+            ("delivery@fast.com", "password123", "delivery_partner"),
+            ("customer@email.com", "password123", "customer"),
+            ("support@help.com", "password123", "support_staff")
+        ]
+        
+        # Test user registration
+        print("🔹 Testing User Registration...")
+        self.test_user_registration()
+        
+        # Test forgot password
+        print("\n🔹 Testing Forgot Password...")
+        self.test_forgot_password()
+        
+        # Test login for all user roles
+        print("\n🔹 Testing User Login for All Roles...")
+        successful_logins = {}
+        for email, password, role in test_users:
+            token = self.test_user_login(email, password, role)
+            if token:
+                successful_logins[role] = token
+        
+        # Test profile access for successfully logged in users
+        print("\n🔹 Testing Profile Access...")
+        for role, token in successful_logins.items():
+            self.test_user_profile(role, token)
+        
+        # Test dashboard access for each role
+        print("\n🔹 Testing Role-based Dashboard Access...")
+        for role, token in successful_logins.items():
+            self.test_dashboard_access(role, token)
+        
+        # Test unauthorized access (try to access other dashboards)
+        print("\n🔹 Testing Unauthorized Dashboard Access...")
+        if len(successful_logins) >= 2:
+            roles = list(successful_logins.keys())
+            # Test first user trying to access second user's dashboard
+            self.test_unauthorized_dashboard_access(roles[0], successful_logins[roles[0]], roles[1])
+            # Test second user trying to access first user's dashboard
+            self.test_unauthorized_dashboard_access(roles[1], successful_logins[roles[1]], roles[0])
+        
+        # Test token refresh
+        print("\n🔹 Testing Token Refresh...")
+        for role, token in list(successful_logins.items())[:3]:  # Test first 3 users
+            self.test_token_refresh(role, token)
+        
+        # Test logout
+        print("\n🔹 Testing Logout...")
+        for role in list(successful_logins.keys())[:2]:  # Test first 2 users
+            self.test_logout(role)
+        
+        # Summary
+        print("\n" + "=" * 80)
+        print("AUTHENTICATION API TEST SUMMARY")
+        print("=" * 80)
+        
+        passed = sum(1 for result in self.test_results if result['success'])
+        total = len(self.test_results)
+        
+        print(f"Total Tests: {total}")
+        print(f"Passed: {passed}")
+        print(f"Failed: {total - passed}")
+        print(f"Success Rate: {(passed/total)*100:.1f}%")
+        
+        if total - passed > 0:
+            print("\nFAILED TESTS:")
+            for result in self.test_results:
+                if not result['success']:
+                    print(f"  - {result['test']}: {result['message']}")
+        
+        return passed == total
+
+
 class SuperAdminAPITester:
     def __init__(self, base_url: str):
         self.base_url = base_url
