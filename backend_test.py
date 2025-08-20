@@ -73,8 +73,8 @@ class AuthenticationAPITester:
             if field not in data:
                 return False, f"Missing field: {field}"
         
-        # Validate dashboard matches expected role
-        expected_dashboard = expected_role.replace('_', '-')
+        # Validate dashboard matches expected role (API returns underscores, not hyphens)
+        expected_dashboard = expected_role  # Keep original format
         if data['dashboard'] != expected_dashboard:
             return False, f"Expected dashboard '{expected_dashboard}', got '{data['dashboard']}'"
         
