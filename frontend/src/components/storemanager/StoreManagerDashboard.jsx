@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { 
-  Store, 
-  Package, 
-  ShoppingCart, 
-  Users, 
-  TrendingUp, 
-  AlertCircle,
-  CheckCircle,
-  Clock,
+  Store,
+  Users,
+  Package,
+  TrendingUp,
   DollarSign,
-  BarChart3,
+  ShoppingCart,
+  Calendar,
   Settings,
+  Bell,
   LogOut,
   Search,
-  Filter,
-  Plus,
+  AlertTriangle,
+  CheckCircle,
+  Clock,
+  Eye,
   Edit,
-  Eye
+  Plus
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Input } from '../ui/input';
@@ -32,153 +32,108 @@ const StoreManagerDashboard = ({ user }) => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('overview');
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      // Call backend logout API
+      const token = localStorage.getItem('token');
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      
+      if (token) {
+        await fetch(`${backendUrl}/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+    } catch (error) {
+      console.log('Logout API error:', error);
+    }
+    
+    // Clear local storage
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    
     toast({
       title: "Logged Out",
       description: "Successfully logged out from your account",
     });
-    navigate('/login');
+    
+    // Redirect to homepage
+    navigate('/');
   };
 
   // Mock store data
   const storeStats = {
-    totalRevenue: 12750.50,
-    todayOrders: 23,
-    pendingOrders: 5,
-    lowStockItems: 8,
-    totalProducts: 156,
-    activeStaff: 6
+    dailySales: 2450.75,
+    totalOrders: 45,
+    activeStaff: 12,
+    inventoryAlerts: 8,
+    customerSatisfaction: 4.7,
+    weeklyGrowth: 12.5
   };
 
   const recentOrders = [
-    {
-      id: "ORD-001",
-      customer: "John Smith",
-      items: ["Organic Apples", "Milk", "Bread"],
-      total: 18.50,
-      status: "pending",
-      time: "2 min ago"
-    },
-    {
-      id: "ORD-002", 
-      customer: "Sarah Johnson",
-      items: ["Coffee", "Yogurt"],
-      total: 12.99,
-      status: "preparing",
-      time: "5 min ago"
-    },
-    {
-      id: "ORD-003",
-      customer: "Mike Wilson",
-      items: ["Vegetables Mix"],
-      total: 8.75,
-      status: "ready",
-      time: "10 min ago"
-    }
+    { id: '#001', customer: 'John Doe', items: 3, total: 45.99, status: 'Processing', time: '10:30 AM' },
+    { id: '#002', customer: 'Jane Smith', items: 1, total: 12.50, status: 'Completed', time: '10:15 AM' },
+    { id: '#003', customer: 'Mike Johnson', items: 5, total: 78.25, status: 'Preparing', time: '10:00 AM' },
+    { id: '#004', customer: 'Sarah Wilson', items: 2, total: 23.75, status: 'Completed', time: '9:45 AM' }
   ];
 
-  const inventoryItems = [
-    {
-      id: 1,
-      name: "Organic Apples",
-      category: "Fruits",
-      stock: 45,
-      lowThreshold: 20,
-      price: 4.99,
-      status: "good"
-    },
-    {
-      id: 2,
-      name: "Whole Milk",
-      category: "Dairy",
-      stock: 8,
-      lowThreshold: 15,
-      price: 3.99,
-      status: "low"
-    },
-    {
-      id: 3,
-      name: "Fresh Bread",
-      category: "Bakery",
-      stock: 0,
-      lowThreshold: 10,
-      price: 2.50,
-      status: "out"
-    }
+  const inventoryAlerts = [
+    { product: 'Organic Apples', stock: 5, status: 'low', threshold: 10 },
+    { product: 'Whole Wheat Bread', stock: 2, status: 'critical', threshold: 5 },
+    { product: 'Fresh Milk', stock: 8, status: 'low', threshold: 15 },
+    { product: 'Greek Yogurt', stock: 1, status: 'critical', threshold: 5 }
   ];
 
   const staffMembers = [
-    {
-      id: 1,
-      name: "Alice Cooper",
-      role: "Cashier",
-      status: "active",
-      shift: "Morning",
-      avatar: null
-    },
-    {
-      id: 2,
-      name: "Bob Turner",
-      role: "Stock Clerk", 
-      status: "active",
-      shift: "Evening",
-      avatar: null
-    },
-    {
-      id: 3,
-      name: "Carol Davis",
-      role: "Assistant Manager",
-      status: "break",
-      shift: "Full Day",
-      avatar: null
-    }
+    { name: 'Alice Cooper', role: 'Cashier', status: 'active', shift: 'Morning' },
+    { name: 'Bob Martin', role: 'Stock Clerk', status: 'active', shift: 'Morning' },
+    { name: 'Carol Davis', role: 'Supervisor', status: 'active', shift: 'Afternoon' },
+    { name: 'David Lee', role: 'Cashier', status: 'break', shift: 'Afternoon' }
   ];
 
   const getStatusColor = (status) => {
-    const colors = {
-      pending: "bg-yellow-100 text-yellow-800",
-      preparing: "bg-blue-100 text-blue-800",
-      ready: "bg-green-100 text-green-800",
-      completed: "bg-gray-100 text-gray-800",
-      good: "bg-green-100 text-green-800",
-      low: "bg-yellow-100 text-yellow-800", 
-      out: "bg-red-100 text-red-800",
-      active: "bg-green-100 text-green-800",
-      break: "bg-yellow-100 text-yellow-800",
-      offline: "bg-gray-100 text-gray-800"
-    };
-    return colors[status] || "bg-gray-100 text-gray-800";
-  };
-
-  const updateOrderStatus = (orderId, newStatus) => {
-    toast({
-      title: "Order Updated",
-      description: `Order ${orderId} status changed to ${newStatus}`,
-    });
+    switch (status) {
+      case 'Completed': return 'bg-green-100 text-green-800';
+      case 'Processing': return 'bg-blue-100 text-blue-800';
+      case 'Preparing': return 'bg-yellow-100 text-yellow-800';
+      case 'critical': return 'bg-red-100 text-red-800';
+      case 'low': return 'bg-yellow-100 text-yellow-800';
+      case 'active': return 'bg-green-100 text-green-800';
+      case 'break': return 'bg-orange-100 text-orange-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shadow-sm">
+      <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-gradient-to-tr from-purple-600 to-blue-600 rounded-xl flex items-center justify-center">
-                <Store className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-800">Store Manager</h1>
-                <p className="text-slate-600">Downtown Store - {user.name}</p>
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-teal-600 rounded-lg flex items-center justify-center">
+                  <Store className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-slate-800">Store Manager</h1>
+                  <p className="text-xs text-slate-500">Downtown QuickMart</p>
+                </div>
               </div>
             </div>
             
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-3 pl-3 border-l">
-                <Avatar className="w-8 h-8">
-                  <AvatarImage src={user.avatar} />
-                  <AvatarFallback className="bg-purple-100 text-purple-600">
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="sm">
+                <Bell className="w-4 h-4" />
+              </Button>
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user?.avatar} />
+                  <AvatarFallback className="bg-green-500 text-white text-sm">
                     {user.name.split(' ').map(n => n[0]).join('')}
                   </AvatarFallback>
                 </Avatar>
@@ -201,195 +156,165 @@ const StoreManagerDashboard = ({ user }) => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-[600px]">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <BarChart3 className="w-4 h-4" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="orders" className="flex items-center gap-2">
-              <ShoppingCart className="w-4 h-4" />
-              Orders
-            </TabsTrigger>
-            <TabsTrigger value="inventory" className="flex items-center gap-2">
-              <Package className="w-4 h-4" />
-              Inventory
-            </TabsTrigger>
-            <TabsTrigger value="staff" className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
-              Staff
-            </TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-5 mb-8">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="inventory">Inventory</TabsTrigger>
+            <TabsTrigger value="staff">Staff</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+            {/* Key Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-5 h-5 text-green-500" />
                     <div>
-                      <p className="text-sm font-medium text-green-600">Revenue</p>
-                      <p className="text-2xl font-bold text-green-800">${storeStats.totalRevenue}</p>
+                      <p className="text-sm text-slate-500">Daily Sales</p>
+                      <p className="text-2xl font-bold text-slate-800">${storeStats.dailySales}</p>
                     </div>
-                    <DollarSign className="w-8 h-8 text-green-600" />
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <ShoppingCart className="w-5 h-5 text-blue-500" />
                     <div>
-                      <p className="text-sm font-medium text-blue-600">Today Orders</p>
-                      <p className="text-2xl font-bold text-blue-800">{storeStats.todayOrders}</p>
+                      <p className="text-sm text-slate-500">Orders Today</p>
+                      <p className="text-2xl font-bold text-slate-800">{storeStats.totalOrders}</p>
                     </div>
-                    <ShoppingCart className="w-8 h-8 text-blue-600" />
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-5 h-5 text-purple-500" />
                     <div>
-                      <p className="text-sm font-medium text-yellow-600">Pending</p>
-                      <p className="text-2xl font-bold text-yellow-800">{storeStats.pendingOrders}</p>
+                      <p className="text-sm text-slate-500">Active Staff</p>
+                      <p className="text-2xl font-bold text-slate-800">{storeStats.activeStaff}</p>
                     </div>
-                    <Clock className="w-8 h-8 text-yellow-600" />
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-red-500" />
                     <div>
-                      <p className="text-sm font-medium text-red-600">Low Stock</p>
-                      <p className="text-2xl font-bold text-red-800">{storeStats.lowStockItems}</p>
+                      <p className="text-sm text-slate-500">Inventory Alerts</p>
+                      <p className="text-2xl font-bold text-slate-800">{storeStats.inventoryAlerts}</p>
                     </div>
-                    <AlertCircle className="w-8 h-8 text-red-600" />
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-green-500" />
                     <div>
-                      <p className="text-sm font-medium text-purple-600">Products</p>
-                      <p className="text-2xl font-bold text-purple-800">{storeStats.totalProducts}</p>
+                      <p className="text-sm text-slate-500">Satisfaction</p>
+                      <p className="text-2xl font-bold text-slate-800">{storeStats.customerSatisfaction}/5</p>
                     </div>
-                    <Package className="w-8 h-8 text-purple-600" />
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="bg-gradient-to-br from-indigo-50 to-indigo-100 border-indigo-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-5 h-5 text-teal-500" />
                     <div>
-                      <p className="text-sm font-medium text-indigo-600">Staff</p>
-                      <p className="text-2xl font-bold text-indigo-800">{storeStats.activeStaff}</p>
+                      <p className="text-sm text-slate-500">Weekly Growth</p>
+                      <p className="text-2xl font-bold text-slate-800">{storeStats.weeklyGrowth}%</p>
                     </div>
-                    <Users className="w-8 h-8 text-indigo-600" />
                   </div>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Recent Orders */}
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Recent Orders</CardTitle>
-                <Button variant="outline" size="sm" onClick={() => setActiveTab('orders')}>
-                  View All
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentOrders.map((order) => (
-                    <div key={order.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <ShoppingCart className="w-5 h-5 text-blue-600" />
-                        </div>
+            {/* Recent Activity */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Clock className="w-5 h-5" />
+                    Recent Orders
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {recentOrders.slice(0, 4).map((order) => (
+                      <div key={order.id} className="flex items-center justify-between p-3 border rounded-lg">
                         <div>
-                          <p className="font-medium text-slate-800">{order.id}</p>
-                          <p className="text-sm text-slate-600">{order.customer}</p>
-                          <p className="text-xs text-slate-500">{order.items.join(', ')}</p>
+                          <p className="font-medium">{order.id} - {order.customer}</p>
+                          <p className="text-sm text-slate-500">{order.items} items • {order.time}</p>
+                        </div>
+                        <div className="text-right">
+                          <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
+                          <p className="text-sm font-medium mt-1">${order.total}</p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-slate-800">${order.total}</p>
-                        <Badge className={`text-xs ${getStatusColor(order.status)}`}>
-                          {order.status}
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-red-500" />
+                    Inventory Alerts
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {inventoryAlerts.map((item, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <p className="font-medium">{item.product}</p>
+                          <p className="text-sm text-slate-500">Stock: {item.stock} units</p>
+                        </div>
+                        <Badge className={getStatusColor(item.status)}>
+                          {item.status}
                         </Badge>
-                        <p className="text-xs text-slate-500">{order.time}</p>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
-          <TabsContent value="orders" className="space-y-6">
+          <TabsContent value="orders">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Order Management</CardTitle>
-                  <div className="flex items-center gap-2">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-                      <Input placeholder="Search orders..." className="pl-9 w-64" />
-                    </div>
-                    <Button variant="outline" size="sm">
-                      <Filter className="w-4 h-4 mr-2" />
-                      Filter
-                    </Button>
-                  </div>
-                </div>
+                <CardTitle>Today's Orders</CardTitle>
+                <CardDescription>Manage and track all store orders</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {recentOrders.map((order) => (
                     <div key={order.id} className="border rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-4">
+                      <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-semibold text-slate-800">{order.id}</h3>
-                          <p className="text-sm text-slate-600">{order.customer} • {order.time}</p>
+                          <h4 className="font-medium">{order.id} - {order.customer}</h4>
+                          <p className="text-sm text-slate-500">Items: {order.items} • Time: {order.time}</p>
                         </div>
-                        <div className="text-right">
-                          <p className="font-semibold text-slate-800">${order.total}</p>
-                          <Badge className={`text-xs ${getStatusColor(order.status)}`}>
-                            {order.status}
-                          </Badge>
-                        </div>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-slate-600">Items: {order.items.join(', ')}</p>
-                        <div className="flex gap-2">
+                        <div className="flex items-center gap-2">
+                          <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
+                          <p className="font-bold">${order.total}</p>
                           <Button variant="outline" size="sm">
-                            <Eye className="w-4 h-4 mr-1" />
-                            View
+                            <Eye className="w-4 h-4" />
                           </Button>
-                          {order.status === 'pending' && (
-                            <Button 
-                              size="sm"
-                              onClick={() => updateOrderStatus(order.id, 'preparing')}
-                            >
-                              Start Preparing
-                            </Button>
-                          )}
-                          {order.status === 'preparing' && (
-                            <Button 
-                              size="sm" 
-                              className="bg-green-600"
-                              onClick={() => updateOrderStatus(order.id, 'ready')}
-                            >
-                              Mark Ready
-                            </Button>
-                          )}
                         </div>
                       </div>
                     </div>
@@ -399,98 +324,115 @@ const StoreManagerDashboard = ({ user }) => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="inventory" className="space-y-6">
+          <TabsContent value="inventory">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Inventory Management</CardTitle>
-                  <Button size="sm" className="bg-purple-600">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Product
-                  </Button>
-                </div>
+                <CardTitle>Inventory Management</CardTitle>
+                <CardDescription>Monitor stock levels and manage products</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {inventoryItems.map((item) => (
-                    <div key={item.id} className="border rounded-lg p-4">
-                      <div className="flex items-center justify-between">
+                  {inventoryAlerts.map((item, index) => (
+                    <div key={index} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-center">
                         <div>
-                          <h3 className="font-semibold text-slate-800">{item.name}</h3>
-                          <p className="text-sm text-slate-600">{item.category}</p>
-                          <p className="text-lg font-bold text-green-600">${item.price}</p>
+                          <h4 className="font-medium">{item.product}</h4>
+                          <p className="text-sm text-slate-500">
+                            Current Stock: {item.stock} • Threshold: {item.threshold}
+                          </p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-2xl font-bold text-slate-800">{item.stock}</p>
-                          <Badge className={`text-xs ${getStatusColor(item.status)}`}>
-                            {item.status === 'good' ? 'In Stock' : 
-                             item.status === 'low' ? 'Low Stock' : 'Out of Stock'}
-                          </Badge>
-                          <p className="text-xs text-slate-500">Min: {item.lowThreshold}</p>
+                        <div className="flex items-center gap-2">
+                          <Badge className={getStatusColor(item.status)}>{item.status}</Badge>
+                          <Button variant="outline" size="sm">
+                            <Edit className="w-4 h-4" />
+                          </Button>
                         </div>
-                      </div>
-                      <div className="flex justify-end gap-2 mt-4">
-                        <Button variant="outline" size="sm">
-                          <Edit className="w-4 h-4 mr-1" />
-                          Edit
-                        </Button>
-                        <Button size="sm" className="bg-blue-600">
-                          Update Stock
-                        </Button>
                       </div>
                     </div>
                   ))}
+                  <Button className="w-full">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add New Product
+                  </Button>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
-          <TabsContent value="staff" className="space-y-6">
+          <TabsContent value="staff">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle>Staff Management</CardTitle>
-                  <Button size="sm" className="bg-indigo-600">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add Staff
-                  </Button>
-                </div>
+                <CardTitle>Staff Management</CardTitle>
+                <CardDescription>Monitor staff schedules and performance</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {staffMembers.map((staff) => (
-                    <Card key={staff.id} className="border">
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3 mb-4">
-                          <Avatar className="w-12 h-12">
-                            <AvatarImage src={staff.avatar} />
-                            <AvatarFallback className="bg-indigo-100 text-indigo-600">
+                <div className="space-y-4">
+                  {staffMembers.map((staff, index) => (
+                    <div key={index} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-10 w-10">
+                            <AvatarFallback className="bg-green-500 text-white">
                               {staff.name.split(' ').map(n => n[0]).join('')}
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <h3 className="font-semibold text-slate-800">{staff.name}</h3>
-                            <p className="text-sm text-slate-600">{staff.role}</p>
+                            <h4 className="font-medium">{staff.name}</h4>
+                            <p className="text-sm text-slate-500">{staff.role} • {staff.shift} Shift</p>
                           </div>
                         </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between">
-                            <span className="text-sm text-slate-600">Status:</span>
-                            <Badge className={`text-xs ${getStatusColor(staff.status)}`}>
-                              {staff.status}
-                            </Badge>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-sm text-slate-600">Shift:</span>
-                            <span className="text-sm font-medium">{staff.shift}</span>
-                          </div>
-                        </div>
-                        <Button variant="outline" size="sm" className="w-full mt-4">
-                          View Details
-                        </Button>
-                      </CardContent>
-                    </Card>
+                        <Badge className={getStatusColor(staff.status)}>{staff.status}</Badge>
+                      </div>
+                    </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="analytics">
+            <Card>
+              <CardHeader>
+                <CardTitle>Store Analytics</CardTitle>
+                <CardDescription>Performance metrics and insights</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Sales Performance</h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-sm">Daily Target</span>
+                        <span className="text-sm font-medium">$3,000</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Current Sales</span>
+                        <span className="text-sm font-medium">${storeStats.dailySales}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Achievement</span>
+                        <span className="text-sm font-medium text-green-600">82%</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h4 className="font-medium">Customer Metrics</h4>
+                    <div className="space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-sm">Satisfaction Rating</span>
+                        <span className="text-sm font-medium">{storeStats.customerSatisfaction}/5</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Weekly Growth</span>
+                        <span className="text-sm font-medium text-green-600">+{storeStats.weeklyGrowth}%</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Return Customers</span>
+                        <span className="text-sm font-medium">68%</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>

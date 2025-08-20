@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  ShoppingBag, 
-  User, 
-  MapPin, 
-  Heart, 
-  Clock, 
-  Package, 
-  Star, 
-  CreditCard, 
-  LogOut,
-  Search,
-  Filter,
-  Bell
-} from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { 
+  Home, 
+  ShoppingCart, 
+  Heart, 
+  MapPin, 
+  CreditCard, 
+  Settings, 
+  Search, 
+  Bell, 
+  LogOut,
+  Package,
+  Clock,
+  Star,
+  TrendingUp,
+  Gift
+} from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Input } from '../ui/input';
@@ -27,125 +29,89 @@ const CustomerDashboard = ({ user }) => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('overview');
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      // Call backend logout API
+      const token = localStorage.getItem('token');
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      
+      if (token) {
+        await fetch(`${backendUrl}/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+    } catch (error) {
+      console.log('Logout API error:', error);
+    }
+    
+    // Clear local storage
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    
     toast({
       title: "Logged Out",
       description: "Successfully logged out from your account",
     });
-    navigate('/login');
+    
+    // Redirect to homepage
+    navigate('/');
   };
 
   // Mock customer data
   const customerData = {
-    totalOrders: 24,
-    totalSpent: 1247.89,
-    loyaltyPoints: 3420,
-    savedAddresses: 3,
-    favoriteItems: 12,
-    memberSince: "January 2024"
+    orders: [
+      { id: '1', date: '2024-01-15', status: 'Delivered', total: 45.99, items: 3 },
+      { id: '2', date: '2024-01-12', status: 'Processing', total: 78.50, items: 5 },
+      { id: '3', date: '2024-01-08', status: 'Delivered', total: 23.75, items: 2 }
+    ],
+    favoriteStores: [
+      { name: 'Fresh Market', category: 'Grocery', rating: 4.8 },
+      { name: 'Tech World', category: 'Electronics', rating: 4.6 },
+      { name: 'QuickBite', category: 'Food', rating: 4.7 }
+    ],
+    loyaltyPoints: 1250,
+    savedAddresses: [
+      { id: 1, label: 'Home', address: '123 Main St, City, State 12345' },
+      { id: 2, label: 'Work', address: '456 Business Ave, City, State 12345' }
+    ]
   };
-
-  const recentOrders = [
-    {
-      id: "ORD-2024-001",
-      date: "2024-07-15",
-      items: ["Organic Apples", "Whole Wheat Bread", "Premium Coffee"],
-      total: 21.97,
-      status: "delivered",
-      outlet: "Downtown Store"
-    },
-    {
-      id: "ORD-2024-002", 
-      date: "2024-07-12",
-      items: ["Fresh Milk", "Yogurt", "Bananas"],
-      total: 15.45,
-      status: "delivered",
-      outlet: "Mall Branch"
-    },
-    {
-      id: "ORD-2024-003",
-      date: "2024-07-10", 
-      items: ["Chicken Breast", "Vegetables Mix"],
-      total: 28.99,
-      status: "processing",
-      outlet: "Downtown Store"
-    }
-  ];
-
-  const favoriteProducts = [
-    {
-      id: "prd_001",
-      name: "Organic Apples",
-      price: 3.99,
-      image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=150&h=150&fit=crop",
-      category: "Fruits",
-      inStock: true
-    },
-    {
-      id: "prd_002", 
-      name: "Premium Coffee Beans",
-      price: 12.99,
-      image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=150&h=150&fit=crop",
-      category: "Beverages", 
-      inStock: true
-    },
-    {
-      id: "prd_003",
-      name: "Whole Wheat Bread",
-      price: 4.50,
-      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=150&h=150&fit=crop",
-      category: "Bakery",
-      inStock: false
-    }
-  ];
 
   const getStatusColor = (status) => {
-    const colors = {
-      delivered: "bg-green-100 text-green-800",
-      processing: "bg-blue-100 text-blue-800", 
-      cancelled: "bg-red-100 text-red-800",
-      pending: "bg-yellow-100 text-yellow-800"
-    };
-    return colors[status] || "bg-gray-100 text-gray-800";
-  };
-
-  const getStatusIcon = (status) => {
-    const icons = {
-      delivered: "✓",
-      processing: "⏳", 
-      cancelled: "✗",
-      pending: "⏰"
-    };
-    return icons[status] || "📦";
+    switch (status) {
+      case 'Delivered': return 'bg-green-100 text-green-800';
+      case 'Processing': return 'bg-yellow-100 text-yellow-800';
+      case 'Shipped': return 'bg-blue-100 text-blue-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shadow-sm">
+      <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 bg-gradient-to-tr from-blue-600 to-green-600 rounded-xl flex items-center justify-center">
-                <ShoppingBag className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-800">Customer Dashboard</h1>
-                <p className="text-slate-600">Welcome back, {user.name}!</p>
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                  <Home className="w-5 h-5 text-white" />
+                </div>
+                <h1 className="text-xl font-bold text-slate-800">Nkiosk</h1>
               </div>
             </div>
             
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" className="relative">
-                <Bell className="w-5 h-5" />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="sm">
+                <Bell className="w-4 h-4" />
               </Button>
-              
-              <div className="flex items-center gap-3 pl-3 border-l">
-                <Avatar className="w-8 h-8">
-                  <AvatarImage src={user.avatar} />
-                  <AvatarFallback className="bg-blue-100 text-blue-600">
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user?.avatar} />
+                  <AvatarFallback className="bg-blue-500 text-white text-sm">
                     {user.name.split(' ').map(n => n[0]).join('')}
                   </AvatarFallback>
                 </Avatar>
@@ -168,73 +134,74 @@ const CustomerDashboard = ({ user }) => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-[500px]">
-            <TabsTrigger value="overview" className="flex items-center gap-2">
-              <ShoppingBag className="w-4 h-4" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger value="orders" className="flex items-center gap-2">
-              <Package className="w-4 h-4" />
-              Orders
-            </TabsTrigger>
-            <TabsTrigger value="favorites" className="flex items-center gap-2">
-              <Heart className="w-4 h-4" />
-              Favorites
-            </TabsTrigger>
-            <TabsTrigger value="profile" className="flex items-center gap-2">
-              <User className="w-4 h-4" />
-              Profile
-            </TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-4 mb-8">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="orders">Orders</TabsTrigger>
+            <TabsTrigger value="favorites">Favorites</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
+            {/* Welcome Card */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Home className="w-5 h-5 text-blue-500" />
+                  Welcome back, {user.name}!
+                </CardTitle>
+                <CardDescription>
+                  Here's your shopping dashboard overview
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
             {/* Quick Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <Package className="w-5 h-5 text-green-500" />
                     <div>
-                      <p className="text-sm font-medium text-blue-600">Total Orders</p>
-                      <p className="text-2xl font-bold text-blue-800">{customerData.totalOrders}</p>
+                      <p className="text-sm text-slate-500">Total Orders</p>
+                      <p className="text-2xl font-bold text-slate-800">{customerData.orders.length}</p>
                     </div>
-                    <Package className="w-8 h-8 text-blue-600" />
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="bg-gradient-to-br from-green-50 to-green-100 border-green-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <Gift className="w-5 h-5 text-purple-500" />
                     <div>
-                      <p className="text-sm font-medium text-green-600">Total Spent</p>
-                      <p className="text-2xl font-bold text-green-800">${customerData.totalSpent}</p>
+                      <p className="text-sm text-slate-500">Loyalty Points</p>
+                      <p className="text-2xl font-bold text-slate-800">{customerData.loyaltyPoints}</p>
                     </div>
-                    <CreditCard className="w-8 h-8 text-green-600" />
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <Heart className="w-5 h-5 text-red-500" />
                     <div>
-                      <p className="text-sm font-medium text-purple-600">Loyalty Points</p>
-                      <p className="text-2xl font-bold text-purple-800">{customerData.loyaltyPoints}</p>
+                      <p className="text-sm text-slate-500">Favorite Stores</p>
+                      <p className="text-2xl font-bold text-slate-800">{customerData.favoriteStores.length}</p>
                     </div>
-                    <Star className="w-8 h-8 text-purple-600" />
                   </div>
                 </CardContent>
               </Card>
-
-              <Card className="bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
-                <CardContent className="pt-6">
-                  <div className="flex items-center justify-between">
+              
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-blue-500" />
                     <div>
-                      <p className="text-sm font-medium text-orange-600">Favorites</p>
-                      <p className="text-2xl font-bold text-orange-800">{customerData.favoriteItems}</p>
+                      <p className="text-sm text-slate-500">Saved Addresses</p>
+                      <p className="text-2xl font-bold text-slate-800">{customerData.savedAddresses.length}</p>
                     </div>
-                    <Heart className="w-8 h-8 text-orange-600" />
                   </div>
                 </CardContent>
               </Card>
@@ -242,31 +209,28 @@ const CustomerDashboard = ({ user }) => {
 
             {/* Recent Orders */}
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Recent Orders</CardTitle>
-                <Button variant="outline" size="sm" onClick={() => setActiveTab('orders')}>
-                  View All
-                </Button>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="w-5 h-5" />
+                  Recent Orders
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentOrders.slice(0, 3).map((order) => (
-                    <div key={order.id} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                  {customerData.orders.map((order) => (
+                    <div key={order.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <span className="text-lg">{getStatusIcon(order.status)}</span>
+                          <Package className="w-5 h-5 text-blue-500" />
                         </div>
                         <div>
-                          <p className="font-medium text-slate-800">{order.id}</p>
-                          <p className="text-sm text-slate-600">{order.items.join(', ')}</p>
-                          <p className="text-xs text-slate-500">{order.date} • {order.outlet}</p>
+                          <p className="font-medium">Order #{order.id}</p>
+                          <p className="text-sm text-slate-500">{order.date} • {order.items} items</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold text-slate-800">${order.total}</p>
-                        <Badge className={`text-xs ${getStatusColor(order.status)}`}>
-                          {order.status}
-                        </Badge>
+                        <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
+                        <p className="text-sm font-medium mt-1">${order.total}</p>
                       </div>
                     </div>
                   ))}
@@ -275,52 +239,26 @@ const CustomerDashboard = ({ user }) => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="orders" className="space-y-6">
+          <TabsContent value="orders">
             <Card>
               <CardHeader>
                 <CardTitle>Order History</CardTitle>
-                <div className="flex items-center gap-4">
-                  <div className="relative flex-1 max-w-sm">
-                    <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-                    <Input placeholder="Search orders..." className="pl-9" />
-                  </div>
-                  <Button variant="outline" size="sm">
-                    <Filter className="w-4 h-4 mr-2" />
-                    Filter
-                  </Button>
-                </div>
+                <CardDescription>View and track all your orders</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {recentOrders.map((order) => (
-                    <div key={order.id} className="border rounded-lg p-6">
-                      <div className="flex items-start justify-between mb-4">
+                  {customerData.orders.map((order) => (
+                    <div key={order.id} className="border rounded-lg p-4">
+                      <div className="flex justify-between items-start">
                         <div>
-                          <h3 className="font-semibold text-slate-800">{order.id}</h3>
-                          <p className="text-sm text-slate-600">{order.date} • {order.outlet}</p>
+                          <h4 className="font-medium">Order #{order.id}</h4>
+                          <p className="text-sm text-slate-500">Placed on {order.date}</p>
+                          <p className="text-sm">Items: {order.items}</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-semibold text-slate-800">${order.total}</p>
-                          <Badge className={`text-xs ${getStatusColor(order.status)}`}>
-                            {order.status}
-                          </Badge>
+                          <Badge className={getStatusColor(order.status)}>{order.status}</Badge>
+                          <p className="font-bold mt-1">${order.total}</p>
                         </div>
-                      </div>
-                      <div className="space-y-2">
-                        <p className="text-sm font-medium text-slate-700">Items:</p>
-                        <div className="flex flex-wrap gap-2">
-                          {order.items.map((item, idx) => (
-                            <Badge key={idx} variant="secondary" className="text-xs">
-                              {item}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                      <div className="flex justify-end gap-2 mt-4">
-                        <Button variant="outline" size="sm">View Details</Button>
-                        {order.status === 'delivered' && (
-                          <Button variant="outline" size="sm">Reorder</Button>
-                        )}
                       </div>
                     </div>
                   ))}
@@ -329,40 +267,28 @@ const CustomerDashboard = ({ user }) => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="favorites" className="space-y-6">
+          <TabsContent value="favorites">
             <Card>
               <CardHeader>
-                <CardTitle>Favorite Products</CardTitle>
+                <CardTitle>Favorite Stores</CardTitle>
+                <CardDescription>Your most loved stores and vendors</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {favoriteProducts.map((product) => (
-                    <div key={product.id} className="border rounded-lg p-4">
-                      <div className="aspect-square bg-slate-100 rounded-lg mb-4 overflow-hidden">
-                        <img 
-                          src={product.image} 
-                          alt={product.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <Badge variant="secondary" className="text-xs">
-                            {product.category}
-                          </Badge>
-                          <Button variant="ghost" size="sm" className="text-red-500 hover:text-red-600">
-                            <Heart className="w-4 h-4 fill-current" />
-                          </Button>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {customerData.favoriteStores.map((store, index) => (
+                    <div key={index} className="border rounded-lg p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                          <Heart className="w-6 h-6 text-white" />
                         </div>
-                        <h3 className="font-medium text-slate-800">{product.name}</h3>
-                        <p className="text-lg font-semibold text-green-600">${product.price}</p>
-                        <Button 
-                          className="w-full" 
-                          size="sm"
-                          disabled={!product.inStock}
-                        >
-                          {product.inStock ? 'Add to Cart' : 'Out of Stock'}
-                        </Button>
+                        <div className="flex-1">
+                          <h4 className="font-medium">{store.name}</h4>
+                          <p className="text-sm text-slate-500">{store.category}</p>
+                          <div className="flex items-center gap-1 mt-1">
+                            <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                            <span className="text-sm">{store.rating}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -371,55 +297,45 @@ const CustomerDashboard = ({ user }) => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="profile" className="space-y-6">
+          <TabsContent value="settings">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Profile Information</CardTitle>
+                  <CardTitle>Account Settings</CardTitle>
+                  <CardDescription>Manage your account preferences</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="flex items-center gap-4">
-                    <Avatar className="w-16 h-16">
-                      <AvatarImage src={user.avatar} />
-                      <AvatarFallback className="bg-blue-100 text-blue-600 text-lg">
-                        {user.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="text-lg font-semibold text-slate-800">{user.name}</h3>
-                      <p className="text-slate-600">{user.email}</p>
-                      <p className="text-sm text-slate-500">Member since {customerData.memberSince}</p>
-                    </div>
+                  <div>
+                    <label className="text-sm font-medium">Full Name</label>
+                    <Input defaultValue={user.name} />
                   </div>
-                  <Button variant="outline" className="w-full">
-                    Edit Profile
-                  </Button>
+                  <div>
+                    <label className="text-sm font-medium">Email</label>
+                    <Input defaultValue={user.email} />
+                  </div>
+                  <Button>Save Changes</Button>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
                   <CardTitle>Saved Addresses</CardTitle>
+                  <CardDescription>Manage your delivery addresses</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
-                      <MapPin className="w-5 h-5 text-slate-500 mt-0.5" />
-                      <div>
-                        <p className="font-medium text-slate-800">Home</p>
-                        <p className="text-sm text-slate-600">123 Main St, New York, NY 10001</p>
-                        <Badge variant="secondary" className="text-xs mt-1">Default</Badge>
+                  <div className="space-y-4">
+                    {customerData.savedAddresses.map((address) => (
+                      <div key={address.id} className="border rounded-lg p-3">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium">{address.label}</p>
+                            <p className="text-sm text-slate-500">{address.address}</p>
+                          </div>
+                          <Button variant="outline" size="sm">Edit</Button>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-start gap-3 p-3 bg-slate-50 rounded-lg">
-                      <MapPin className="w-5 h-5 text-slate-500 mt-0.5" />
-                      <div>
-                        <p className="font-medium text-slate-800">Office</p>
-                        <p className="text-sm text-slate-600">456 Business Ave, New York, NY 10002</p>
-                      </div>
-                    </div>
-                    <Button variant="outline" size="sm" className="w-full">
-                      <MapPin className="w-4 h-4 mr-2" />
+                    ))}
+                    <Button variant="outline" className="w-full">
                       Add New Address
                     </Button>
                   </div>
