@@ -34,9 +34,31 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      // Call backend logout API
+      const token = localStorage.getItem('token');
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      
+      if (token) {
+        await fetch(`${backendUrl}/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+    } catch (error) {
+      console.log('Logout API error:', error);
+    }
+    
+    // Clear local storage
     localStorage.removeItem('user');
-    navigate('/login');
+    localStorage.removeItem('token');
+    
+    // Redirect to homepage
+    navigate('/');
   };
 
   const getRoleNavigation = (role) => {
