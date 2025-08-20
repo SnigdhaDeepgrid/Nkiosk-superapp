@@ -50,6 +50,39 @@ class StatusCheck(BaseModel):
 class StatusCheckCreate(BaseModel):
     client_name: str
 
+# Authentication Models
+class UserCreate(BaseModel):
+    name: str
+    email: str
+    password: str
+    role: str = "customer"
+    phone: Optional[str] = None
+    
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class UserResponse(BaseModel):
+    id: str
+    name: str
+    email: str
+    role: str
+    roleDisplay: str
+    avatar: Optional[str] = None
+    tenant: Optional[str] = None
+    store: Optional[str] = None
+    business: Optional[str] = None
+    created_at: datetime
+
+class LoginResponse(BaseModel):
+    user: UserResponse
+    token: str
+    message: str
+
+class TokenData(BaseModel):
+    user_id: Optional[str] = None
+    email: Optional[str] = None
+
 # Analytics Models
 class RevenueMetrics(BaseModel):
     date: str
