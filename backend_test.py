@@ -11,8 +11,8 @@ from typing import Dict, List, Any
 import sys
 import os
 
-# Get backend URL from environment
-BACKEND_URL = "https://multi-role-portal.preview.emergentagent.com/api"
+# Get backend URL from environment - Testing on localhost as requested
+BACKEND_URL = "http://localhost:8001/api"
 
 class AuthenticationAPITester:
     def __init__(self, base_url: str):
