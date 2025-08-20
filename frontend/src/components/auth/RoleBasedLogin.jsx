@@ -154,7 +154,7 @@ const RoleBasedLogin = () => {
 
     try {
       // Use the backend API for authentication
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${backendUrl}/auth/login`, {
         method: 'POST',
         headers: {
