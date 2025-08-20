@@ -210,9 +210,9 @@ const RoleBasedLogin = () => {
   return (
     <>
       {/* Role Selection Section */}
-      <section className="py-20 bg-white">
+      <section className="py-14 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-bold text-[#2E2E2E] mb-4">
               Quick Access Dashboards
             </h2>
@@ -227,7 +227,7 @@ const RoleBasedLogin = () => {
               return (
                 <Card
                   key={index}
-                  className="group cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105 border-0 bg-white shadow-lg"
+                  className="group cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:scale-105 bg-white shadow-lg border-2"
                   onClick={() => handleRoleSelect(role)}
                 >
                   <CardHeader className="pb-4">
