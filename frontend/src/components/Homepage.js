@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import RoleBasedLogin from "./auth/RoleBasedLogin";
 
 const Homepage = () => {
   const navigate = useNavigate();
@@ -60,10 +61,10 @@ const Homepage = () => {
                 Industries
               </a>
               <a
-                href="#services"
+                href="#dashboards"
                 className="text-[#2E2E2E] hover:text-[#D94436] font-medium transition-colors"
               >
-                Services
+                Dashboards
               </a>
             </div>
 
@@ -123,10 +124,10 @@ const Homepage = () => {
                   Industries
                 </a>
                 <a
-                  href="#services"
+                  href="#dashboards"
                   className="text-[#2E2E2E] hover:text-[#F25C44] font-medium"
                 >
-                  Services
+                  Dashboards
                 </a>
                 <button
                   onClick={handleGetStarted}
@@ -347,6 +348,11 @@ const Homepage = () => {
         </div>
       </section>
 
+      {/* Role-Based Login Section */}
+      <div id="dashboards">
+        <RoleBasedLogin />
+      </div>
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-[#F25C44] to-[#D94436]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -428,10 +434,10 @@ const Homepage = () => {
                 </li>
                 <li>
                   <a
-                    href="#services"
+                    href="#dashboards"
                     className="text-[#A3A3A3] hover:text-white transition-colors"
                   >
-                    Services
+                    Dashboards
                   </a>
                 </li>
               </ul>
