@@ -22,52 +22,29 @@ const LoginForm = () => {
     console.log('🔑 Password:', password);
     setIsLoading(true);
 
-    try {
-      // Use the backend API for authentication
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
-      const response = await fetch(`${backendUrl}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('✅ Authentication successful');
-        // Store both user and token
-        localStorage.setItem('user', JSON.stringify(data.user));
-        localStorage.setItem('token', data.token);
-        console.log('💾 User and token saved to localStorage');
-        
-        toast({
-          title: "Welcome to Nkiosk!",
-          description: data.message || `Successfully logged in as ${data.user.name}`,
-        });
-        console.log('🍞 Toast displayed');
-        
-        setIsLoading(false);
-        console.log('🔄 Navigating to dashboard...');
-        navigate('/dashboard');
-      } else {
-        console.log('❌ Authentication failed');
-        toast({
-          title: "Login Failed",
-          description: data.detail || "Invalid credentials. Try: admin@saas.com with password123",
-          variant: "destructive",
-        });
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.log('❌ Network error:', error);
+    // Mock authentication - direct authentication without timeout
+    const mockUser = getMockUserByEmail(email);
+    console.log('👤 Found mock user:', mockUser);
+    
+    if (mockUser && password === 'password123') {
+      console.log('✅ Authentication successful');
+      localStorage.setItem('user', JSON.stringify(mockUser));
+      console.log('💾 User saved to localStorage');
+      
       toast({
-        title: "Login Error",
-        description: "Unable to connect to server. Please try again.",
+        title: "Welcome to Nkiosk!",
+        description: `Successfully logged in as ${mockUser.name}`,
+      });
+      console.log('🍞 Toast displayed');
+      
+      setIsLoading(false);
+      console.log('🔄 Navigating to dashboard...');
+      navigate('/dashboard');
+    } else {
+      console.log('❌ Authentication failed');
+      toast({
+        title: "Login Failed",
+        description: "Invalid credentials. Try: admin@saas.com with password123",
         variant: "destructive",
       });
       setIsLoading(false);
