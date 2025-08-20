@@ -33,9 +33,34 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(userData));
   };
 
-  const logout = () => {
+  const logout = async (navigate) => {
+    try {
+      // Call backend logout API
+      const token = localStorage.getItem('token');
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      
+      if (token) {
+        await fetch(`${backendUrl}/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+    } catch (error) {
+      console.log('Logout API error:', error);
+    }
+    
+    // Clear state and localStorage
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    
+    // Redirect to homepage if navigate function is provided
+    if (navigate) {
+      navigate('/');
+    }
   };
 
   const value = {
