@@ -21,7 +21,11 @@ const Homepage = () => {
     if (user) {
       navigate("/dashboard");
     } else {
-      navigate("/auth");
+      // Scroll to the role-based login section instead of navigating to /auth
+      const dashboardsSection = document.getElementById('dashboards');
+      if (dashboardsSection) {
+        dashboardsSection.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
