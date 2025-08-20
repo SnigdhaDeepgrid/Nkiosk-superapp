@@ -21,16 +21,7 @@ const Homepage = () => {
     if (user) {
       navigate("/dashboard");
     } else {
-      // Scroll to the role-based login section instead of navigating to /auth
-      setTimeout(() => {
-        const dashboardsSection = document.getElementById('dashboards');
-        if (dashboardsSection) {
-          dashboardsSection.scrollIntoView({ 
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      }, 100); // Small delay to ensure DOM is ready
+      navigate("/auth");
     }
   };
 
