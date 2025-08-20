@@ -68,15 +68,38 @@ const NKioskDashboard = ({ user }) => {
     },
   ];
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      // Call backend logout API
+      const token = localStorage.getItem('token');
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      
+      if (token) {
+        await fetch(`${backendUrl}/auth/logout`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+    } catch (error) {
+      console.log('Logout API error:', error);
+    }
+    
+    // Clear local storage
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     localStorage.removeItem("selectedLocation");
     clearCartOnLogout(); // Clear cart on logout
+    
     toast({
       title: "Logged Out",
       description: "Successfully logged out from your account",
     });
-    navigate("/login");
+    
+    // Redirect to homepage
+    navigate("/");
   };
 
   const handleLocationSelect = (location) => {
