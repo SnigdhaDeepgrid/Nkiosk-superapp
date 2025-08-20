@@ -175,7 +175,10 @@ const Homepage = () => {
                 >
                   Start Free Trial
                 </button>
-                <button className="border-2 border-[#F25C44] text-[#F25C44] px-8 py-4 rounded-md hover:bg-[#F25C44] hover:text-white transition-colors font-semibold text-lg">
+                <button 
+                  className="border-2 border-[#F25C44] text-[#F25C44] px-8 py-4 rounded-md hover:bg-[#F25C44] hover:text-white transition-colors font-semibold text-lg"
+                  onClick={handleGetStarted}
+                >
                   Book a Demo
                 </button>
               </div>
