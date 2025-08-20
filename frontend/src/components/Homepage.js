@@ -137,6 +137,14 @@ const Homepage = () => {
                 <a
                   href="#dashboards"
                   className="text-[#2E2E2E] hover:text-[#F25C44] font-medium"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const dashboardsSection = document.getElementById('dashboards');
+                    if (dashboardsSection) {
+                      dashboardsSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    setIsMenuOpen(false); // Close mobile menu after clicking
+                  }}
                 >
                   Dashboards
                 </a>
