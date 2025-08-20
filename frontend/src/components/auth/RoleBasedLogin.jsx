@@ -152,23 +152,47 @@ const RoleBasedLogin = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    const mockUser = getMockUserByEmail(email);
-    
-    if (mockUser && password === 'password123') {
-      localStorage.setItem('user', JSON.stringify(mockUser));
-      
-      toast({
-        title: "Welcome to Nkiosk!",
-        description: `Successfully logged in as ${mockUser.name}`,
+    try {
+      // Use the backend API for authentication
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      const response = await fetch(`${backendUrl}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        }),
       });
-      
-      setShowModal(false);
-      setIsLoading(false);
-      navigate('/dashboard');
-    } else {
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store both user and token
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('token', data.token);
+        
+        toast({
+          title: "Welcome to Nkiosk!",
+          description: data.message || `Successfully logged in as ${data.user.name}`,
+        });
+        
+        setShowModal(false);
+        setIsLoading(false);
+        navigate('/dashboard');
+      } else {
+        toast({
+          title: "Login Failed",
+          description: data.detail || "Invalid credentials. Use password: password123",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+      }
+    } catch (error) {
       toast({
-        title: "Login Failed",
-        description: "Invalid credentials. Use password: password123",
+        title: "Login Error",
+        description: "Unable to connect to server. Please try again.",
         variant: "destructive",
       });
       setIsLoading(false);
