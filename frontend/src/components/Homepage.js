@@ -461,6 +461,13 @@ const Homepage = () => {
                   <a
                     href="#dashboards"
                     className="text-[#A3A3A3] hover:text-white transition-colors"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const dashboardsSection = document.getElementById('dashboards');
+                      if (dashboardsSection) {
+                        dashboardsSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
                   >
                     Dashboards
                   </a>
