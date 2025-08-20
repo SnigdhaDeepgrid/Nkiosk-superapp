@@ -589,6 +589,335 @@ def generate_mock_orders():
         )
     ]
 
+
+# Authentication Utility Functions
+def hash_password(password: str) -> str:
+    """Hash a password using bcrypt"""
+    return pwd_context.hash(password)
+
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a password against its hash"""
+    return pwd_context.verify(plain_password, hashed_password)
+
+def create_access_token(data: dict) -> str:
+    """Create a JWT access token"""
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(hours=JWT_EXPIRE_HOURS)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+    return encoded_jwt
+
+def decode_token(token: str) -> dict:
+    """Decode and verify a JWT token"""
+    try:
+        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+        return payload
+    except jwt.PyJWTError:
+        return None
+
+async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Get the current authenticated user from JWT token"""
+    token = credentials.credentials
+    payload = decode_token(token)
+    if not payload:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    
+    email = payload.get("sub")
+    if not email:
+        raise HTTPException(status_code=401, detail="Invalid token")
+        
+    # Get user from mock data for now
+    user = get_mock_user_by_email(email)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return user
+
+def get_mock_user_by_email(email: str) -> Optional[dict]:
+    """Get mock user data by email"""
+    mock_users = {
+        'admin@saas.com': {
+            'id': '1',
+            'name': 'John Smith',
+            'email': 'admin@saas.com',
+            'role': 'saas_admin',
+            'roleDisplay': 'SaaS Admin',
+            'avatar': 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+            'created_at': datetime.utcnow()
+        },
+        'superadmin@tenant1.com': {
+            'id': '2',
+            'name': 'Sarah Johnson',
+            'email': 'superadmin@tenant1.com',
+            'role': 'super_admin',
+            'roleDisplay': 'Super Admin',
+            'tenant': 'QuickMart',
+            'avatar': 'https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face',
+            'created_at': datetime.utcnow()
+        },
+        'manager@store1.com': {
+            'id': '3',
+            'name': 'Mike Davis',
+            'email': 'manager@store1.com',
+            'role': 'store_manager',
+            'roleDisplay': 'Store Manager',
+            'store': 'Downtown QuickMart',
+            'avatar': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+            'created_at': datetime.utcnow()
+        },
+        'vendor@foodie.com': {
+            'id': '4',
+            'name': 'Lisa Chen',
+            'email': 'vendor@foodie.com',
+            'role': 'vendor',
+            'roleDisplay': 'Vendor',
+            'business': 'Foodie Express',
+            'avatar': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
+            'created_at': datetime.utcnow()
+        },
+        'delivery@fast.com': {
+            'id': '5',
+            'name': 'Carlos Rodriguez',
+            'email': 'delivery@fast.com',
+            'role': 'delivery_partner',
+            'roleDisplay': 'Delivery Partner',
+            'avatar': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+            'created_at': datetime.utcnow()
+        },
+        'customer@email.com': {
+            'id': '6',
+            'name': 'Emma Wilson',
+            'email': 'customer@email.com',
+            'role': 'customer',
+            'roleDisplay': 'Customer',
+            'avatar': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face',
+            'created_at': datetime.utcnow()
+        },
+        'support@help.com': {
+            'id': '7',
+            'name': 'David Kim',
+            'email': 'support@help.com',
+            'role': 'support_staff',
+            'roleDisplay': 'Support Staff',
+            'avatar': 'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=150&h=150&fit=crop&crop=face',
+            'created_at': datetime.utcnow()
+        }
+    }
+    return mock_users.get(email)
+
+# Authentication API Endpoints
+@api_router.post("/auth/login", response_model=LoginResponse)
+async def login(user_login: UserLogin):
+    """Authenticate user and return JWT token"""
+    user_data = get_mock_user_by_email(user_login.email)
+    
+    if not user_data:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    # For demo purposes, accept password123 for all users
+    if user_login.password != "password123":
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    
+    # Create access token
+    token = create_access_token(data={"sub": user_data["email"], "role": user_data["role"]})
+    
+    # Prepare user response
+    user_response = UserResponse(
+        id=user_data["id"],
+        name=user_data["name"],
+        email=user_data["email"],
+        role=user_data["role"],
+        roleDisplay=user_data["roleDisplay"],
+        avatar=user_data.get("avatar"),
+        tenant=user_data.get("tenant"),
+        store=user_data.get("store"),
+        business=user_data.get("business"),
+        created_at=user_data["created_at"]
+    )
+    
+    return LoginResponse(
+        user=user_response,
+        token=token,
+        message=f"Successfully logged in as {user_data['roleDisplay']}"
+    )
+
+@api_router.post("/auth/register", response_model=dict)
+async def register(user_create: UserCreate):
+    """Register a new user"""
+    # Check if user already exists
+    if get_mock_user_by_email(user_create.email):
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # For demo purposes, just return success message
+    # In real app, would hash password and save to database
+    return {
+        "message": "User registered successfully",
+        "user": {
+            "id": str(uuid.uuid4()),
+            "name": user_create.name,
+            "email": user_create.email,
+            "role": user_create.role
+        }
+    }
+
+@api_router.get("/auth/profile", response_model=UserResponse)
+async def get_profile(current_user: dict = Depends(get_current_user)):
+    """Get current user profile"""
+    return UserResponse(
+        id=current_user["id"],
+        name=current_user["name"],
+        email=current_user["email"],
+        role=current_user["role"],
+        roleDisplay=current_user["roleDisplay"],
+        avatar=current_user.get("avatar"),
+        tenant=current_user.get("tenant"),
+        store=current_user.get("store"),
+        business=current_user.get("business"),
+        created_at=current_user["created_at"]
+    )
+
+@api_router.post("/auth/logout")
+async def logout():
+    """Logout user (token-based, so just return success)"""
+    return {"message": "Successfully logged out"}
+
+@api_router.post("/auth/refresh")
+async def refresh_token(current_user: dict = Depends(get_current_user)):
+    """Refresh JWT token"""
+    token = create_access_token(data={"sub": current_user["email"], "role": current_user["role"]})
+    return {"token": token, "message": "Token refreshed successfully"}
+
+@api_router.post("/auth/forgot-password")
+async def forgot_password(email_data: dict):
+    """Initiate password reset (mock implementation)"""
+    email = email_data.get("email")
+    if not email:
+        raise HTTPException(status_code=400, detail="Email is required")
+    
+    # For demo purposes, just return success message
+    return {"message": "Password reset link sent to your email"}
+
+# Role-based Dashboard Access Endpoints
+@api_router.get("/dashboard/saas-admin")
+async def get_saas_admin_dashboard(current_user: dict = Depends(get_current_user)):
+    """Get SaaS Admin dashboard data"""
+    if current_user["role"] != "saas_admin":
+        raise HTTPException(status_code=403, detail="Access denied: SaaS Admin role required")
+    
+    return {
+        "dashboard": "saas_admin",
+        "user": current_user,
+        "data": {
+            "total_tenants": 156,
+            "active_subscriptions": 142,
+            "monthly_revenue": 45670.89,
+            "recent_signups": 23
+        }
+    }
+
+@api_router.get("/dashboard/super-admin")
+async def get_super_admin_dashboard(current_user: dict = Depends(get_current_user)):
+    """Get Super Admin dashboard data"""
+    if current_user["role"] != "super_admin":
+        raise HTTPException(status_code=403, detail="Access denied: Super Admin role required")
+    
+    return {
+        "dashboard": "super_admin",
+        "user": current_user,
+        "data": {
+            "total_outlets": 12,
+            "total_products": 1456,
+            "pending_orders": 23,
+            "monthly_sales": 123456.78
+        }
+    }
+
+@api_router.get("/dashboard/store-manager")
+async def get_store_manager_dashboard(current_user: dict = Depends(get_current_user)):
+    """Get Store Manager dashboard data"""
+    if current_user["role"] != "store_manager":
+        raise HTTPException(status_code=403, detail="Access denied: Store Manager role required")
+    
+    return {
+        "dashboard": "store_manager",
+        "user": current_user,
+        "data": {
+            "store_sales": 12345.67,
+            "inventory_alerts": 8,
+            "staff_count": 15,
+            "daily_visitors": 234
+        }
+    }
+
+@api_router.get("/dashboard/vendor")
+async def get_vendor_dashboard(current_user: dict = Depends(get_current_user)):
+    """Get Vendor dashboard data"""
+    if current_user["role"] != "vendor":
+        raise HTTPException(status_code=403, detail="Access denied: Vendor role required")
+    
+    return {
+        "dashboard": "vendor",
+        "user": current_user,
+        "data": {
+            "product_listings": 89,
+            "pending_orders": 12,
+            "monthly_earnings": 8765.43,
+            "inventory_value": 23456.78
+        }
+    }
+
+@api_router.get("/dashboard/delivery-partner")
+async def get_delivery_partner_dashboard(current_user: dict = Depends(get_current_user)):
+    """Get Delivery Partner dashboard data"""
+    if current_user["role"] != "delivery_partner":
+        raise HTTPException(status_code=403, detail="Access denied: Delivery Partner role required")
+    
+    return {
+        "dashboard": "delivery_partner",
+        "user": current_user,
+        "data": {
+            "active_deliveries": 3,
+            "completed_today": 12,
+            "earnings_today": 156.75,
+            "rating": 4.8
+        }
+    }
+
+@api_router.get("/dashboard/customer")
+async def get_customer_dashboard(current_user: dict = Depends(get_current_user)):
+    """Get Customer dashboard data"""
+    if current_user["role"] != "customer":
+        raise HTTPException(status_code=403, detail="Access denied: Customer role required")
+    
+    return {
+        "dashboard": "customer",
+        "user": current_user,
+        "data": {
+            "recent_orders": 5,
+            "favorite_stores": 3,
+            "loyalty_points": 1250,
+            "saved_addresses": 2
+        }
+    }
+
+@api_router.get("/dashboard/support-staff")
+async def get_support_staff_dashboard(current_user: dict = Depends(get_current_user)):
+    """Get Support Staff dashboard data"""
+    if current_user["role"] != "support_staff":
+        raise HTTPException(status_code=403, detail="Access denied: Support Staff role required")
+    
+    return {
+        "dashboard": "support_staff",
+        "user": current_user,
+        "data": {
+            "open_tickets": 23,
+            "resolved_today": 15,
+            "avg_response_time": "2.5 hours",
+            "customer_satisfaction": 4.7
+        }
+    }
+
+
 # Super Admin User Management APIs
 @api_router.get("/super-admin/users", response_model=List[BusinessUser])
 async def get_business_users():
