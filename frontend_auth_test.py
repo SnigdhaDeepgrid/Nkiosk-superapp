@@ -16,7 +16,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 import sys
 
 # Frontend URL from environment
-FRONTEND_URL = "https://chromatic-app.preview.emergentagent.com"
+FRONTEND_URL = "https://multi-role-portal.preview.emergentagent.com"
 
 class FrontendAuthTester:
     def __init__(self):

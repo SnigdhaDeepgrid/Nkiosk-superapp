@@ -9,7 +9,7 @@
     
     <script>
         // Test if we can access the frontend
-        fetch('https://chromatic-app.preview.emergentagent.com/auth')
+        fetch('https://multi-role-portal.preview.emergentagent.com/auth')
             .then(response => response.text())
             .then(html => {
                 const results = document.getElementById('test-results');
@@ -29,7 +29,7 @@
                 `;
                 
                 // Now test the JS bundle
-                return fetch('https://chromatic-app.preview.emergentagent.com/static/js/bundle.js');
+                return fetch('https://multi-role-portal.preview.emergentagent.com/static/js/bundle.js');
             })
             .then(response => response.text())
             .then(jsContent => {
