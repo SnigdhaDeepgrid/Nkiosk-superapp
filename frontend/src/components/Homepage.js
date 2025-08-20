@@ -66,11 +66,12 @@ const Homepage = () => {
                 onClick={(e) => {
                   e.preventDefault();
                   setTimeout(() => {
-                    const dashboardsSection = document.getElementById('dashboards');
+                    const dashboardsSection =
+                      document.getElementById("dashboards");
                     if (dashboardsSection) {
-                      dashboardsSection.scrollIntoView({ 
-                        behavior: 'smooth',
-                        block: 'start'
+                      dashboardsSection.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
                       });
                     }
                   }, 100);
@@ -141,11 +142,12 @@ const Homepage = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     setTimeout(() => {
-                      const dashboardsSection = document.getElementById('dashboards');
+                      const dashboardsSection =
+                        document.getElementById("dashboards");
                       if (dashboardsSection) {
-                        dashboardsSection.scrollIntoView({ 
-                          behavior: 'smooth',
-                          block: 'start'
+                        dashboardsSection.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
                         });
                       }
                     }, 100);
@@ -196,7 +198,7 @@ const Homepage = () => {
                 >
                   Start Free Trial
                 </button>
-                <button 
+                <button
                   className="border-2 border-[#F25C44] text-[#F25C44] px-8 py-4 rounded-md hover:bg-[#F25C44] hover:text-white transition-colors font-semibold text-lg"
                   onClick={handleGetStarted}
                 >
@@ -233,6 +235,148 @@ const Homepage = () => {
       </section>
 
       {/* Features Section */}
+      <section id="features" className="py-0 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[300px] w-full">
+          {/* Left Side - About NKIOSK */}
+          <div className="bg-[#2E2E2E] text-white p-12 lg:p-16 flex flex-col justify-center">
+            <h2 className="text-4xl lg:text-5xl font-bold mb-2 ml-16">ABOUT</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#FF6B47] mb-8 ml-16">
+              NKIOSK
+            </h2>
+
+            <p className="text-lg lg:text-xl leading-relaxed text-gray-300 ml-16">
+              Nkiosk empowers businesses to launch and scale online marketplaces
+              with ease. From grocery to electronics, it unites vendors,
+              streamlines orders, and delivers great customer experiences.
+            </p>
+          </div>
+
+          {/* Right Side - What You Get */}
+          <div className="p-12 lg:p-16 flex flex-col justify-center bg-white">
+            <h2 className="text-3xl lg:text-4xl font-bold text-[#2E2E2E] mb-4 text-center lg:text-left">
+              WHAT YOU GET
+              <br />
+              WITH NKIOSK
+            </h2>
+            <div className="w-16 h-1 bg-[#FF6B47] mb-12 mx-auto lg:mx-0"></div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {[
+                {
+                  icon: "📊",
+                  title: "Centralized Platform",
+                  description:
+                    "Manage all vendors, products, and orders from one unified dashboard.",
+                },
+                {
+                  icon: "👥",
+                  title: "Vendor Management",
+                  description:
+                    "Onboard and manage unlimited vendors with automated workflows.",
+                },
+                {
+                  icon: "📱",
+                  title: "Mobile Experience",
+                  description:
+                    "Native mobile apps for customers, vendors, and delivery partners.",
+                },
+                {
+                  icon: "⚡",
+                  title: "Real-time Analytics",
+                  description:
+                    "Track sales and make data-driven decisions with comprehensive reports.",
+                },
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className="flex items-start space-x-3 p-4 bg-white rounded-xl border border-[#EAEAEA] hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="flex-shrink-0">
+                    <div className="w-10 h-10 bg-gradient-to-br from-[#FF6B47] to-[#FF8A47] rounded-lg flex items-center justify-center text-white text-lg font-semibold">
+                      {feature.icon}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[#2E2E2E] mb-2">
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm text-[#737373] leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Industries Section */}
+      <section id="industries" className="py-20 bg-[#F5F5F5]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#2E2E2E] mb-4">
+              Industries We Support
+            </h2>
+            <p className="text-xl text-[#737373] max-w-3xl mx-auto">
+              Nkiosk powers marketplaces across diverse industries and business
+              types
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                image:
+                  "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&h=300&fit=crop&crop=center",
+                title: "Grocery & Food",
+                description:
+                  "Fresh produce, packaged goods, and specialty food items with inventory management.",
+              },
+              {
+                image:
+                  "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&h=300&fit=crop&crop=center",
+                title: "Pharmacy & Health",
+                description:
+                  "Prescription medicines, health products, and medical supplies with compliance features.",
+              },
+              {
+                image:
+                  "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400&h=300&fit=crop&crop=center",
+                title: "Electronics & Tech",
+                description:
+                  "Latest gadgets, smartphones, computers, and tech accessories with warranty management.",
+              },
+              {
+                image:
+                  "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400&h=300&fit=crop&crop=center",
+                title: "Food Delivery",
+                description:
+                  "Restaurant partnerships, food delivery, and meal ordering with real-time tracking.",
+              },
+            ].map((industry, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+              >
+                <div className="h-48 overflow-hidden">
+                  <img
+                    src={industry.image}
+                    alt={industry.title}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-[#2E2E2E] mb-2">
+                    {industry.title}
+                  </h3>
+                  <p className="text-[#737373]">{industry.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Role-Based Login Section */}
       <div id="dashboards">
@@ -257,7 +401,7 @@ const Homepage = () => {
             >
               Start Free Trial
             </button>
-            <button 
+            <button
               className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-[#F25C44] transition-colors font-semibold text-lg"
               onClick={handleGetStarted}
             >
@@ -328,11 +472,12 @@ const Homepage = () => {
                     onClick={(e) => {
                       e.preventDefault();
                       setTimeout(() => {
-                        const dashboardsSection = document.getElementById('dashboards');
+                        const dashboardsSection =
+                          document.getElementById("dashboards");
                         if (dashboardsSection) {
-                          dashboardsSection.scrollIntoView({ 
-                            behavior: 'smooth',
-                            block: 'start'
+                          dashboardsSection.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
                           });
                         }
                       }, 100);
