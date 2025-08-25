@@ -11,8 +11,8 @@ from typing import Dict, List, Any
 import sys
 import os
 
-# Get backend URL from environment - Testing on localhost as requested
-BACKEND_URL = "http://localhost:8001/api"
+# Get backend URL from environment - Use the production URL from frontend/.env
+BACKEND_URL = "https://rider-portal-1.preview.emergentagent.com/api"
 
 class AuthenticationAPITester:
     def __init__(self, base_url: str):
