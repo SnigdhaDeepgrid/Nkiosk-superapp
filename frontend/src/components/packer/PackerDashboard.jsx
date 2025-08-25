@@ -112,7 +112,7 @@ const PackerDashboard = ({ user }) => {
 
     // Listen for WebSocket events
     ws.on('order_ready_for_packing', (order) => {
-      setPpackingQueue(prev => [...prev, order]);
+      setPackingQueue(prev => [...prev, order]);
       toast({
         title: "New Order Ready",
         description: `Order for ${order.customerName} ready for packing`,
