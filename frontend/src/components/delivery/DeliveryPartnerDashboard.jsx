@@ -45,6 +45,7 @@ const DeliveryPartnerDashboard = ({ user }) => {
     websocket,
     acceptAssignment,
     markPickedUp,
+    markArrived,
     verifyOtp,
     toggleAvailability,
     setAssignments,
