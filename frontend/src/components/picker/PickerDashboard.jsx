@@ -167,7 +167,14 @@ const PickerDashboard = ({ user }) => {
 
   const handleCompletePicking = () => {
     if (currentPickingOrder) {
+      const pickedItems = currentPickingOrder.items.filter(item => 
+        scannedItems[`${currentPickingOrder.id}_${item.id}`]?.verified
+      );
+      
+      // Complete in both picker and workflow contexts
       completePicking(currentPickingOrder.id);
+      completeOrderPicking(currentPickingOrder.id, pickerId, pickedItems);
+      
       toast({
         title: "Order Completed!",
         description: "Order sent to packing queue",
