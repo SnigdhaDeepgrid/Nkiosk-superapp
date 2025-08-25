@@ -135,7 +135,7 @@ const StepProgress = ({ currentOrder, onMarkPickedUp, onMarkArrived, onVerifyOtp
                       {/* Action Buttons */}
                       {isCurrent && (
                         <div className="ml-4">
-                          {step.id === 'picked_up' && canMarkPickedUp && (
+                          {step.id === 'navigate_to_store' && canMarkPickedUp && (
                             <Button 
                               onClick={onMarkPickedUp}
                               size="sm"
