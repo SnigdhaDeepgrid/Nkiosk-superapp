@@ -59,6 +59,22 @@ const RoleBasedLogin = () => {
       color: 'from-indigo-500 to-indigo-700'
     },
     {
+      role: 'picker',
+      title: 'Picker',
+      icon: Search,
+      description: 'Order picking and inventory',
+      demoEmail: 'picker@warehouse.com',
+      color: 'from-cyan-500 to-cyan-700'
+    },
+    {
+      role: 'packer',
+      title: 'Packer',
+      icon: Box,
+      description: 'Order packing and labeling',
+      demoEmail: 'packer@warehouse.com',
+      color: 'from-violet-500 to-violet-700'
+    },
+    {
       role: 'customer',
       title: 'Customer',
       icon: Users,
