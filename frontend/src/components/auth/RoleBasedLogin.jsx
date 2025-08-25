@@ -5,7 +5,7 @@ import { Input } from '../ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Label } from '../ui/label';
 import { useToast } from '../../hooks/use-toast';
-import { Eye, EyeOff, X, User, Crown, Store, Package, Truck, Users, HeadphonesIcon } from 'lucide-react';
+import { Eye, EyeOff, X, User, Crown, Store, Package, Truck, Users, HeadphonesIcon, Search, Box } from 'lucide-react';
 
 const RoleBasedLogin = () => {
   const [showModal, setShowModal] = useState(false);
