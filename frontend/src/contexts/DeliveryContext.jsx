@@ -162,7 +162,8 @@ export const DeliveryProvider = ({ children }) => {
 
     verifyOtp: (code) => {
       // In real app, this would verify with backend
-      if (code === '123456' || code.length === 6) {
+      // For demo, we'll accept any 6-digit code that the customer might provide
+      if (code.length === 6 && /^\d{6}$/.test(code)) {
         dispatch({ 
           type: DELIVERY_ACTIONS.UPDATE_ORDER_STATUS, 
           payload: { status: 'delivered' }
