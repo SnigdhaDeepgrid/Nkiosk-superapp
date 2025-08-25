@@ -37,7 +37,7 @@ const PickerDashboard = ({ user }) => {
 
   // Picker context
   const {
-    assignedOrders,
+    assignedOrders = [], // Default to empty array
     currentPickingOrder,
     pickingProgress,
     scannedItems,
@@ -53,6 +53,9 @@ const PickerDashboard = ({ user }) => {
     setWebSocket,
     setIndustry
   } = usePickerPacker();
+
+  // Ensure assignedOrders is always an array
+  const safeAssignedOrders = Array.isArray(assignedOrders) ? assignedOrders : [];
 
   // Initialize picker data and WebSocket
   useEffect(() => {
