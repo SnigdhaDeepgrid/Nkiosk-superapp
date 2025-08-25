@@ -326,11 +326,11 @@ const PickerDashboard = ({ user }) => {
             <div className="flex items-center justify-between">
               <h2 className="text-2xl font-bold text-gray-900">Assigned Orders</h2>
               <Badge variant="outline" className="px-3 py-1">
-                {assignedOrders.length} orders pending
+                {safeAssignedOrders.length} orders pending
               </Badge>
             </div>
 
-            {assignedOrders.length === 0 ? (
+            {safeAssignedOrders.length === 0 ? (
               <Card>
                 <CardContent className="p-12 text-center">
                   <Package className="w-16 h-16 mx-auto text-gray-400 mb-4" />
