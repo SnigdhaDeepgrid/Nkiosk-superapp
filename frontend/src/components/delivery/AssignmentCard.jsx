@@ -104,7 +104,7 @@ const AssignmentCard = ({ assignment, onAccept, disabled = false }) => {
         <Button 
           onClick={() => onAccept(id)}
           disabled={disabled}
-          className="w-full bg-green-600 hover:bg-green-700 text-white"
+          className="w-full bg-[#F25C44] hover:bg-[#a4230f] text-white"
           size="lg"
         >
           {disabled ? 'Processing...' : 'Accept Job'}

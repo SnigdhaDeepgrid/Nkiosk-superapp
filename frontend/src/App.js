@@ -34,7 +34,7 @@ const ProtectedRoute = ({ children }) => {
   console.log('✅ ProtectedRoute - User found, allowing access');
   
   // For SaaS Admin, Super Admin, and Customer, we need to handle tab changes in their own components
-  if (user.role === 'saas_admin' || user.role === 'super_admin' || user.role === 'customer') {
+  if (user.role === 'saas_admin' || user.role === 'super_admin' || user.role === 'customer' || user.role === 'delivery_partner') {
     return children; // Let the Dashboard component handle its own layout
   }
 
