@@ -164,9 +164,10 @@ function App() {
             <Toaster />
           </BrowserRouter>
         </div>
-      </CartProvider>
-    </AuthProvider>
-  );
+      </DeliveryProvider>
+    </CartProvider>
+  </AuthProvider>
+);
 }
 
 export default App;
