@@ -174,7 +174,7 @@ const OtpDialog = ({ isOpen, onClose, onVerify, customerName, orderId }) => {
           {/* Help Text */}
           <div className="text-center text-sm text-gray-500">
             <p>Ask the customer to provide the OTP from their order confirmation</p>
-            <p className="text-xs mt-1">Demo OTP: <span className="font-mono">123456</span></p>
+            <p className="text-xs mt-1 text-orange-600">⚠️ Customer will receive OTP via SMS/App notification</p>
           </div>
         </div>
 
