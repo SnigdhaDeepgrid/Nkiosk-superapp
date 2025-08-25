@@ -132,14 +132,20 @@ class MockWebSocket {
       {
         type: 'order.otp.issued',
         orderId: 'order_123',
-        otp: '123456',
-        message: 'OTP has been issued for delivery verification',
+        message: 'OTP has been sent to customer via SMS. Ask customer for the 6-digit code.',
+        customerMessage: 'Customer will receive: "Your delivery OTP is: XXXXXX"',
         timestamp: new Date()
       },
       {
         type: 'rider.job.assigned',
         assignmentId: 'assign_456',
         message: 'New delivery assignment received',
+        timestamp: new Date()
+      },
+      {
+        type: 'customer.arrived',
+        orderId: 'order_123',
+        message: 'You have arrived at customer location. Ask customer for OTP to complete delivery.',
         timestamp: new Date()
       }
     ];
