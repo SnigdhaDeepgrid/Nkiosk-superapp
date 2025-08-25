@@ -89,11 +89,12 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <div className="App">
-          <BrowserRouter>
-            <Routes>
-              {/* Homepage route - this will be the landing page */}
-              <Route path="/" element={<Homepage />} />
+        <DeliveryProvider>
+          <div className="App">
+            <BrowserRouter>
+              <Routes>
+                {/* Homepage route - this will be the landing page */}
+                <Route path="/" element={<Homepage />} />
               
               {/* Auth routes */}
               <Route path="/auth" element={<LoginForm />} />
