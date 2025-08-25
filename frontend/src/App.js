@@ -86,8 +86,8 @@ const Dashboard = () => {
       console.log('📋 Routing to Packer Dashboard');
       return <PackerDashboard user={user} />;
     case 'customer':
-      console.log('👤 Routing to Customer Dashboard');
-      return <NKioskDashboard user={user} />;
+      console.log('🛒 Routing to Enhanced Customer Dashboard');
+      return <EnhancedCustomerDashboard user={user} />;
     case 'support_staff':
       console.log('💬 Routing to Support Staff Dashboard');
       return <div>Support Staff Dashboard - Coming Soon</div>;
