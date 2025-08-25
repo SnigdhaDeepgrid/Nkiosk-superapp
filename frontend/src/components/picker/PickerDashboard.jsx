@@ -253,14 +253,14 @@ const PickerDashboard = ({ user }) => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Quick Stats */}
+            {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
           <Card>
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">Assigned Orders</p>
-                  <p className="text-2xl font-bold">{assignedOrders.length}</p>
+                  <p className="text-2xl font-bold">{safeAssignedOrders.length}</p>
                 </div>
                 <Package className="w-8 h-8 text-blue-500" />
               </div>
