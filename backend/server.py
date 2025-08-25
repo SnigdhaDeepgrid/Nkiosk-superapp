@@ -701,6 +701,26 @@ def get_mock_user_by_email(email: str) -> Optional[dict]:
             'roleDisplay': 'Support Staff',
             'avatar': 'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=150&h=150&fit=crop&crop=face',
             'created_at': datetime.utcnow()
+        },
+        'picker@warehouse.com': {
+            'id': '8',
+            'name': 'Alex Thompson',
+            'email': 'picker@warehouse.com',
+            'role': 'picker',
+            'roleDisplay': 'Picker',
+            'industry': 'grocery',
+            'avatar': 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
+            'created_at': datetime.utcnow()
+        },
+        'packer@warehouse.com': {
+            'id': '9',
+            'name': 'Maria Rodriguez',
+            'email': 'packer@warehouse.com',
+            'role': 'packer',
+            'roleDisplay': 'Packer',
+            'industry': 'grocery',
+            'avatar': 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face',
+            'created_at': datetime.utcnow()
         }
     }
     return mock_users.get(email)
