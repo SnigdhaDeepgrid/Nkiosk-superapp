@@ -72,7 +72,33 @@ const Dashboard = () => {
       return <SuperAdminDashboard user={user} />;
     case 'store_manager':
       console.log('🏪 Routing to Store Manager Dashboard');
-      return <StoreManagerDashboard user={user} />;
+      return (
+        <div className="min-h-screen bg-gray-50">
+          <header className="bg-white shadow-sm border-b">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-16">
+                <h1 className="text-xl font-bold text-gray-900">🏪 Store Manager Dashboard</h1>
+                <div className="flex items-center space-x-4">
+                  <span className="text-sm font-medium">{user?.name || 'Store Manager'}</span>
+                  <button 
+                    onClick={() => {
+                      localStorage.removeItem('user');
+                      localStorage.removeItem('token');
+                      window.location.href = '/';
+                    }}
+                    className="text-gray-500 hover:text-gray-700"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+          </header>
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <StoreManagerWorkflow user={user} />
+          </main>
+        </div>
+      );
     case 'vendor':
       console.log('🛒 Routing to Vendor Dashboard');
       return <VendorDashboard user={user} />;
