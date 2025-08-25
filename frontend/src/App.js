@@ -25,6 +25,8 @@ import VendorDashboard from "./components/vendor/VendorDashboard";
 import DeliveryPartnerDashboard from "./components/delivery/DeliveryPartnerDashboard";
 import PickerDashboard from "./components/picker/PickerDashboard";
 import PackerDashboard from "./components/packer/PackerDashboard";
+import EnhancedCustomerDashboard from "./components/customer/EnhancedCustomerDashboard";
+import StoreManagerWorkflow from "./components/workflow/StoreManagerWorkflow";
 
 const ProtectedRoute = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
