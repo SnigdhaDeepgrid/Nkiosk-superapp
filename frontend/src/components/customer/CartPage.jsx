@@ -87,7 +87,7 @@ const CartPage = () => {
   const tax = cartItems.length > 0 ? 2.00 : 0;
   const total = subtotal + delivery + tax;
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (cartItems.length === 0) {
       toast({
         title: "Cart Empty",
@@ -97,12 +97,82 @@ const CartPage = () => {
       return;
     }
 
-    toast({
-      title: "Order Placed Successfully!",
-      description: `Your order of $${total.toFixed(2)} has been placed.`,
-    });
-    clearCart();
-    navigate('/customer-app/orders');
+    if (!deliveryAddress.trim()) {
+      toast({
+        title: "Missing Address",
+        description: "Please provide a delivery address",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    if (!paymentMethod) {
+      toast({
+        title: "Payment Method Required",
+        description: "Please select a payment method",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsPlacingOrder(true);
+
+    try {
+      // Determine category based on cart items
+      const categoryMap = {
+        'food': 'food_delivery',
+        'grocery': 'grocery', 
+        'pharmacy': 'pharmacy',
+        'electronics': 'electronics'
+      };
+      
+      const categories = [...new Set(cartItems.map(item => item.category || item.type))];
+      const primaryCategory = categories[0] || 'grocery';
+      const orderCategory = categoryMap[primaryCategory] || 'grocery';
+
+      // Create order data
+      const orderData = {
+        customerId: 'customer_001', // Would come from auth context
+        customerName: 'John Doe', // Would come from user context
+        storeId: 'store_001',
+        category: orderCategory,
+        items: cartItems.map(item => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          unit: 'piece',
+          barcode: `${item.id}_${Date.now()}`,
+          status: 'pending'
+        })),
+        totalAmount: total,
+        deliveryFee: delivery,
+        deliveryAddress,
+        paymentMethod,
+        specialInstructions,
+        estimatedDeliveryTime: orderCategory === 'food_delivery' ? 30 : 60
+      };
+
+      // Place order through workflow
+      placeOrder(orderData);
+
+      toast({
+        title: "Order Placed Successfully!",
+        description: `Your ${orderCategory.replace('_', ' ')} order has been placed and sent to the store for confirmation`,
+      });
+
+      clearCart();
+      navigate('/customer-app/orders');
+
+    } catch (error) {
+      toast({
+        title: "Order Failed",
+        description: "Failed to place order. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsPlacingOrder(false);
+    }
   };
 
   return (
