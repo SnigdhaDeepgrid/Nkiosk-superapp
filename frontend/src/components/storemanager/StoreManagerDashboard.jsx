@@ -26,6 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Input } from '../ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useToast } from '../../hooks/use-toast';
+import StoreManagerWorkflow from '../workflow/StoreManagerWorkflow';
 
 const StoreManagerDashboard = ({ user }) => {
   const navigate = useNavigate();
