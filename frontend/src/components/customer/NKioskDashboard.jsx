@@ -250,8 +250,13 @@ const NKioskDashboard = ({ user }) => {
                 onClick={() => navigate("/customer-app/orders")}
                 className="flex items-center gap-2 text-coral-red hover:text-coral-red-700 hover:bg-coral-red-50"
               >
-                <div className="w-6 h-6 flex items-center justify-center">
-                  <span className="text-lg">📦</span>
+                <div className="w-6 h-6 flex items-center justify-center relative">
+                  <Package className="w-5 h-5" />
+                  {activeOrders.length > 0 && (
+                    <Badge className="absolute -top-2 -right-2 w-4 h-4 rounded-full bg-green-500 text-white text-xs flex items-center justify-center">
+                      {activeOrders.length}
+                    </Badge>
+                  )}
                 </div>
                 My Orders
               </Button>
