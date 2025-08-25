@@ -332,6 +332,68 @@ const NKioskDashboard = ({ user }) => {
           </div>
         </div>
 
+        {/* Active Orders Section */}
+        {activeOrders.length > 0 && (
+          <div className="mb-12">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-app-gray-900">Your Active Orders</h2>
+              <Button
+                variant="outline"
+                onClick={() => navigate("/customer-app/orders")}
+                className="flex items-center gap-2"
+              >
+                <Eye className="w-4 h-4" />
+                View All Orders
+              </Button>
+            </div>
+            
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {activeOrders.slice(0, 3).map((order) => (
+                <Card key={order.id} className="border-coral-red-200 hover:shadow-lg transition-shadow">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-semibold text-lg">Order #{order.id.slice(-6)}</h3>
+                      <Badge className="capitalize bg-blue-100 text-blue-800">
+                        {order.status.replace(/_/g, ' ')}
+                      </Badge>
+                    </div>
+                    
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Category:</span>
+                        <span className="font-medium capitalize">{order.category}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Items:</span>
+                        <span className="font-medium">{order.items?.length || 0}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Total:</span>
+                        <span className="font-medium">₹{order.totalAmount}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Placed:</span>
+                        <span className="font-medium">{new Date(order.createdAt).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                    
+                    <OrderTracker orderId={order.id} minimal={true} />
+                    
+                    <Button
+                      onClick={() => navigate(`/customer-app/track/${order.id}`)}
+                      className="w-full mt-3 bg-coral-red hover:bg-coral-red-700"
+                      size="sm"
+                    >
+                      <Clock className="w-3 h-3 mr-2" />
+                      Track Order
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-8 items-center">
           {/* 3D Phone Illustration (2 columns on large screens) */}
           <div className="col-span-1 lg:col-span-2 flex justify-center">
