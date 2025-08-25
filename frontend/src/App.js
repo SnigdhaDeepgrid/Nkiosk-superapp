@@ -101,8 +101,9 @@ function App() {
       <CartProvider>
         <DeliveryProvider>
           <PickerPackerProvider>
-            <div className="App">
-              <BrowserRouter>
+            <OrderWorkflowProvider>
+              <div className="App">
+                <BrowserRouter>
               <Routes>
                 {/* Homepage route - this will be the landing page */}
                 <Route path="/" element={<Homepage />} />
