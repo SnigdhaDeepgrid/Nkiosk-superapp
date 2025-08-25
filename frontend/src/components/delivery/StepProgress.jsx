@@ -42,11 +42,11 @@ const StepProgress = ({ currentOrder, onMarkPickedUp, onMarkArrived, onVerifyOtp
   const getCurrentStepIndex = () => {
     const status = currentOrder.status;
     switch (status) {
-      case 'accepted': return 0;
-      case 'picked_up': return 2;
-      case 'en_route': return 2;
-      case 'arrived_customer': return 3;
-      case 'delivered': return 4;
+      case 'accepted': return 0;           // Navigate to Store
+      case 'picked_up': return 1;          // Picked Up (completed)
+      case 'en_route': return 2;           // Navigate to Customer  
+      case 'arrived_customer': return 3;   // Verify OTP
+      case 'delivered': return 4;          // Delivered
       default: return 0;
     }
   };
