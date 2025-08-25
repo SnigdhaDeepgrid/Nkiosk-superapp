@@ -1457,51 +1457,402 @@ class AnalyticsAPITester:
         
         return passed == total
 
+class PickerPackerAPITester:
+    def __init__(self, base_url: str):
+        self.base_url = base_url
+        self.session = requests.Session()
+        self.test_results = []
+        self.auth_tokens = {}
+        
+    def log_test(self, test_name: str, success: bool, message: str, details: Dict = None):
+        """Log test results"""
+        result = {
+            "test": test_name,
+            "success": success,
+            "message": message,
+            "details": details or {}
+        }
+        self.test_results.append(result)
+        status = "✅ PASS" if success else "❌ FAIL"
+        print(f"{status}: {test_name} - {message}")
+        if details and not success:
+            print(f"   Details: {details}")
+    
+    def validate_picker_dashboard_data(self, data: Dict) -> tuple[bool, str]:
+        """Validate picker dashboard data structure"""
+        required_fields = ['assigned_orders', 'items_picked_today', 'avg_pick_time', 'accuracy_rate']
+        
+        for field in required_fields:
+            if field not in data:
+                return False, f"Missing field: {field}"
+        
+        # Validate data types
+        if not isinstance(data['assigned_orders'], int):
+            return False, f"assigned_orders should be integer, got {type(data['assigned_orders'])}"
+        
+        if not isinstance(data['items_picked_today'], int):
+            return False, f"items_picked_today should be integer, got {type(data['items_picked_today'])}"
+        
+        if not isinstance(data['avg_pick_time'], (int, float)):
+            return False, f"avg_pick_time should be numeric, got {type(data['avg_pick_time'])}"
+        
+        if not isinstance(data['accuracy_rate'], (int, float)):
+            return False, f"accuracy_rate should be numeric, got {type(data['accuracy_rate'])}"
+        
+        return True, "Picker dashboard data structure is valid"
+    
+    def validate_packer_dashboard_data(self, data: Dict) -> tuple[bool, str]:
+        """Validate packer dashboard data structure"""
+        required_fields = ['packing_queue', 'packed_today', 'labels_generated', 'avg_pack_time']
+        
+        for field in required_fields:
+            if field not in data:
+                return False, f"Missing field: {field}"
+        
+        # Validate data types
+        if not isinstance(data['packing_queue'], int):
+            return False, f"packing_queue should be integer, got {type(data['packing_queue'])}"
+        
+        if not isinstance(data['packed_today'], int):
+            return False, f"packed_today should be integer, got {type(data['packed_today'])}"
+        
+        if not isinstance(data['labels_generated'], int):
+            return False, f"labels_generated should be integer, got {type(data['labels_generated'])}"
+        
+        if not isinstance(data['avg_pack_time'], (int, float)):
+            return False, f"avg_pack_time should be numeric, got {type(data['avg_pack_time'])}"
+        
+        return True, "Packer dashboard data structure is valid"
+    
+    def test_picker_authentication(self):
+        """Test picker authentication with picker@warehouse.com / password123"""
+        try:
+            login_data = {
+                "email": "picker@warehouse.com",
+                "password": "password123"
+            }
+            
+            response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
+            
+            if response.status_code != 200:
+                self.log_test("Picker Authentication", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return None
+            
+            data = response.json()
+            
+            # Validate response structure
+            required_fields = ['user', 'token', 'message']
+            for field in required_fields:
+                if field not in data:
+                    self.log_test("Picker Authentication", False, f"Missing field: {field}")
+                    return None
+            
+            # Validate user data
+            user = data['user']
+            if user['role'] != 'picker':
+                self.log_test("Picker Authentication", False, f"Expected role 'picker', got '{user['role']}'")
+                return None
+            
+            if user['email'] != 'picker@warehouse.com':
+                self.log_test("Picker Authentication", False, f"Expected email 'picker@warehouse.com', got '{user['email']}'")
+                return None
+            
+            # Validate JWT token
+            token = data['token']
+            if not token or len(token) < 10:
+                self.log_test("Picker Authentication", False, "Invalid or empty JWT token")
+                return None
+            
+            # Store token for later use
+            self.auth_tokens['picker'] = token
+            
+            self.log_test("Picker Authentication", True, 
+                        f"Successfully authenticated picker: {user['name']}",
+                        {
+                            "user_id": user['id'],
+                            "email": user['email'],
+                            "role": user['role'],
+                            "roleDisplay": user['roleDisplay'],
+                            "token_length": len(token)
+                        })
+            return token
+            
+        except Exception as e:
+            self.log_test("Picker Authentication", False, f"Exception: {str(e)}")
+            return None
+    
+    def test_packer_authentication(self):
+        """Test packer authentication with packer@warehouse.com / password123"""
+        try:
+            login_data = {
+                "email": "packer@warehouse.com",
+                "password": "password123"
+            }
+            
+            response = self.session.post(f"{self.base_url}/auth/login", json=login_data)
+            
+            if response.status_code != 200:
+                self.log_test("Packer Authentication", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return None
+            
+            data = response.json()
+            
+            # Validate response structure
+            required_fields = ['user', 'token', 'message']
+            for field in required_fields:
+                if field not in data:
+                    self.log_test("Packer Authentication", False, f"Missing field: {field}")
+                    return None
+            
+            # Validate user data
+            user = data['user']
+            if user['role'] != 'packer':
+                self.log_test("Packer Authentication", False, f"Expected role 'packer', got '{user['role']}'")
+                return None
+            
+            if user['email'] != 'packer@warehouse.com':
+                self.log_test("Packer Authentication", False, f"Expected email 'packer@warehouse.com', got '{user['email']}'")
+                return None
+            
+            # Validate JWT token
+            token = data['token']
+            if not token or len(token) < 10:
+                self.log_test("Packer Authentication", False, "Invalid or empty JWT token")
+                return None
+            
+            # Store token for later use
+            self.auth_tokens['packer'] = token
+            
+            self.log_test("Packer Authentication", True, 
+                        f"Successfully authenticated packer: {user['name']}",
+                        {
+                            "user_id": user['id'],
+                            "email": user['email'],
+                            "role": user['role'],
+                            "roleDisplay": user['roleDisplay'],
+                            "token_length": len(token)
+                        })
+            return token
+            
+        except Exception as e:
+            self.log_test("Packer Authentication", False, f"Exception: {str(e)}")
+            return None
+    
+    def test_picker_dashboard_access(self, token: str):
+        """Test picker dashboard access with authentication"""
+        try:
+            headers = {"Authorization": f"Bearer {token}"}
+            response = self.session.get(f"{self.base_url}/dashboard/picker", headers=headers)
+            
+            if response.status_code != 200:
+                self.log_test("Picker Dashboard Access", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return
+            
+            data = response.json()
+            
+            # Validate response structure
+            required_fields = ['dashboard', 'user', 'data']
+            for field in required_fields:
+                if field not in data:
+                    self.log_test("Picker Dashboard Access", False, f"Missing field: {field}")
+                    return
+            
+            # Validate dashboard type
+            if data['dashboard'] != 'picker':
+                self.log_test("Picker Dashboard Access", False, 
+                            f"Expected dashboard 'picker', got '{data['dashboard']}'")
+                return
+            
+            # Validate user role
+            if data['user']['role'] != 'picker':
+                self.log_test("Picker Dashboard Access", False, 
+                            f"Expected user role 'picker', got '{data['user']['role']}'")
+                return
+            
+            # Validate dashboard data structure
+            dashboard_data = data['data']
+            is_valid, message = self.validate_picker_dashboard_data(dashboard_data)
+            
+            if is_valid:
+                self.log_test("Picker Dashboard Access", True, 
+                            "Successfully accessed picker dashboard",
+                            {
+                                "assigned_orders": dashboard_data['assigned_orders'],
+                                "items_picked_today": dashboard_data['items_picked_today'],
+                                "avg_pick_time": dashboard_data['avg_pick_time'],
+                                "accuracy_rate": dashboard_data['accuracy_rate']
+                            })
+            else:
+                self.log_test("Picker Dashboard Access", False, 
+                            f"Dashboard data validation failed: {message}")
+                
+        except Exception as e:
+            self.log_test("Picker Dashboard Access", False, f"Exception: {str(e)}")
+    
+    def test_packer_dashboard_access(self, token: str):
+        """Test packer dashboard access with authentication"""
+        try:
+            headers = {"Authorization": f"Bearer {token}"}
+            response = self.session.get(f"{self.base_url}/dashboard/packer", headers=headers)
+            
+            if response.status_code != 200:
+                self.log_test("Packer Dashboard Access", False, 
+                            f"HTTP {response.status_code}: {response.text}")
+                return
+            
+            data = response.json()
+            
+            # Validate response structure
+            required_fields = ['dashboard', 'user', 'data']
+            for field in required_fields:
+                if field not in data:
+                    self.log_test("Packer Dashboard Access", False, f"Missing field: {field}")
+                    return
+            
+            # Validate dashboard type
+            if data['dashboard'] != 'packer':
+                self.log_test("Packer Dashboard Access", False, 
+                            f"Expected dashboard 'packer', got '{data['dashboard']}'")
+                return
+            
+            # Validate user role
+            if data['user']['role'] != 'packer':
+                self.log_test("Packer Dashboard Access", False, 
+                            f"Expected user role 'packer', got '{data['user']['role']}'")
+                return
+            
+            # Validate dashboard data structure
+            dashboard_data = data['data']
+            is_valid, message = self.validate_packer_dashboard_data(dashboard_data)
+            
+            if is_valid:
+                self.log_test("Packer Dashboard Access", True, 
+                            "Successfully accessed packer dashboard",
+                            {
+                                "packing_queue": dashboard_data['packing_queue'],
+                                "packed_today": dashboard_data['packed_today'],
+                                "labels_generated": dashboard_data['labels_generated'],
+                                "avg_pack_time": dashboard_data['avg_pack_time']
+                            })
+            else:
+                self.log_test("Packer Dashboard Access", False, 
+                            f"Dashboard data validation failed: {message}")
+                
+        except Exception as e:
+            self.log_test("Packer Dashboard Access", False, f"Exception: {str(e)}")
+    
+    def test_unauthorized_access_control(self):
+        """Test that picker cannot access packer dashboard and vice versa"""
+        try:
+            picker_token = self.auth_tokens.get('picker')
+            packer_token = self.auth_tokens.get('packer')
+            
+            if not picker_token or not packer_token:
+                self.log_test("Unauthorized Access Control", False, 
+                            "Missing authentication tokens for access control test")
+                return
+            
+            # Test picker trying to access packer dashboard
+            headers = {"Authorization": f"Bearer {picker_token}"}
+            response = self.session.get(f"{self.base_url}/dashboard/packer", headers=headers)
+            
+            if response.status_code == 403:
+                self.log_test("Picker -> Packer Dashboard (Unauthorized)", True, 
+                            "Correctly denied picker access to packer dashboard")
+            else:
+                self.log_test("Picker -> Packer Dashboard (Unauthorized)", False, 
+                            f"Expected 403 Forbidden, got {response.status_code}")
+            
+            # Test packer trying to access picker dashboard
+            headers = {"Authorization": f"Bearer {packer_token}"}
+            response = self.session.get(f"{self.base_url}/dashboard/picker", headers=headers)
+            
+            if response.status_code == 403:
+                self.log_test("Packer -> Picker Dashboard (Unauthorized)", True, 
+                            "Correctly denied packer access to picker dashboard")
+            else:
+                self.log_test("Packer -> Picker Dashboard (Unauthorized)", False, 
+                            f"Expected 403 Forbidden, got {response.status_code}")
+                
+        except Exception as e:
+            self.log_test("Unauthorized Access Control", False, f"Exception: {str(e)}")
+    
+    def run_picker_packer_tests(self):
+        """Run all picker and packer authentication and dashboard tests"""
+        print("=" * 80)
+        print("PICKER & PACKER AUTHENTICATION AND DASHBOARD TESTING SUITE")
+        print("=" * 80)
+        print(f"Testing backend URL: {self.base_url}")
+        print()
+        
+        # Test picker authentication
+        print("🔹 Testing Picker Authentication...")
+        picker_token = self.test_picker_authentication()
+        
+        # Test packer authentication
+        print("\n🔹 Testing Packer Authentication...")
+        packer_token = self.test_packer_authentication()
+        
+        # Test dashboard access if authentication was successful
+        if picker_token:
+            print("\n🔹 Testing Picker Dashboard Access...")
+            self.test_picker_dashboard_access(picker_token)
+        
+        if packer_token:
+            print("\n🔹 Testing Packer Dashboard Access...")
+            self.test_packer_dashboard_access(packer_token)
+        
+        # Test access control
+        if picker_token and packer_token:
+            print("\n🔹 Testing Access Control...")
+            self.test_unauthorized_access_control()
+        
+        # Summary
+        print("\n" + "=" * 80)
+        print("PICKER & PACKER TEST SUMMARY")
+        print("=" * 80)
+        
+        passed = sum(1 for result in self.test_results if result['success'])
+        total = len(self.test_results)
+        
+        print(f"Total Tests: {total}")
+        print(f"Passed: {passed}")
+        print(f"Failed: {total - passed}")
+        print(f"Success Rate: {(passed/total)*100:.1f}%")
+        
+        if total - passed > 0:
+            print("\nFAILED TESTS:")
+            for result in self.test_results:
+                if not result['success']:
+                    print(f"  - {result['test']}: {result['message']}")
+        
+        return passed == total
+
+
 def main():
     """Main test execution"""
-    print("🚀 Starting Comprehensive Backend API Testing Suite")
+    print("🚀 Starting Picker & Packer Authentication Testing Suite")
     print("=" * 80)
     
-    # Test Authentication APIs
-    auth_tester = AuthenticationAPITester(BACKEND_URL)
-    auth_success = auth_tester.run_all_authentication_tests()
-    
-    print("\n" + "=" * 80)
-    
-    # Test Analytics APIs
-    analytics_tester = AnalyticsAPITester(BACKEND_URL)
-    analytics_success = analytics_tester.run_all_tests()
-    
-    print("\n" + "=" * 80)
-    
-    # Test Super Admin APIs
-    super_admin_tester = SuperAdminAPITester(BACKEND_URL)
-    super_admin_success = super_admin_tester.run_all_super_admin_tests()
+    # Test Picker & Packer Authentication and Dashboard Access
+    picker_packer_tester = PickerPackerAPITester(BACKEND_URL)
+    picker_packer_success = picker_packer_tester.run_picker_packer_tests()
     
     # Overall Summary
     print("\n" + "=" * 80)
-    print("🎯 OVERALL TEST SUMMARY")
+    print("🎯 PICKER & PACKER TEST SUMMARY")
     print("=" * 80)
     
-    auth_passed = sum(1 for result in auth_tester.test_results if result['success'])
-    auth_total = len(auth_tester.test_results)
+    picker_packer_passed = sum(1 for result in picker_packer_tester.test_results if result['success'])
+    picker_packer_total = len(picker_packer_tester.test_results)
     
-    analytics_passed = sum(1 for result in analytics_tester.test_results if result['success'])
-    analytics_total = len(analytics_tester.test_results)
+    print(f"Picker & Packer Tests: {picker_packer_passed}/{picker_packer_total} passed ({(picker_packer_passed/picker_packer_total)*100:.1f}%)")
     
-    super_admin_passed = sum(1 for result in super_admin_tester.test_results if result['success'])
-    super_admin_total = len(super_admin_tester.test_results)
-    
-    total_passed = auth_passed + analytics_passed + super_admin_passed
-    total_tests = auth_total + analytics_total + super_admin_total
-    
-    print(f"Authentication API Tests: {auth_passed}/{auth_total} passed")
-    print(f"Analytics API Tests: {analytics_passed}/{analytics_total} passed")
-    print(f"Super Admin API Tests: {super_admin_passed}/{super_admin_total} passed")
-    print(f"Overall: {total_passed}/{total_tests} passed ({(total_passed/total_tests)*100:.1f}%)")
-    
-    if auth_success and analytics_success and super_admin_success:
-        print("\n🎉 All backend API tests passed successfully!")
+    if picker_packer_success:
+        print("\n🎉 All picker and packer authentication tests passed successfully!")
         sys.exit(0)
     else:
         print("\n❌ Some tests failed. Check the details above.")
