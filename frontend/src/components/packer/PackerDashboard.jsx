@@ -341,7 +341,7 @@ const PackerDashboard = ({ user }) => {
               </Badge>
             </div>
 
-            {packingQueue.length === 0 ? (
+            {safePackingQueue.length === 0 ? (
               <Card>
                 <CardContent className="p-12 text-center">
                   <Package2 className="w-16 h-16 mx-auto text-gray-400 mb-4" />
