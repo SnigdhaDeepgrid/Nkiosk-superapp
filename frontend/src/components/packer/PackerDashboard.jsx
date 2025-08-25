@@ -208,12 +208,13 @@ const PackerDashboard = ({ user }) => {
   const IconComponent = config.icon;
 
   // Calculate statistics
-  const totalInQueue = packingQueue.length;
-  const urgentOrders = packingQueue.filter(order => order.priority === 'urgent' || order.priority === 'high').length;
-  const avgWaitTime = packingQueue.length > 0 
-    ? Math.round(packingQueue.reduce((sum, order) => 
+  const safePackingQueue = Array.isArray(packingQueue) ? packingQueue : [];
+  const totalInQueue = safePackingQueue.length;
+  const urgentOrders = safePackingQueue.filter(order => order.priority === 'urgent' || order.priority === 'high').length;
+  const avgWaitTime = safePackingQueue.length > 0 
+    ? Math.round(safePackingQueue.reduce((sum, order) => 
         sum + (new Date() - order.completedPickingAt) / (1000 * 60), 0
-      ) / packingQueue.length)
+      ) / safePackingQueue.length)
     : 0;
 
   return (
