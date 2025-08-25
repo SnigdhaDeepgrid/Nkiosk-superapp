@@ -316,6 +316,7 @@ const DeliveryPartnerDashboard = ({ user }) => {
               <StepProgress 
                 currentOrder={currentOrder}
                 onMarkPickedUp={handleMarkPickedUp}
+                onMarkArrived={handleMarkArrived}
                 onVerifyOtp={handleVerifyOtp}
               />
             ) : (
