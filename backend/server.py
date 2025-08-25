@@ -903,6 +903,40 @@ async def get_delivery_partner_dashboard(current_user: dict = Depends(get_curren
         }
     }
 
+@api_router.get("/dashboard/picker")
+async def get_picker_dashboard(current_user: dict = Depends(get_current_user)):
+    """Get Picker dashboard data"""
+    if current_user["role"] != "picker":
+        raise HTTPException(status_code=403, detail="Access denied: Picker role required")
+    
+    return {
+        "dashboard": "picker",
+        "user": current_user,
+        "data": {
+            "assigned_orders": 4,
+            "items_picked_today": 47,
+            "avg_pick_time": 8.5,
+            "accuracy_rate": 98.2
+        }
+    }
+
+@api_router.get("/dashboard/packer")
+async def get_packer_dashboard(current_user: dict = Depends(get_current_user)):
+    """Get Packer dashboard data"""
+    if current_user["role"] != "packer":
+        raise HTTPException(status_code=403, detail="Access denied: Packer role required")
+    
+    return {
+        "dashboard": "packer",
+        "user": current_user,
+        "data": {
+            "packing_queue": 6,
+            "packed_today": 23,
+            "labels_generated": 18,
+            "avg_pack_time": 5.2
+        }
+    }
+
 @api_router.get("/dashboard/customer")
 async def get_customer_dashboard(current_user: dict = Depends(get_current_user)):
     """Get Customer dashboard data"""
