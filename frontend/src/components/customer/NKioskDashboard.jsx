@@ -276,9 +276,19 @@ const NKioskDashboard = ({ user }) => {
               </Button>
 
               <div className="flex items-center gap-2">
-                <span className="text-coral-red text-lg">👤</span>
-                <span className="text-sm font-medium text-app-gray-900">John Smith</span>
-                <span className="text-xs text-app-gray-500">customer</span>
+                <Avatar className="w-8 h-8">
+                  <AvatarImage src={user?.avatar} />
+                  <AvatarFallback>{user?.name?.charAt(0) || 'U'}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <span className="text-sm font-medium text-app-gray-900">{user?.name || 'Customer'}</span>
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs text-app-gray-500">{user?.role || 'customer'}</span>
+                    {notifications.filter(n => n.userId === customerId).length > 0 && (
+                      <Bell className="w-3 h-3 text-orange-500" />
+                    )}
+                  </div>
+                </div>
                 <Button
                   variant="outline"
                   size="sm"
