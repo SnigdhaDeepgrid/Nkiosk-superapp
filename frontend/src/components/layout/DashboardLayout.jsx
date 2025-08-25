@@ -144,7 +144,7 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
   };
 
   return (
-    <div className="min-h-screen bg-app-gray-50">
+    <div className="min-h-screen bg-app-gray-50 flex">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div
@@ -248,7 +248,7 @@ const DashboardLayout = ({ children, user, activeTab, onTabChange }) => {
       </aside>
 
       {/* Main Content */}
-      <div className="md:ml-72">
+      <div className="w-full">
         {/* Top Header */}
         <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-app-gray-200 px-6 py-4">
           <div className="flex items-center justify-between">
