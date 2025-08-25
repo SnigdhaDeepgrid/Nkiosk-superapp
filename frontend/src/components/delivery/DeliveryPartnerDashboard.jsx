@@ -116,8 +116,15 @@ const DeliveryPartnerDashboard = ({ user }) => {
 
     ws.on('order.otp.issued', (data) => {
       toast({
-        title: "OTP Issued",
-        description: `Customer OTP: ${data.otp}`,
+        title: "Customer OTP Sent",
+        description: "OTP sent to customer. Ask them for the 6-digit code to complete delivery.",
+      });
+    });
+
+    ws.on('customer.arrived', (data) => {
+      toast({
+        title: "Arrived at Customer",
+        description: "You're at the delivery location. Request OTP from customer.",
       });
     });
 
