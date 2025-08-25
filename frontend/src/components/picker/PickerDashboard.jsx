@@ -21,7 +21,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Progress } from '../ui/progress';
 import { useToast } from '../../hooks/use-toast';
 import { usePickerPacker } from '../../contexts/PickerPackerContext';
+import { useOrderWorkflow } from '../../contexts/OrderWorkflowContext';
 import { createPickerSocket } from '../../services/mockPickerPackerSocket';
+import { createWorkflowWebSocket } from '../../services/workflowWebSocket';
 
 // Import picker components
 import OrderCard from './OrderCard';
