@@ -54,10 +54,20 @@ const PickerDashboard = ({ user }) => {
     setWorker,
     setWebSocket,
     setIndustry
-  } = usePickerPacker();
+  } = usePickerPicker();
+
+  // Order workflow context
+  const {
+    pickerOrders,
+    setUserContext,
+    connectWebSocket: connectWorkflowSocket,
+    completePicking: completeOrderPicking
+  } = useOrderWorkflow();
 
   // Ensure assignedOrders is always an array
   const safeAssignedOrders = Array.isArray(assignedOrders) ? assignedOrders : [];
+  const pickerId = user?.id || 'picker_001';
+  const workflowOrders = pickerOrders[pickerId] || [];
 
   // Initialize picker data and WebSocket
   useEffect(() => {
