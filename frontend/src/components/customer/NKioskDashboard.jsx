@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapPin, ShoppingCart, User, LogOut, Bell } from "lucide-react";
+import { MapPin, ShoppingCart, User, LogOut, Bell, Package, Eye, Clock } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useToast } from "../../hooks/use-toast";
 import { useCart } from "../../contexts/CartContext";
+import { useOrderWorkflow } from "../../contexts/OrderWorkflowContext";
+import { createWorkflowWebSocket } from "../../services/workflowWebSocket";
 import LocationSelector from "./LocationSelector";
+import OrderTracker from "../workflow/OrderTracker";
 
 const NKioskDashboard = ({ user }) => {
   const navigate = useNavigate();
