@@ -45,7 +45,7 @@ const StepProgress = ({ currentOrder, onMarkPickedUp, onVerifyOtp }) => {
       case 'accepted': return 0;
       case 'picked_up': return 2;
       case 'en_route': return 2;
-      case 'arrived': return 3;
+      case 'arrived_customer': return 3;
       case 'delivered': return 4;
       default: return 0;
     }
@@ -53,7 +53,7 @@ const StepProgress = ({ currentOrder, onMarkPickedUp, onVerifyOtp }) => {
 
   const currentStepIndex = getCurrentStepIndex();
   const canMarkPickedUp = currentOrder.status === 'accepted';
-  const canVerifyOtp = currentOrder.status === 'picked_up' || currentOrder.status === 'en_route';
+  const canVerifyOtp = currentOrder.status === 'picked_up' || currentOrder.status === 'en_route' || currentOrder.status === 'arrived_customer';
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
