@@ -42,7 +42,7 @@ const PackerDashboard = ({ user }) => {
     generatedLabels,
     currentIndustry,
     websocket,
-    setPpackingQueue,
+    setPackingQueue,
     startPackingOrder,
     markItemPacked,
     generateLabel,
