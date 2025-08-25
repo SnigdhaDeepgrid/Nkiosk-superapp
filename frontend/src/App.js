@@ -99,8 +99,9 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <DeliveryProvider>
-          <div className="App">
-            <BrowserRouter>
+          <PickerPackerProvider>
+            <div className="App">
+              <BrowserRouter>
               <Routes>
                 {/* Homepage route - this will be the landing page */}
                 <Route path="/" element={<Homepage />} />
