@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "./components/ui/toaster";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import { DeliveryProvider } from "./contexts/DeliveryContext";
 import Homepage from "./components/Homepage";
 import LoginForm from "./components/auth/LoginForm";
 import DashboardLayout from "./components/layout/DashboardLayout";
