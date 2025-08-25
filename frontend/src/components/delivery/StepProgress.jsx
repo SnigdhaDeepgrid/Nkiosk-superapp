@@ -53,7 +53,7 @@ const StepProgress = ({ currentOrder, onMarkPickedUp, onMarkArrived, onVerifyOtp
 
   const currentStepIndex = getCurrentStepIndex();
   const canMarkPickedUp = currentOrder.status === 'accepted';
-  const canMarkArrived = currentOrder.status === 'picked_up';
+  const canMarkArrived = currentOrder.status === 'en_route';     // Changed from 'picked_up' to 'en_route'
   const canVerifyOtp = currentOrder.status === 'arrived_customer';
 
   return (
