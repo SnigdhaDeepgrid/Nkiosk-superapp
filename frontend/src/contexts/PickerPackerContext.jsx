@@ -279,7 +279,7 @@ export const PickerPackerProvider = ({ children }) => {
     },
 
     // Packer actions
-    setPpackingQueue: (orders) => {
+    setPackingQueue: (orders) => {
       dispatch({ type: PICKER_PACKER_ACTIONS.SET_PACKING_QUEUE, payload: orders });
     },
 
