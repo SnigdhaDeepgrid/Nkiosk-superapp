@@ -72,54 +72,25 @@ const PickerDashboard = ({ user }) => {
   // Initialize picker data and WebSocket
   useEffect(() => {
     // Set worker info
-    setWorker(user?.id || 'picker_001', 'picker');
+    setWorker(pickerId, 'picker');
+    setUserContext(user, 'picker');
     
     // Set industry based on user role or default
     const industry = user?.industry || 'grocery';
     setIndustry(industry);
 
-    // Initialize mock assigned orders
-    const mockOrders = [
-      {
-        id: 'ORD_001',
-        customerName: 'Emma Johnson',
-        industry: industry,
-        priority: 'high',
-        estimatedTime: 12,
-        totalItems: 6,
-        orderTime: new Date(Date.now() - 10 * 60 * 1000),
-        items: [
-          { id: 'item_001', name: 'Organic Bananas', quantity: 2, unit: 'bunch', barcode: '1234567890123', location: 'Aisle 1-A', status: 'pending' },
-          { id: 'item_002', name: 'Whole Milk', quantity: 1, unit: 'gallon', barcode: '2345678901234', location: 'Dairy Section', status: 'pending' },
-          { id: 'item_003', name: 'Bread - Whole Wheat', quantity: 1, unit: 'loaf', barcode: '3456789012345', location: 'Bakery', status: 'pending' },
-          { id: 'item_004', name: 'Greek Yogurt', quantity: 3, unit: 'container', barcode: '4567890123456', location: 'Dairy Section', status: 'pending' },
-          { id: 'item_005', name: 'Apples - Gala', quantity: 1, unit: 'bag', barcode: '5555666677778', location: 'Produce', status: 'pending' },
-          { id: 'item_006', name: 'Orange Juice', quantity: 1, unit: 'bottle', barcode: '6666777788889', location: 'Refrigerated', status: 'pending' }
-        ],
-        deliveryAddress: '123 Main St, Downtown'
-      },
-      {
-        id: 'ORD_002',
-        customerName: 'Michael Chen',
-        industry: industry,
-        priority: 'normal',
-        estimatedTime: 8,
-        totalItems: 4,
-        orderTime: new Date(Date.now() - 5 * 60 * 1000),
-        items: [
-          { id: 'med_001', name: 'Vitamin D3 Supplements', quantity: 1, unit: 'bottle', barcode: '7777888899990', location: 'Health-A1', status: 'pending' },
-          { id: 'med_002', name: 'Pain Relief Gel', quantity: 1, unit: 'tube', barcode: '8888999900001', location: 'Health-B2', status: 'pending' },
-          { id: 'med_003', name: 'Hand Sanitizer', quantity: 2, unit: 'bottle', barcode: '9999000011112', location: 'Health & Beauty', status: 'pending' },
-          { id: 'med_004', name: 'First Aid Kit', quantity: 1, unit: 'kit', barcode: '0000111122223', location: 'Health-C3', status: 'pending' }
-        ],
-        deliveryAddress: '456 Oak Avenue, Midtown'
-      }
-    ];
-    setAssignedOrders(mockOrders);
+    // Combine workflow orders with existing assigned orders
+    const combinedOrders = [...safeAssignedOrders, ...workflowOrders];
+    if (combinedOrders.length > safeAssignedOrders.length) {
+      setAssignedOrders(combinedOrders);
+    }
 
-    // Initialize WebSocket
-    const ws = createPickerSocket(user?.id || 'picker_001');
+    // Initialize WebSocket connections
+    const ws = createPickerSocket(pickerId);
     setWebSocket(ws);
+    
+    const workflowWs = createWorkflowWebSocket(pickerId, 'picker');
+    connectWorkflowSocket(workflowWs);
 
     // Listen for WebSocket events
     ws.on('new_order_assigned', (order) => {
@@ -130,11 +101,19 @@ const PickerDashboard = ({ user }) => {
       });
     });
 
-    ws.on('priority_update', (update) => {
+    // Listen for workflow events
+    workflowWs.on('picker.assignment.new', (data) => {
+      toast({
+        title: "New Picking Assignment",
+        description: `Order ${data.orderId.slice(-6)} assigned for picking`,
+      });
+    });
+
+    workflowWs.on('picker.assignment.priority.update', (data) => {
       toast({
         title: "Priority Update",
-        description: `Order ${update.orderId} priority changed to ${update.newPriority}`,
-        variant: update.newPriority === 'urgent' ? 'destructive' : 'default'
+        description: `Order ${data.orderId.slice(-6)} priority changed to ${data.newPriority}`,
+        variant: data.newPriority === 'urgent' ? 'destructive' : 'default'
       });
     });
 
@@ -143,8 +122,11 @@ const PickerDashboard = ({ user }) => {
       if (ws) {
         ws.cleanup();
       }
+      if (workflowWs) {
+        workflowWs.cleanup();
+      }
     };
-  }, []);
+  }, [workflowOrders]);
 
   const handleStartPicking = (order) => {
     startPickingOrder(order);
