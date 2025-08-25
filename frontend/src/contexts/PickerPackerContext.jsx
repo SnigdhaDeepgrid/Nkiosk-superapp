@@ -116,13 +116,15 @@ function pickerPackerReducer(state, action) {
       return {
         ...state,
         currentPickingOrder: null,
-        assignedOrders: state.assignedOrders.filter(order => order.id !== action.payload),
-        packingQueue: completedOrder ? [...state.packingQueue, {
+        assignedOrders: Array.isArray(state.assignedOrders) 
+          ? state.assignedOrders.filter(order => order.id !== action.payload)
+          : [],
+        packingQueue: completedOrder ? [...(Array.isArray(state.packingQueue) ? state.packingQueue : []), {
           ...completedOrder,
           status: 'ready_for_packing',
           completedPickingAt: new Date(),
           pickingProgress: state.pickingProgress[action.payload]
-        }] : state.packingQueue
+        }] : (Array.isArray(state.packingQueue) ? state.packingQueue : [])
       };
 
     case PICKER_PACKER_ACTIONS.SET_PACKING_QUEUE:
