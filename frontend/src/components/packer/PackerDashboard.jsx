@@ -104,7 +104,7 @@ const PackerDashboard = ({ user }) => {
         deliveryAddress: '456 Oak Avenue, Midtown'
       }
     ];
-    setPpackingQueue(mockPackingQueue);
+    setPackingQueue(mockPackingQueue);
 
     // Initialize WebSocket
     const ws = createPackerSocket(user?.id || 'packer_001');
