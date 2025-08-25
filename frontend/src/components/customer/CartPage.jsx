@@ -430,8 +430,18 @@ const CartPage = () => {
               size="lg"
               className="w-full bg-blue-600 hover:bg-blue-700 text-lg py-4"
               onClick={handlePlaceOrder}
+              disabled={isPlacingOrder || !deliveryAddress.trim() || !paymentMethod}
             >
-              🛒 Place Order (${total.toFixed(2)})
+              {isPlacingOrder ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Placing Order...
+                </>
+              ) : (
+                <>
+                  🛒 Place Order (${total.toFixed(2)})
+                </>
+              )}
             </Button>
             
             <div className="grid grid-cols-2 gap-4">
