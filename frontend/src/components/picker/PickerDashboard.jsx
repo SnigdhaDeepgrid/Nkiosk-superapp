@@ -111,7 +111,7 @@ const PickerDashboard = ({ user }) => {
 
     // Listen for WebSocket events
     ws.on('new_order_assigned', (order) => {
-      setAssignedOrders(prev => [...prev, order]);
+      setAssignedOrders(prev => Array.isArray(prev) ? [...prev, order] : [order]);
       toast({
         title: "New Order Assigned",
         description: `Order for ${order.customerName} - ${order.totalItems} items`,
