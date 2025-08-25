@@ -160,6 +160,13 @@ export const DeliveryProvider = ({ children }) => {
       });
     },
 
+    markArrived: () => {
+      dispatch({ 
+        type: DELIVERY_ACTIONS.UPDATE_ORDER_STATUS, 
+        payload: { status: 'arrived_customer' }
+      });
+    },
+
     verifyOtp: (code) => {
       // In real app, this would verify with backend
       // For demo, we'll accept any 6-digit code that the customer might provide
