@@ -13,7 +13,7 @@ import sys
 import os
 
 # Get backend URL from environment
-BACKEND_URL = "https://multi-role-portal.preview.emergentagent.com/api"
+BACKEND_URL = "https://rider-portal-1.preview.emergentagent.com/api"
 
 class AuthenticationTester:
     def __init__(self, base_url: str):

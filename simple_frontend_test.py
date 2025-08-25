@@ -9,7 +9,7 @@ import json
 import sys
 
 # Frontend URL from environment
-FRONTEND_URL = "https://multi-role-portal.preview.emergentagent.com"
+FRONTEND_URL = "https://rider-portal-1.preview.emergentagent.com"
 
 class SimpleFrontendTester:
     def __init__(self):
