@@ -346,6 +346,55 @@ const CartPage = () => {
           </Card>
         )}
 
+        {/* Delivery Details */}
+        {cartItems.length > 0 && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MapPin className="w-5 h-5" />
+                Delivery Details
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-sm font-medium block mb-2">Delivery Address *</label>
+                <Textarea
+                  value={deliveryAddress}
+                  onChange={(e) => setDeliveryAddress(e.target.value)}
+                  placeholder="Enter your full delivery address..."
+                  className="w-full"
+                  rows={3}
+                />
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium block mb-2">Payment Method *</label>
+                <Select value={paymentMethod} onValueChange={setPaymentMethod}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select payment method" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="cash">Cash on Delivery</SelectItem>
+                    <SelectItem value="card">Credit/Debit Card</SelectItem>
+                    <SelectItem value="upi">UPI Payment</SelectItem>
+                    <SelectItem value="wallet">Digital Wallet</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium block mb-2">Special Instructions</label>
+                <Textarea
+                  value={specialInstructions}
+                  onChange={(e) => setSpecialInstructions(e.target.value)}
+                  placeholder="Any special delivery instructions..."
+                  rows={2}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Order Summary */}
         {cartItems.length > 0 && (
           <Card className="mb-8">
