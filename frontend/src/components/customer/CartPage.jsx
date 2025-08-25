@@ -22,6 +22,13 @@ const CartPage = () => {
     removeItem, 
     clearCart 
   } = useCart();
+  
+  // Order workflow integration
+  const { placeOrder } = useOrderWorkflow();
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [specialInstructions, setSpecialInstructions] = useState('');
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   const handleQuantityUpdate = (id, newQuantity) => {
     if (newQuantity <= 0) {
