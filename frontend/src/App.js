@@ -72,7 +72,7 @@ const Dashboard = () => {
       return <VendorDashboard user={user} />;
     case 'delivery_partner':
       console.log('🚚 Routing to Delivery Partner Dashboard');
-      return <div>Delivery Partner Dashboard - Coming Soon</div>;
+      return <DeliveryPartnerDashboard user={user} />;
     case 'customer':
       console.log('👤 Routing to Customer Dashboard');
       return <NKioskDashboard user={user} />;
