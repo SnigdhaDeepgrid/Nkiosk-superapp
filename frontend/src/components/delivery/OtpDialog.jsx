@@ -174,8 +174,8 @@ const OtpDialog = ({ isOpen, onClose, onVerify, customerName, orderId }) => {
 
           {/* Help Text */}
           <div className="text-center text-sm text-gray-500">
-            <p>Ask the customer to provide the OTP from their order confirmation</p>
-            <p className="text-xs mt-1 text-orange-600">⚠️ Customer will receive OTP via SMS/App notification</p>
+            <p><strong>Say to customer:</strong> "Can you please share your 6-digit delivery OTP?"</p>
+            <p className="text-xs mt-1 text-orange-600">⚠️ Customer received OTP via SMS/App - They need to tell you the code</p>
           </div>
         </div>
 
