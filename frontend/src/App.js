@@ -174,9 +174,10 @@ function App() {
             <Toaster />
           </BrowserRouter>
         </div>
-      </DeliveryProvider>
-    </CartProvider>
-  </AuthProvider>
+      </PickerPackerProvider>
+    </DeliveryProvider>
+  </CartProvider>
+</AuthProvider>
 );
 }
 
