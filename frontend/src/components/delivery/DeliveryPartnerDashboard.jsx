@@ -166,7 +166,15 @@ const DeliveryPartnerDashboard = ({ user }) => {
     markPickedUp();
     toast({
       title: "Picked Up!",
-      description: "Order marked as picked up. Navigate to customer.",
+      description: "Order marked as picked up. Navigate to customer location.",
+    });
+  };
+
+  const handleMarkArrived = () => {
+    markArrived();
+    toast({
+      title: "Arrived at Customer!",
+      description: "Ask customer for their 6-digit OTP to complete delivery.",
     });
   };
 
