@@ -54,7 +54,7 @@ const PickerDashboard = ({ user }) => {
     setWorker,
     setWebSocket,
     setIndustry
-  } = usePickerPicker();
+  } = usePickerPacker();
 
   // Order workflow context
   const {
