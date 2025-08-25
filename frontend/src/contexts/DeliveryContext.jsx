@@ -156,7 +156,7 @@ export const DeliveryProvider = ({ children }) => {
     markPickedUp: () => {
       dispatch({ 
         type: DELIVERY_ACTIONS.UPDATE_ORDER_STATUS, 
-        payload: { status: 'picked_up' }
+        payload: { status: 'en_route' }  // Changed from 'picked_up' to 'en_route'
       });
     },
 
