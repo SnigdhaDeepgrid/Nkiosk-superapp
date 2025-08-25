@@ -115,10 +115,11 @@ const OtpDialog = ({ isOpen, onClose, onVerify, customerName, orderId }) => {
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
             <Key className="w-5 h-5 text-blue-500" />
-            <span>Verify Delivery OTP</span>
+            <span>Get OTP from Customer</span>
           </DialogTitle>
           <DialogDescription>
-            Enter the 6-digit OTP provided by <strong>{customerName}</strong> to complete the delivery.
+            Ask <strong>{customerName}</strong> to provide their 6-digit delivery verification OTP. 
+            They should have received it via SMS or app notification.
           </DialogDescription>
         </DialogHeader>
 
