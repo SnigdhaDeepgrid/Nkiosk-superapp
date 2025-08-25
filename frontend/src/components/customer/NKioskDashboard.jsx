@@ -18,6 +18,54 @@ const NKioskDashboard = ({ user }) => {
   const { totalItems, clearCartOnLogout } = useCart();
   const [selectedLocation, setSelectedLocation] = useState(null);
 
+  // Order workflow integration
+  const {
+    customerOrders,
+    notifications,
+    setUserContext,
+    connectWebSocket
+  } = useOrderWorkflow();
+
+  const customerId = user?.id || 'customer_001';
+  const userOrders = customerOrders[customerId] || [];
+  const activeOrders = userOrders.filter(order => 
+    !['delivered', 'cancelled'].includes(order.status)
+  );
+
+  // Initialize workflow WebSocket
+  useEffect(() => {
+    setUserContext(user, 'customer');
+    
+    const ws = createWorkflowWebSocket(customerId, 'customer');
+    connectWebSocket(ws);
+
+    // Listen for order updates
+    ws.on('order.status.update', (data) => {
+      toast({
+        title: "Order Update",
+        description: data.message,
+      });
+    });
+
+    ws.on('order.picker.assigned', (data) => {
+      toast({
+        title: "Picker Assigned",
+        description: `${data.pickerName} is now picking your order`,
+      });
+    });
+
+    ws.on('order.ready.for.delivery', (data) => {
+      toast({
+        title: "Out for Delivery",
+        description: `${data.riderName} is delivering your order`,
+      });
+    });
+
+    return () => {
+      ws.cleanup();
+    };
+  }, []);
+
   // Location-based category availability
   const locationCategories = {
     downtown: ["grocery", "pharmacy", "food", "electronics"],
