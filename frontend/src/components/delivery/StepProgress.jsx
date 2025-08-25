@@ -3,7 +3,7 @@ import { MapPin, Package, Navigation, Key, CheckCircle2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 
-const StepProgress = ({ currentOrder, onMarkPickedUp, onVerifyOtp }) => {
+const StepProgress = ({ currentOrder, onMarkPickedUp, onMarkArrived, onVerifyOtp }) => {
   if (!currentOrder) return null;
 
   const steps = [
