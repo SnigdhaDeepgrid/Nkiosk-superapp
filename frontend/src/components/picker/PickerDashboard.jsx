@@ -342,7 +342,7 @@ const PickerDashboard = ({ user }) => {
               </Card>
             ) : (
               <div className="grid gap-4">
-                {assignedOrders.map((order) => (
+                {safeAssignedOrders.map((order) => (
                   <OrderCard
                     key={order.id}
                     order={order}
