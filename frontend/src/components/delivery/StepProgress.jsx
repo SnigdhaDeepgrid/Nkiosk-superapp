@@ -144,13 +144,22 @@ const StepProgress = ({ currentOrder, onMarkPickedUp, onMarkArrived, onVerifyOtp
                               Mark Picked Up
                             </Button>
                           )}
+                          {step.id === 'navigate_to_customer' && canMarkArrived && (
+                            <Button 
+                              onClick={onMarkArrived}
+                              size="sm"
+                              className="bg-blue-600 hover:bg-blue-700"
+                            >
+                              Mark Arrived
+                            </Button>
+                          )}
                           {step.id === 'verify_otp' && canVerifyOtp && (
                             <Button 
                               onClick={onVerifyOtp}
                               size="sm"
-                              className="bg-blue-600 hover:bg-blue-700"
+                              className="bg-purple-600 hover:bg-purple-700"
                             >
-                              Enter OTP
+                              Get OTP from Customer
                             </Button>
                           )}
                         </div>
