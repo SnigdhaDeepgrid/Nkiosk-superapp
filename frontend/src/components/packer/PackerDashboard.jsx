@@ -353,7 +353,7 @@ const PackerDashboard = ({ user }) => {
               </Card>
             ) : (
               <div className="grid gap-4">
-                {packingQueue.map((order) => (
+                {safePackingQueue.map((order) => (
                   <PackingQueueCard
                     key={order.id}
                     order={order}
