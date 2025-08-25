@@ -35,7 +35,7 @@ const PackerDashboard = ({ user }) => {
 
   // Packer context
   const {
-    packingQueue,
+    packingQueue = [], // Default to empty array
     currentPackingOrder,
     packingProgress,
     packageTypes,
